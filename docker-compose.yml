@@ -1,0 +1,27 @@
+services:
+  starter.api:
+    image: saifdev22/starterapi
+    container_name: StarterTemplate
+    build:
+      context: .
+      dockerfile: src/api/Starter.API/Dockerfile
+    ports:
+      - 6060:8080
+      - 6061:8081
+       
+  client.api:
+    image: saifdev22/blazor-wasm
+    container_name: BlazorWASM-v5000
+    build:
+      context: .
+      dockerfile: src/clients/BlazorWASM/Dockerfile
+    ports:
+      - 6090:8080
+      - 6091:8081
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:8080
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
+

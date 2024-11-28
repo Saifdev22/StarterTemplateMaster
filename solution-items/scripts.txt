@@ -1,0 +1,25 @@
+Migrations
+
+System
+Add-Migration -Name InitialCreate -Context SystemDbContext -OutputDir Common/Database/Migrations -Project System.Infrastructure -StartupProject Starter.API
+Update-Database -Context SystemDbContext -Project System.Infrastructure -StartupProject Starter.API 
+
+Inventory
+Add-Migration -Name InitialCreate -Context InventoryDbContext  -OutputDir Common/Database/Migrations  -Project Inventory.Infrastructure -StartupProject Starter.API
+Update-Database -Context InventoryDbContext -Project Inventory.Infrastructure -StartupProject Starter.API 
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Project Reference
+
+Modules
+
+Domain => Common.Domain
+Infrastructure => Common.Infrastructure, Application, Presentation
+Application => Common.Application, Domain, IntegrationEvents
+Presentation => Common.Presentation, Application
+
+
+Prepare Blazor
+
+1. Install Microsoft.AspNetCore.Components.WebAssembly On The API

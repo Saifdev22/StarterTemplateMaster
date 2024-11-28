@@ -1,0 +1,10 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\common\Common.Infrastructure\Common.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\system\System.Application\System.Application.csproj" />
+    <ProjectReference Include="..\Inventory.Application\Inventory.Application.csproj" />
+    <ProjectReference Include="..\Inventory.Presentation\Inventory.Presentation.csproj" />
+  </ItemGroup>
+
+</Project>

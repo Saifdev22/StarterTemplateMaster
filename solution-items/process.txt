@@ -1,0 +1,21 @@
+
+
+Creating Endpoint
+
+1. Create Model (Domain)
+
+2. Add Model To DbContext
+
+3. Configure Model
+
+4. Add CQRS
+
+5. Add Endpoint
+
+
+ToDo
+
+1. Authentication/Authorization
+2. Database Backups
+3. Docker Blazor
+4. 
