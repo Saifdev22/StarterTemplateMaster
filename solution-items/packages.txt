@@ -121,6 +121,7 @@ Server Tools
 -NetData
 -Portainer
 -Nginx Proxy Manager
+-Vagrant
 -Ansible
 -Terraform
 

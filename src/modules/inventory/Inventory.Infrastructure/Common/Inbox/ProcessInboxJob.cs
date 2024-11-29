@@ -11,7 +11,7 @@ using Newtonsoft.Json;
 using Quartz;
 using System.Application.Common.Interfaces;
 using System.Data.Common;
-using System.Domain.Features.Tenants;
+using System.Domain.Features.Tenant;
 
 namespace Inventory.Infrastructure.Common.Inbox;
 

@@ -43,7 +43,7 @@ public static class SystemModule
     private static void AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddScoped<ITokenService, TokenService>();
-        services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<IIdentityRepository, UserRepository>();
         services.AddScoped<IPermissionService, PermissionService>();
 
         services.AddDbContext<SystemDbContext>((sp, options) =>

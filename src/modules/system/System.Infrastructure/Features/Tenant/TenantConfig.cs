@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System.Domain.Features.Tenants;
+using System.Domain.Features.Tenant;
 
 namespace System.Infrastructure.Features.Tenant;
 

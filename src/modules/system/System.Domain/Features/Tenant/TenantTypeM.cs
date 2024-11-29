@@ -1,4 +1,4 @@
-﻿namespace System.Domain.Features.Tenants;
+﻿namespace System.Domain.Features.Tenant;
 
 public class TenantTypeM : AggregateRoot
 {

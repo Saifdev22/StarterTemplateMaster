@@ -1,6 +1,6 @@
 ﻿using System.Domain.Features.Identity;
 
-namespace System.Domain.Features.Tenants;
+namespace System.Domain.Features.Tenant;
 
 public class TenantM
 {

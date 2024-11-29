@@ -15,7 +15,14 @@ Creating Endpoint
 
 ToDo
 
-1. Authentication/Authorization
-2. Database Backups
-3. Docker Blazor
-4. 
+1. Finalize API (Get TODO Tasks).
+
+2. Docker BlazorWASM (Get Blazor Ready).
+
+3. Docker Self Hosted Github Runnner.
+
+4. Deploy A Test Kubernetes Cluster.
+
+5. Create a R60 Seperate VPS. (Make it a worker/control node) - For databases. (Postgres/MSSQL)
+
+6. Develop A Basic CI/CD Pipeline.

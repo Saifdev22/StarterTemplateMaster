@@ -1,6 +1,6 @@
 ﻿namespace System.Domain.Features.Identity;
 
-public interface IUserRepository
+public interface IIdentityRepository
 {
     Task AddUser(UserM user);
 

@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.Domain.Features.Identity;
-using System.Domain.Features.Tenants;
+using System.Domain.Features.Tenant;
 using System.Globalization;
 using System.IdentityModel.Tokens.Jwt;
 using System.Infrastructure.Common.Database;

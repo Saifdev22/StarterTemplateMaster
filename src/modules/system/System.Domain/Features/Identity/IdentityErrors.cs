@@ -1,6 +1,6 @@
 ﻿namespace System.Domain.Features.Identity;
 
-public static class UserErrors
+public static class IdentityErrors
 {
     public static CustomError NotFound(int userId)
     {

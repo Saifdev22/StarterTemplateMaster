@@ -4,7 +4,7 @@ using Common.Infrastructure.Outbox;
 using Microsoft.EntityFrameworkCore;
 using System.Application.Common.Interfaces;
 using System.Domain.Features.Identity;
-using System.Domain.Features.Tenants;
+using System.Domain.Features.Tenant;
 using System.Reflection;
 
 namespace System.Infrastructure.Common.Database;

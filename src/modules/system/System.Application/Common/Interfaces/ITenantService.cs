@@ -1,4 +1,4 @@
-﻿using System.Domain.Features.Tenants;
+﻿using System.Domain.Features.Tenant;
 
 namespace System.Application.Common.Interfaces;
 public interface ITenantService

@@ -6,7 +6,7 @@ using System.Infrastructure.Common.Database;
 
 namespace System.Infrastructure.Features.Identity;
 
-internal sealed class UserRepository(SystemDbContext _dbContext) : IUserRepository
+internal sealed class UserRepository(SystemDbContext _dbContext) : IIdentityRepository
 {
     public async Task AddUser(UserM user)
     {
@@ -66,7 +66,7 @@ internal sealed class UserRepository(SystemDbContext _dbContext) : IUserReposito
         }
         else
         {
-            Result.Failure(UserErrors.NotFound(userDto.UserId));
+            Result.Failure(IdentityErrors.NotFound(userDto.UserId));
         }
 
     }

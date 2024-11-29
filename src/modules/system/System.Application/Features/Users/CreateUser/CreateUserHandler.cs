@@ -3,7 +3,7 @@ using System.Domain.Features.Identity;
 
 namespace System.Application.Features.Users.CreateUser;
 
-internal sealed class CreateUserHandler(IUserRepository _userRepository)
+internal sealed class CreateUserHandler(IIdentityRepository _userRepository)
         : ICommandHandler<CreateUserCommand, int>
 {
     public async Task<Result<int>> Handle(CreateUserCommand request, CancellationToken cancellationToken)

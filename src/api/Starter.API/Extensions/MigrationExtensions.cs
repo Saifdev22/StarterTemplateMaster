@@ -1,6 +1,6 @@
 ﻿using Inventory.Infrastructure.Common.Database;
 using Microsoft.EntityFrameworkCore;
-using System.Domain.Features.Tenants;
+using System.Domain.Features.Tenant;
 using System.Infrastructure.Common.Database;
 
 namespace Starter.API.Extensions;
