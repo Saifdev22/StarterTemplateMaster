@@ -1,7 +1,23 @@
 ﻿@page "/home"
 
-<PageTitle>Homexx</PageTitle>
+<PageTitle>Home</PageTitle>
 
-<h1>Hello, worldsssssssssss!</h1>
+<AuthorizeView>
+    @foreach (var claim in context.User.Claims)
+    {
+        <p>@claim.Type - @claim.Value</p>
+    }
+
+    @if (context.User.HasClaim(c => c.Type == "Department" && c.Value == "HR"))
+    {
+        <p>Welcome to the HR section!</p>
+    }
+
+</AuthorizeView>
+
+<AuthorizeView Roles="Administrator">
+    Only Administrators can see this.
+</AuthorizeView>
 
 Welcome to your new app. Mr S KHAN. S KHAN
+

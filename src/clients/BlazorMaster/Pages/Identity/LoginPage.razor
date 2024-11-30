@@ -5,48 +5,32 @@
 
 @layout AuthLayout
 
-<div class="login-box">
-    <div class="auth-logo">
-        <img src="/images/saif-logo.png" alt="Auth Logo" />
+<EditForm Enhance Model="User" OnValidSubmit="HandleLogin">
+    <DataAnnotationsValidator />
+    <div class="mb-3">
+        <label for="email">Email</label>
+        <InputText id="email" @bind-Value="User.Email" class="form-control" />
+        <ValidationMessage For="@(() => User.Email)" />
     </div>
-    <div class="login-header">
-        <header>Login</header>
+    <div class="mb-3">
+        <label for="password">Password</label>
+        <InputText id="password" @bind-Value="User.Password" class="form-control" type="password" />
+        <ValidationMessage For="@(() => User.Password)" />
     </div>
-    <EditForm Enhance Model="User" OnValidSubmit="HandleLogin">
-        <DataAnnotationsValidator />
-        <div class="input-box">
-            <InputText @bind-Value="User.Email" class="input-field" placeholder="Email" type="email" autocomplete="off"></InputText>
-        </div>
-        <div class="input-box">
-            <input type="password" @bind="User.Password" class="input-field" placeholder="Password" autocomplete="off" />
-        </div>
-        <div class="forgot">
-            <section>
-                <input type="checkbox" id="check">
-                <label for="check">Remember me</label>
-            </section>
-            <section>
-                <a href="#">Forgot password</a>
-            </section>
-        </div>
-        <div class="input-submit">
-            @if(ShowLoadingButton)
-            {
-                <BlazorMaster.Pages.Components.ButtonLoader />
-            }
-            else
-            {
-            <button class="submit-btn" id="submit" type="submit"></button>
-            <label for="submit">Sign In</label>              
-            }
-            
-        </div>
-        <div class="sign-up-link">
-            <p>Don't have an account? <a href="identity/account/register">Sign up now.</a></p>
-        </div>
-        <ValidationSummary />
-    </EditForm>
-</div>
+    <div class="input-submit">
+        @if(ShowLoadingButton)
+        {
+            <BlazorMaster.Pages.Components.ButtonLoader />
+        }
+        else
+        {
+        <button class="btn btn-secondary" id="submit" type="submit"></button>
+        <label for="submit">Sign In</label>              
+        }      
+    </div>
+    <ValidationSummary />
+</EditForm>
+
 
 
 @code {
