@@ -2,7 +2,7 @@ services:
 
   client.api:
     image: saifdev22/blazor-wasm
-    container_name: BlazorWASM-v1
+    container_name: Starter.Blazor
     build:
       context: .
       dockerfile: src/api/Client.API/Dockerfile
