@@ -4,12 +4,14 @@ name: Blazor Client Pipeline
     branches:
       - master
     paths:
-      - src/clients/Blazor.WebAssembly/**
+      - src/clients/BlazorMaster/**
+      - src/api/Client.API/**
   pull_request:
     branches:
       - master
     paths:
-      - src/clients/Blazor.WebAssembly/**
+      - src/clients/BlazorMaster/**
+      - src/api/Client.API/**
 jobs:
   build_images:
     name: Build Docker Images
