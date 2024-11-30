@@ -17,7 +17,7 @@ namespace System.Infrastructure.Common.Database.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasDefaultSchema("BASE")
+                .HasDefaultSchema("main")
                 .HasAnnotation("ProductVersion", "9.0.0")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
@@ -49,7 +49,7 @@ namespace System.Infrastructure.Common.Database.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("InboxMessages", "BASE");
+                    b.ToTable("InboxMessages", "main");
                 });
 
             modelBuilder.Entity("Common.Infrastructure.Inbox.InboxMessageConsumer", b =>
@@ -63,7 +63,7 @@ namespace System.Infrastructure.Common.Database.Migrations
 
                     b.HasKey("InboxMessageId", "Name");
 
-                    b.ToTable("InboxMessageConsumers", "BASE");
+                    b.ToTable("InboxMessageConsumers", "main");
                 });
 
             modelBuilder.Entity("Common.Infrastructure.Outbox.OutboxMessage", b =>
@@ -92,7 +92,7 @@ namespace System.Infrastructure.Common.Database.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("OutboxMessages", "BASE");
+                    b.ToTable("OutboxMessages", "main");
                 });
 
             modelBuilder.Entity("Common.Infrastructure.Outbox.OutboxMessageConsumer", b =>
@@ -106,7 +106,7 @@ namespace System.Infrastructure.Common.Database.Migrations
 
                     b.HasKey("OutboxMessageId", "Name");
 
-                    b.ToTable("OutboxMessageConsumers", "BASE");
+                    b.ToTable("OutboxMessageConsumers", "main");
                 });
 
             modelBuilder.Entity("System.Domain.Features.Identity.PermissionM", b =>
@@ -124,7 +124,7 @@ namespace System.Infrastructure.Common.Database.Migrations
 
                     b.HasKey("PermissionId");
 
-                    b.ToTable("Permissions", "BASE");
+                    b.ToTable("Permissions", "main");
                 });
 
             modelBuilder.Entity("System.Domain.Features.Identity.RoleM", b =>
@@ -150,7 +150,7 @@ namespace System.Infrastructure.Common.Database.Migrations
                     b.HasIndex("RoleName")
                         .IsUnique();
 
-                    b.ToTable("Roles", "BASE");
+                    b.ToTable("Roles", "main");
                 });
 
             modelBuilder.Entity("System.Domain.Features.Identity.RolePermissionM", b =>
@@ -165,7 +165,7 @@ namespace System.Infrastructure.Common.Database.Migrations
 
                     b.HasIndex("PermissionId");
 
-                    b.ToTable("RolePermissions", "BASE");
+                    b.ToTable("RolePermissions", "main");
                 });
 
             modelBuilder.Entity("System.Domain.Features.Identity.UserM", b =>
@@ -226,7 +226,7 @@ namespace System.Infrastructure.Common.Database.Migrations
 
                     b.HasIndex("TenantMTenantId");
 
-                    b.ToTable("Users", "BASE");
+                    b.ToTable("Users", "main");
                 });
 
             modelBuilder.Entity("System.Domain.Features.Identity.UserRoleM", b =>
@@ -241,10 +241,10 @@ namespace System.Infrastructure.Common.Database.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("UserRoles", "BASE");
+                    b.ToTable("UserRoles", "main");
                 });
 
-            modelBuilder.Entity("System.Domain.Features.Tenants.TenantM", b =>
+            modelBuilder.Entity("System.Domain.Features.Tenant.TenantM", b =>
                 {
                     b.Property<int>("TenantId")
                         .ValueGeneratedOnAdd()
@@ -283,10 +283,10 @@ namespace System.Infrastructure.Common.Database.Migrations
 
                     b.HasIndex("TenantTypeId");
 
-                    b.ToTable("Tenants", "BASE");
+                    b.ToTable("Tenants", "main");
                 });
 
-            modelBuilder.Entity("System.Domain.Features.Tenants.TenantTypeM", b =>
+            modelBuilder.Entity("System.Domain.Features.Tenant.TenantTypeM", b =>
                 {
                     b.Property<int>("TenantTypeId")
                         .ValueGeneratedOnAdd()
@@ -325,7 +325,7 @@ namespace System.Infrastructure.Common.Database.Migrations
                     b.HasIndex("TenantTypeCode")
                         .IsUnique();
 
-                    b.ToTable("TenantTypes", "BASE");
+                    b.ToTable("TenantTypes", "main");
                 });
 
             modelBuilder.Entity("System.Domain.Features.Identity.RolePermissionM", b =>
@@ -345,7 +345,7 @@ namespace System.Infrastructure.Common.Database.Migrations
 
             modelBuilder.Entity("System.Domain.Features.Identity.UserM", b =>
                 {
-                    b.HasOne("System.Domain.Features.Tenants.TenantM", null)
+                    b.HasOne("System.Domain.Features.Tenant.TenantM", null)
                         .WithMany("Users")
                         .HasForeignKey("TenantMTenantId");
                 });
@@ -369,9 +369,9 @@ namespace System.Infrastructure.Common.Database.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("System.Domain.Features.Tenants.TenantM", b =>
+            modelBuilder.Entity("System.Domain.Features.Tenant.TenantM", b =>
                 {
-                    b.HasOne("System.Domain.Features.Tenants.TenantTypeM", "TenantType")
+                    b.HasOne("System.Domain.Features.Tenant.TenantTypeM", "TenantType")
                         .WithMany("Tenants")
                         .HasForeignKey("TenantTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -390,12 +390,12 @@ namespace System.Infrastructure.Common.Database.Migrations
                     b.Navigation("UserRoles");
                 });
 
-            modelBuilder.Entity("System.Domain.Features.Tenants.TenantM", b =>
+            modelBuilder.Entity("System.Domain.Features.Tenant.TenantM", b =>
                 {
                     b.Navigation("Users");
                 });
 
-            modelBuilder.Entity("System.Domain.Features.Tenants.TenantTypeM", b =>
+            modelBuilder.Entity("System.Domain.Features.Tenant.TenantTypeM", b =>
                 {
                     b.Navigation("Tenants");
                 });

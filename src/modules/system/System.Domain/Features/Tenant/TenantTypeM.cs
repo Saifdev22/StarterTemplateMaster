@@ -8,11 +8,10 @@ public class TenantTypeM : AggregateRoot
 
     public virtual ICollection<TenantM>? Tenants { get; }
 
-    public static TenantTypeM Create(int tenantTypeId, string tenantTypeCode, string tenantTypeDesc)
+    public static TenantTypeM Create(string tenantTypeCode, string tenantTypeDesc)
     {
         TenantTypeM tenantType = new()
         {
-            TenantTypeId = tenantTypeId,
             TenantTypeCode = tenantTypeCode,
             TenantTypeName = tenantTypeDesc,
         };

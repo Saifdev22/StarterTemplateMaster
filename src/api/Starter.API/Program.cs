@@ -5,13 +5,10 @@ using Common.Presentation.Endpoints;
 using HealthChecks.UI.Client;
 using Inventory.Infrastructure;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
-using Scalar.AspNetCore;
 using Serilog;
 using Starter.API.Extensions;
 using Starter.API.Middlewares;
 using Starter.API.OpenTelemetry;
-using Starter.API.Services;
-using System.Application.Common.Interfaces;
 using System.Infrastructure;
 using System.Reflection;
 using System.Text.Json.Serialization;
@@ -21,8 +18,6 @@ WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 //Controller API Support
 builder.Services.AddControllers().AddJsonOptions(x =>
      x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve);
-
-builder.Services.AddScoped<ITenantService, TenantService>();
 
 //Serilog
 builder.Host.UseSerilog((context, loggerConfig) => loggerConfig.ReadFrom.Configuration(context.Configuration));
@@ -45,9 +40,8 @@ Assembly[] moduleApplicationAssemblies =
 builder.Services.AddCommonApplication(moduleApplicationAssemblies);
 
 // Adding Common Infrastructure Module
-string systemDatabase = builder.Configuration.GetValueOrThrow<string>("Database:DefaultConnection");
+//string systemDatabase = builder.Configuration.GetValueOrThrow<string>("Database:DefaultConnection");
 string redisConnectionString = builder.Configuration.GetValueOrThrow<string>("Redis:DefaultConnection");
-string baseUrl = builder.Configuration.GetValueOrThrow<string>("BaseUrl");
 
 builder.Services.AddCommonInfrastructure(
     DiagnosticsConfig.ServiceName,
@@ -72,25 +66,30 @@ builder.Services.AddHealthChecks();
 //.AddSqlServer(testDatabase!)
 //.AddRedis(redisConnectionString);
 
+// Add CORS services
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("MyPolicy", policy =>
+    {
+        // Allow all origins (adjust as necessary)
+        policy.AllowAnyOrigin()
+              .AllowAnyMethod()
+              .AllowAnyHeader();
+    });
+});
+
 WebApplication app = builder.Build();
 
-// Configure the HTTP request pipeline.
+app.UseCors("MyPolicy");
+
 app.MapControllers();
 
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
-    app.MapScalarApiReference(options =>
-    {
-        options
-        .WithTitle("SaifAPI")
-        .WithTheme(ScalarTheme.BluePlanet)
-        .WithModels(false)
-        .AddServer(baseUrl)
-        .WithDefaultHttpClient(ScalarTarget.CSharp, ScalarClient.HttpClient);
-    });
+    app.UseSwaggerUI(options => options.SwaggerEndpoint("/openapi/v1.json", "Starter.API"));
 
-    app.ApplyMigrations(systemDatabase);
+    app.ApplyMigrations();
 }
 
 app.MapHealthChecks("health", new HealthCheckOptions

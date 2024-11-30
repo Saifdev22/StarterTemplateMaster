@@ -1,4 +1,4 @@
-﻿using Common.Domain.Jwt;
+﻿using System.Domain.Features.Token;
 
 namespace System.Application.Features.Token;
 

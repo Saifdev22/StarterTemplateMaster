@@ -23,7 +23,7 @@ public sealed class SystemDbContext(DbContextOptions<SystemDbContext> options) :
     {
         ArgumentNullException.ThrowIfNull(modelBuilder);
 
-        modelBuilder.HasDefaultSchema(Schemas.Users);
+        modelBuilder.HasDefaultSchema(Schemas.System);
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         modelBuilder.ApplyConfiguration(new OutboxMessageConfiguration());
         modelBuilder.ApplyConfiguration(new OutboxMessageConsumerConfiguration());

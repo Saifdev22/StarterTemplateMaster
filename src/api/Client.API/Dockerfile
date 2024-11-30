@@ -7,13 +7,13 @@ WORKDIR /app
 EXPOSE 8080
 EXPOSE 8081
 
+
 # This stage is used to build the service project
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["Directory.Build.props", "."]
 COPY ["src/api/Client.API/Client.API.csproj", "src/api/Client.API/"]
-COPY ["src/clients/Blazor.WebAssembly/Blazor.WebAssembly.csproj", "src/clients/Blazor.WebAssembly/"]
 RUN dotnet restore "./src/api/Client.API/Client.API.csproj"
 COPY . .
 WORKDIR "/src/src/api/Client.API"

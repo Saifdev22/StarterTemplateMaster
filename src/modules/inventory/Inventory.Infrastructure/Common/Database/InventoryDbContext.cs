@@ -10,7 +10,7 @@ namespace Inventory.Infrastructure.Common.Database;
 
 public sealed class InventoryDbContext(DbContextOptions<InventoryDbContext> options) : DbContext(options), IUnitOfWork
 {
-    internal DbSet<CategoryGroupM> Tenants => Set<CategoryGroupM>();
+    internal DbSet<CategoryGroupM> CategoryGroups => Set<CategoryGroupM>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

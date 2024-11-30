@@ -7,9 +7,9 @@ namespace Starter.API.Extensions;
 
 internal static class MigrationExtensions
 {
-    public static void ApplyMigrations(this IApplicationBuilder app, string systemDb)
+    public static void ApplyMigrations(this IApplicationBuilder app)
     {
-        ApplyMigration<SystemDbContext>(app, systemDb);
+        ApplyMigration<SystemDbContext>(app, null);
 
         using IServiceScope scope = app.ApplicationServices.CreateScope();
         SystemDbContext systemDbContext = scope.ServiceProvider.GetRequiredService<SystemDbContext>();
@@ -29,12 +29,16 @@ internal static class MigrationExtensions
 
     }
 
-    private static void ApplyMigration<TDbContext>(this IApplicationBuilder app, string connectionString)
+    private static void ApplyMigration<TDbContext>(this IApplicationBuilder app, string? connectionString)
             where TDbContext : DbContext
     {
         using IServiceScope scope = app.ApplicationServices.CreateScope();
         using TDbContext context = scope.ServiceProvider.GetRequiredService<TDbContext>();
-        context.Database.SetConnectionString(connectionString);
+
+        if (connectionString != null)
+        {
+            context.Database.SetConnectionString(connectionString);
+        }
 
         if (context.Database.GetPendingMigrations().Any())
         {

@@ -1,0 +1,51 @@
+﻿@using BlazorMaster.Dtos
+@using BlazorMaster.Helpers
+@inherits LayoutComponentBase
+
+<AuthorizeView>
+    <Authorized>
+        <div class="page">
+            <div class="sidebar">
+                <NavMenu />
+            </div>
+            <main>
+                <div class="top-row px-4">
+                    <a class="btn btn-none" @onclick="LogoutClicked">Logout</a>
+                </div>
+
+                <article class="content px-4">
+                    <ErrorBoundary @ref="errorBoundary">
+                        <ChildContent>
+                            @Body
+                        </ChildContent>
+                        <ErrorContent Context="Exception" >
+                            <p>Error Occured!!!</p>
+                            <p>@Exception.GetType();</p>
+                            <p>@Exception.Message;</p>
+                        </ErrorContent>
+                    </ErrorBoundary>
+                    
+                </article>
+            </main>
+        </div>
+    </Authorized>
+   
+    <NotAuthorized>@Body</NotAuthorized>
+</AuthorizeView> 
+
+@code {
+    private ErrorBoundary? errorBoundary;
+
+    protected override void OnParametersSet()
+    {
+        errorBoundary?.Recover();
+    }
+
+    async Task LogoutClicked()
+    {
+        var logoutModel = new TokenResponse();
+        var customAuthStateProvider = (CustomAuthenticationStateProvider)_authenticationStateProvider;
+        await customAuthStateProvider.UpdateAuthenticationState(logoutModel);
+        _navigationManager.NavigateTo("/identity/account/login", replace: true, forceLoad: true);
+    }
+}

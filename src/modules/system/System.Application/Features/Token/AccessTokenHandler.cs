@@ -1,10 +1,10 @@
-﻿using Common.Application.Authentication;
-using Common.Domain.Jwt;
+﻿using System.Application.Common.Interfaces;
+using System.Domain.Features.Token;
 
 
 namespace System.Application.Features.Token;
 
-internal sealed class AccessTokenHandler(ITokenService _tokenService)
+internal sealed class CreateTenantHandler(ITokenService _tokenService)
         : ICommandHandler<AccessTokenCommand, TokenResponse>
 {
     public async Task<Result<TokenResponse>> Handle(AccessTokenCommand request, CancellationToken cancellationToken)

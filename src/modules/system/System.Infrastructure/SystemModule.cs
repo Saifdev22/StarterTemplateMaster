@@ -1,10 +1,9 @@
-﻿using Common.Application.Authentication;
-using Common.Application.Authorization;
+﻿using Common.Application.Authorization;
 using Common.Application.EventBus;
 using Common.Application.Messaging;
 using Common.Domain.Abstractions;
-using Common.Infrastructure.Configuration;
 using Common.Infrastructure.Outbox;
+using Common.Infrastructure.System;
 using Common.Presentation.Endpoints;
 using MassTransit;
 using Microsoft.EntityFrameworkCore;
@@ -19,6 +18,7 @@ using System.Infrastructure.Common.Database;
 using System.Infrastructure.Common.Inbox;
 using System.Infrastructure.Common.Outbox;
 using System.Infrastructure.Features.Identity;
+using System.Infrastructure.Features.Tenant;
 using System.Presentation.Features.User;
 
 namespace System.Infrastructure;
@@ -42,14 +42,18 @@ public static class SystemModule
 
     private static void AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
+        services.AddScoped<ITenantService, TenantService>();
         services.AddScoped<ITokenService, TokenService>();
         services.AddScoped<IIdentityRepository, UserRepository>();
         services.AddScoped<IPermissionService, PermissionService>();
 
         services.AddDbContext<SystemDbContext>((sp, options) =>
         {
+            CurrentTenant tenantProvider = sp.GetRequiredService<CurrentTenant>();
+            string connectionString = tenantProvider.GetConnectionString();
+
             options.AddInterceptors(sp.GetServices<InsertOutboxMessagesInterceptor>());
-            options.UseSqlServer(configuration.GetValueOrThrow<string>("Database:DefaultConnection"), sqlServerOptionsAction: sqlOptions =>
+            options.UseSqlServer(connectionString, sqlServerOptionsAction: sqlOptions =>
             {
                 sqlOptions.EnableRetryOnFailure(
                 maxRetryCount: 10,

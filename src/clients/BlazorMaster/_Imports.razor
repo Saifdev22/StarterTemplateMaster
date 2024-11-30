@@ -1,0 +1,20 @@
+﻿@using System.Net.Http
+@using System.Net.Http.Json
+@using BlazorMaster.Services
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.Authorization
+@using Microsoft.AspNetCore.Components.Forms
+@using Microsoft.AspNetCore.Components.Routing
+@using Microsoft.AspNetCore.Components.Web
+@using Microsoft.AspNetCore.Components.Web.Virtualization
+@using Microsoft.AspNetCore.Components.WebAssembly.Http
+@using Microsoft.JSInterop
+@using BlazorMaster
+@using BlazorMaster.Layout
+
+@attribute [Authorize]
+
+@inject AuthenticationStateProvider _authenticationStateProvider
+@inject NavigationManager _navigationManager
+@inject IJSRuntime _js
+@inject ITokenService _tokenService

@@ -2,5 +2,5 @@
 
 internal static class Schemas
 {
-    internal const string Users = "BASE";
+    internal const string System = "main";
 }

@@ -1,0 +1,101 @@
+﻿@using BlazorMaster.Dtos
+@using BlazorMaster.Helpers
+
+@page "/identity/account/login"
+
+@layout AuthLayout
+
+<div class="login-box">
+    <div class="auth-logo">
+        <img src="/images/saif-logo.png" alt="Auth Logo" />
+    </div>
+    <div class="login-header">
+        <header>Login</header>
+    </div>
+    <EditForm Enhance Model="User" OnValidSubmit="HandleLogin">
+        <DataAnnotationsValidator />
+        <div class="input-box">
+            <InputText @bind-Value="User.Email" class="input-field" placeholder="Email" type="email" autocomplete="off"></InputText>
+        </div>
+        <div class="input-box">
+            <input type="password" @bind="User.Password" class="input-field" placeholder="Password" autocomplete="off" />
+        </div>
+        <div class="forgot">
+            <section>
+                <input type="checkbox" id="check">
+                <label for="check">Remember me</label>
+            </section>
+            <section>
+                <a href="#">Forgot password</a>
+            </section>
+        </div>
+        <div class="input-submit">
+            @if(ShowLoadingButton)
+            {
+                <BlazorMaster.Pages.Components.ButtonLoader />
+            }
+            else
+            {
+            <button class="submit-btn" id="submit" type="submit"></button>
+            <label for="submit">Sign In</label>              
+            }
+            
+        </div>
+        <div class="sign-up-link">
+            <p>Don't have an account? <a href="identity/account/register">Sign up now.</a></p>
+        </div>
+        <ValidationSummary />
+    </EditForm>
+</div>
+
+
+@code {
+    [CascadingParameter]
+    public Task<AuthenticationState>? AuthenticationState { get; set; }
+
+    public bool ShowLoadingButton { get; set; } = false;
+    internal LoginDto User { get; set; } = new();
+
+    protected async override Task OnInitializedAsync()
+    {
+        await CheckUserAuthentication();
+    }
+
+    public async Task HandleLogin()
+    {
+        ShowLoadingButton = true;
+
+        var result = await _tokenService.LoginUser(User);
+        if (result.Flag)
+        {
+            string customMessage = $"{result.Flag}{Environment.NewLine}{result.Token}";
+            await _js.InvokeVoidAsync("alert", customMessage);
+
+            var customAuthStateProvider = (CustomAuthenticationStateProvider)_authenticationStateProvider;
+            await customAuthStateProvider.UpdateAuthenticationState(new TokenResponse() 
+            { 
+                Token = result.Token, 
+                RefreshToken = result.RefreshToken, 
+                RefreshTokenExpiryTime = result.RefreshTokenExpiryTime 
+            });
+
+            _navigationManager.NavigateTo("/home/dashboard", forceLoad: true);
+        }
+        else
+        {
+            await _js.InvokeVoidAsync("alert", "Error");
+        }
+
+        ShowLoadingButton = false;
+    }
+
+    private async Task CheckUserAuthentication()
+    {
+        var user = (await AuthenticationState!).User;
+        bool isUserAuthenticated = user.Identity!.IsAuthenticated;
+        if (isUserAuthenticated)
+        {
+            _navigationManager.NavigateTo("/home/dashboard");
+        }
+    }
+}

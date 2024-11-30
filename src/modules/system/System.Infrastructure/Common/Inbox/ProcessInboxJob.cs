@@ -84,7 +84,7 @@ internal sealed class ProcessInboxJob(
              SELECT TOP {inboxOptions.Value.BatchSize}
                 Id AS {nameof(InboxMessageResponse.Id)},
                 Content AS {nameof(InboxMessageResponse.Content)}
-             FROM [BASE].[InboxMessages]
+             FROM [main].[InboxMessages]
              WHERE ProcessedOnUtc IS NULL
              ORDER BY OccurredOnUtc
              """;
@@ -104,7 +104,7 @@ internal sealed class ProcessInboxJob(
     {
         const string sql =
                 """
-            UPDATE [BASE].[InboxMessages]
+            UPDATE [main].[InboxMessages]
             SET ProcessedOnUtc = @ProcessedOnUtc,
                 error = @Error
             WHERE Id = @Id

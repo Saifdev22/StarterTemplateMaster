@@ -29,13 +29,12 @@ public sealed class CurrentTenant(IConfiguration config, IHttpContextAccessor ht
 
     public string GetConnectionString()
     {
-        string pattern = @"(?<=Database=)([^;]*)";
-
         if (string.IsNullOrWhiteSpace(TenantClaim))
         {
             return GetDefaultConnectionstring();
         }
 
+        string pattern = @"(?<=Database=)([^;]*)";
         string newConnectionString = Regex.Replace(GetDefaultConnectionstring(), pattern, TenantClaim);
         return newConnectionString;
     }

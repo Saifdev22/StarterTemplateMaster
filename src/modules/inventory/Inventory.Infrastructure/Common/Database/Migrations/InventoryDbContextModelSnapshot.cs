@@ -149,7 +149,7 @@ namespace Inventory.Infrastructure.Common.Database.Migrations
                     b.HasIndex("CategoryGroupCode")
                         .IsUnique();
 
-                    b.ToTable("Tenants", "IN");
+                    b.ToTable("CategoryGroups", "IN");
                 });
 #pragma warning restore 612, 618
         }
