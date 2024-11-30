@@ -1,6 +1,10 @@
-﻿<div class="top-row ps-3 navbar navbar-dark">
+﻿<AuthorizeView>
+
+<div class="top-row ps-3 navbar navbar-dark">
     <div class="container-fluid">
-        <a class="navbar-brand" href="">BlazorMaster</a>
+            <a class="navbar-brand" href="/">
+                <span>@context.User.Claims.FirstOrDefault(c => c.Type == "tenant").Value</span>
+            </a>
         <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -26,7 +30,7 @@
         </div>
     </nav>
 </div>
-
+</AuthorizeView>
 @code {
     private bool collapseNavMenu = true;
 
