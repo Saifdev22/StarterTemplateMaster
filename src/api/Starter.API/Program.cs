@@ -113,6 +113,7 @@ app.MapEndpoints();
 
 app.Run();
 
+
 //public partial class Program;
 //This is how to access strongly-typed configurations in Program.cs
 //var weatherOptions = builder.Configuration.GetSection(nameof(WeatherOptions)).Get<WeatherOptions>();
