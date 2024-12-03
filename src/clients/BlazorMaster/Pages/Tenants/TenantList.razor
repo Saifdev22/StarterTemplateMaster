@@ -1,0 +1,42 @@
+﻿@page "/tenant/list"
+@using Common.Domain.SharedClient
+
+<h3>TenantList</h3>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Tenant Code</th>
+            <th scope="col">Tenant Name</th>
+            <th scope="col"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var tenant in Tenants)
+        {
+            <tr>
+                <th scope="row">1</th>
+                <td>Mark</td>
+                <td>Otto</td>
+                <td>
+                    <button class="btn btn-primary">
+                        <i class="oi oi-pencil"></i>
+                    </button>
+                    <button class="btn btn-primary">
+                        <i class="oi oi-trash"></i>
+                    </button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@code {
+    public List<GetAllTenants> Tenants { get; set; } = new List<GetAllTenants>();
+
+    // protected override async Task OnInitializedAsync()
+    // {
+
+    // }
+
+}

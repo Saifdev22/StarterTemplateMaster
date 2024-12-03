@@ -1,4 +1,5 @@
-﻿using Common.Infrastructure.System;
+﻿using Common.Domain.SharedClient;
+using Common.Infrastructure.System;
 using Dapper;
 using Inventory.Infrastructure.Common.Database;
 using Microsoft.Data.SqlClient;

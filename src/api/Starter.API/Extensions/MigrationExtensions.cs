@@ -7,8 +7,9 @@ namespace Starter.API.Extensions;
 
 internal static class MigrationExtensions
 {
-    public static void ApplyMigrations(this IApplicationBuilder app)
+    public static async Task ApplyMigrations(this IApplicationBuilder app)
     {
+        await ApplyMigration2(app);
         ApplyMigration<SystemDbContext>(app, null);
 
         using IServiceScope scope = app.ApplicationServices.CreateScope();
@@ -29,6 +30,16 @@ internal static class MigrationExtensions
 
     }
 
+    private static async Task ApplyMigration2(this IApplicationBuilder app)
+    {
+        using IServiceScope scope = app.ApplicationServices.CreateScope(); // Corrected this line
+                                                                           // Get the DatabaseInitializer service from the service provider
+        DatabaseInitializer databaseInitializer = scope.ServiceProvider.GetRequiredService<DatabaseInitializer>();
+
+        // Initialize the database
+        await databaseInitializer.Execute(); // Initialize the database
+    }
+
     private static void ApplyMigration<TDbContext>(this IApplicationBuilder app, string? connectionString)
             where TDbContext : DbContext
     {
@@ -47,6 +58,5 @@ internal static class MigrationExtensions
             Console.ResetColor();
             context.Database.Migrate();
         }
-
     }
 }

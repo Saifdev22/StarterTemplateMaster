@@ -1,4 +1,4 @@
-﻿namespace System.Domain.Features.Tenant;
+﻿namespace Common.Domain.SharedClient;
 
 public class CreateTenantDto
 {
@@ -9,6 +9,12 @@ public class CreateTenantDto
 }
 
 public sealed record CreateTenantTypeDto
+(
+    string TenantTypeCode,
+    string TenantTypeName
+);
+
+public sealed record GetAllTenants
 (
     string TenantTypeCode,
     string TenantTypeName

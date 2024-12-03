@@ -49,6 +49,8 @@
     {
         ShowLoadingButton = true;
 
+        // List<CreateTenantDto>? response = await _httpClient.GetFromJsonAsync<List<CreateTenantDto>>("tenant/all");
+
         var result = await _tokenService.LoginUser(User);
         if (result.Flag)
         {

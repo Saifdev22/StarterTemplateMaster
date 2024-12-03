@@ -8,11 +8,13 @@ using Common.Infrastructure.Caching;
 using Common.Infrastructure.Clock;
 using Common.Infrastructure.Database;
 using Common.Infrastructure.Outbox;
+using Common.Infrastructure.OutboxScaling;
 using Common.Infrastructure.System;
 using Dapper;
 using MassTransit;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Npgsql;
 using Quartz;
 using StackExchange.Redis;
 
@@ -25,7 +27,9 @@ public static class InfrastructureConfiguration
         string serviceName,
         Action<IRegistrationConfigurator,
         string>[] moduleConfigureConsumers,
-        string redisConnectionString)
+        string redisConnectionString,
+        string rabbitmqConnectionString,
+        string postgresConnectionString)
     {
         services.AddAuthenticationInternal();
         services.AddAuthorizationInternal();
@@ -66,6 +70,16 @@ public static class InfrastructureConfiguration
 
         services.TryAddSingleton<ICacheService, CacheService>();
 
+        //Outbox - RabbitMQ - MassTransit
+
+        services.AddScoped<OutboxProcessor>();
+
+        services.AddSingleton(_ =>
+        {
+            //Change to posetgres
+            return new NpgsqlDataSourceBuilder(postgresConnectionString).Build();
+        });
+
         services.AddMassTransit(configure =>
         {
             string instanceId = serviceName.ToUpperInvariant().Replace('.', '-');
@@ -76,11 +90,23 @@ public static class InfrastructureConfiguration
 
             configure.SetKebabCaseEndpointNameFormatter();
 
-            configure.UsingInMemory((context, cfg) =>
+            configure.UsingRabbitMq((context, cfg) =>
             {
+                cfg.Host(rabbitmqConnectionString, hostCfg =>
+                {
+                    hostCfg.MaxMessageSize(500000);
+                });
                 cfg.ConfigureEndpoints(context);
             });
         });
+
+        services.AddHostedService<OutboxBackgroundService>();
+
+        //var host = builder.Build();
+
+        //await host.Services.GetRequiredService<DatabaseInitializer>().Execute();
+
+        //host.Run();
 
         //services
         //        .AddOpenTelemetry()

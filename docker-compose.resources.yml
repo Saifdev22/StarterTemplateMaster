@@ -1,0 +1,31 @@
+services:
+
+  postgres.database:
+    image: postgres:latest
+    container_name: Starter.Postgres
+    environment:
+      - POSTGRES_DB=test-db
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    networks:
+      - mynetwork
+ 
+  evently.jaeger:
+    image: jaegertracing/all-in-one:latest
+    container_name: Evently.Jaeger
+    ports:
+      - 4317:4317
+      - 4318:4318
+      - 16686:16686
+ 
+volumes:
+  postgres_data:
+
+networks:
+  mynetwork:
+    name: my_custom_network  
+    driver: bridge # Default driver, can be changed

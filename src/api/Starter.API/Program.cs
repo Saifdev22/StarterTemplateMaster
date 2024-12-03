@@ -42,6 +42,8 @@ builder.Services.AddCommonApplication(moduleApplicationAssemblies);
 // Adding Common Infrastructure Module
 //string systemDatabase = builder.Configuration.GetValueOrThrow<string>("Database:DefaultConnection");
 string redisConnectionString = builder.Configuration.GetValueOrThrow<string>("Redis:DefaultConnection");
+string rabbitmqConnectionString = builder.Configuration.GetValueOrThrow<string>("RabbitMQ:DefaultConnection");
+string postgresConnectionString = builder.Configuration.GetValueOrThrow<string>("Postgres:DefaultConnection");
 
 builder.Services.AddCommonInfrastructure(
     DiagnosticsConfig.ServiceName,
@@ -49,7 +51,9 @@ builder.Services.AddCommonInfrastructure(
         SystemModule.ConfigureConsumers,
         //InventoryModule.ConfigureConsumers(redisConnectionString)
     ],
-    redisConnectionString);
+    redisConnectionString,
+    rabbitmqConnectionString,
+    postgresConnectionString);
 
 //Adding Other Modules
 builder.Services.AddSystemModule(builder.Configuration);
@@ -78,6 +82,8 @@ builder.Services.AddCors(options =>
     });
 });
 
+builder.Services.AddSingleton<DatabaseInitializer>();
+
 WebApplication app = builder.Build();
 
 app.UseCors("MyPolicy");
@@ -89,7 +95,9 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
     app.UseSwaggerUI(options => options.SwaggerEndpoint("/openapi/v1.json", "Starter.API"));
 
-    app.ApplyMigrations();
+    await app.ApplyMigrations();
+
+
 }
 
 app.MapHealthChecks("health", new HealthCheckOptions
@@ -111,7 +119,7 @@ app.UseAuthorization();
 
 app.MapEndpoints();
 
-app.Run();
+await app.RunAsync();
 
 
 //public partial class Program;

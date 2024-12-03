@@ -16,59 +16,14 @@ public class GenericRepository<TEntity> : IGenericRepository<TEntity>
         _dbSet = _dbContext.Set<TEntity>();
     }
 
-    public async Task AddAsync(TEntity entity)
+    public async Task<List<TEntity>> GetAllAsync()
     {
-        await _dbSet.AddAsync(entity);
-    }
-
-    public async Task AddManyAsync(IEnumerable<TEntity> entities)
-    {
-        await _dbContext.Set<TEntity>().AddRangeAsync(entities);
-    }
-
-    public void Delete(TEntity entity)
-    {
-        _dbContext.Set<TEntity>().Remove(entity);
-    }
-
-    public void DeleteMany(Expression<Func<TEntity, bool>> predicate)
-    {
-        IQueryable<TEntity> entities = Find(predicate);
-        _dbContext.Set<TEntity>().RemoveRange(entities);
-    }
-
-    public TEntity FindOne(Expression<Func<TEntity, bool>> predicate, FindOptions? findOptions = null, CancellationToken cancellationToken = default)
-    {
-        return Get(findOptions).FirstOrDefault(predicate)!;
-    }
-
-    public Task<TEntity?> FindOne(Func<TEntity, bool> value, CancellationToken cancellationToken)
-    {
-        throw new NotImplementedException();
-    }
-
-    public IQueryable<TEntity> Find(Expression<Func<TEntity, bool>> predicate, FindOptions? findOptions = null)
-    {
-        return Get(findOptions).Where(predicate);
+        return await _dbContext.Set<TEntity>().ToListAsync();
     }
 
     public IQueryable<TEntity> GetAll(FindOptions? findOptions = null)
     {
         return Get(findOptions);
-    }
-    public void Update(TEntity entity)
-    {
-        _dbContext.Set<TEntity>().Update(entity);
-    }
-
-    public bool Any(Expression<Func<TEntity, bool>> predicate)
-    {
-        return _dbContext.Set<TEntity>().Any(predicate);
-    }
-
-    public int Count(Expression<Func<TEntity, bool>> predicate)
-    {
-        return _dbContext.Set<TEntity>().Count(predicate);
     }
 
     private DbSet<TEntity> Get(FindOptions? findOptions = null)
@@ -88,6 +43,55 @@ public class GenericRepository<TEntity> : IGenericRepository<TEntity>
             entity.AsNoTracking();
         }
         return entity;
+    }
+
+    public TEntity FindOne(Expression<Func<TEntity, bool>> predicate, FindOptions? findOptions = null, CancellationToken cancellationToken = default)
+    {
+        return Get(findOptions).FirstOrDefault(predicate)!;
+    }
+
+    public IQueryable<TEntity> Find(Expression<Func<TEntity, bool>> predicate, FindOptions? findOptions = null)
+    {
+        return Get(findOptions).Where(predicate);
+    }
+
+    //Add
+    public async Task AddAsync(TEntity entity)
+    {
+        await _dbSet.AddAsync(entity);
+    }
+
+    public async Task AddManyAsync(IEnumerable<TEntity> entities)
+    {
+        await _dbContext.Set<TEntity>().AddRangeAsync(entities);
+    }
+
+    //Delete
+    public void Delete(TEntity entity)
+    {
+        _dbContext.Set<TEntity>().Remove(entity);
+    }
+
+    public void DeleteMany(Expression<Func<TEntity, bool>> predicate)
+    {
+        IQueryable<TEntity> entities = Find(predicate);
+        _dbContext.Set<TEntity>().RemoveRange(entities);
+    }
+
+    //Update
+    public void Update(TEntity entity)
+    {
+        _dbContext.Set<TEntity>().Update(entity);
+    }
+
+    public bool Any(Expression<Func<TEntity, bool>> predicate)
+    {
+        return _dbContext.Set<TEntity>().Any(predicate);
+    }
+
+    public int Count(Expression<Func<TEntity, bool>> predicate)
+    {
+        return _dbContext.Set<TEntity>().Count(predicate);
     }
 
     public async Task SaveChangesAsync(CancellationToken cancellationToken = default)

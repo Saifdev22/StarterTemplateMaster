@@ -16,7 +16,7 @@
 	</ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Services\Tenant\" />
+    <ProjectReference Include="..\..\common\Common.Domain\Common.Domain.csproj" />
   </ItemGroup>
 
 </Project>
