@@ -1,6 +1,6 @@
 ﻿namespace Common.Infrastructure.OutboxScaling;
 
-public sealed class OutboxMessage
+public sealed class OutboxMessageScale
 {
     public Guid Id { get; init; }
     public required string Type { get; init; }

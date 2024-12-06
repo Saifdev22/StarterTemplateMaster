@@ -1,12 +1,12 @@
 ﻿using System.Text.Json;
-using Common.Infrastructure.OutboxScaling;
+using Common.Application.OutboxPattern;
 using Dapper;
 using Npgsql;
 using NpgsqlTypes;
 
 namespace Starter.API.Extensions;
 
-internal class DatabaseInitializer(
+internal sealed class DatabaseInitializer(
     NpgsqlDataSource dataSource,
     IConfiguration configuration,
     ILogger<DatabaseInitializer> logger)
@@ -85,8 +85,10 @@ internal class DatabaseInitializer(
 
         logger.LogInformation("Seeding 2 million records to outbox_messages table.");
 
-        const int batchSize = 500_000;
-        const int totalRecords = 1_000_000;
+        //const int batchSize = 500_000;
+        //const int totalRecords = 2_000_000;
+        const int batchSize = 50_000;
+        const int totalRecords = 500_000;
 
         await using NpgsqlBinaryImporter writer = await connection.BeginBinaryImportAsync(
             "COPY public.outbox_messages (id, type, content, occurred_on_utc) FROM STDIN (FORMAT BINARY)");

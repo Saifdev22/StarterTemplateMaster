@@ -8,7 +8,7 @@ internal sealed class OutboxBackgroundService(
     IServiceScopeFactory serviceScopeFactory,
     ILogger<OutboxBackgroundService> logger) : BackgroundService
 {
-    //private const int OutboxProcessorFrequency = 5;
+    private const int OutboxProcessorFrequency = 5;
     private readonly int _maxParallelism = 5;
     private int _totalIterations;
     private int _totalProcessedMessage;
@@ -17,7 +17,7 @@ internal sealed class OutboxBackgroundService(
     {
         OutboxLoggers.LogStarting(logger);
 
-        using CancellationTokenSource cts = new(TimeSpan.FromMinutes(1));
+        using CancellationTokenSource cts = new(TimeSpan.FromMinutes(10));
         using CancellationTokenSource linkedCts = CancellationTokenSource.CreateLinkedTokenSource(cts.Token, stoppingToken);
 
         ParallelOptions parallelOptions = new()
@@ -66,7 +66,7 @@ internal sealed class OutboxBackgroundService(
             OutboxLoggers.LogIterationCompleted(logger, iterationCount, processedMessages, totalProcessedMessages);
 
             // Simulate running Outbox processing every N seconds
-            //await Task.Delay(TimeSpan.FromSeconds(OutboxProcessorFrequency), cancellationToken);
+            await Task.Delay(TimeSpan.FromSeconds(OutboxProcessorFrequency), cancellationToken);
         }
     }
 }

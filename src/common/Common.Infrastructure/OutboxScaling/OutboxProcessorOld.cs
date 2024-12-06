@@ -24,7 +24,7 @@ internal sealed class OutboxProcessorOld(
         await using NpgsqlTransaction transaction = await connection.BeginTransactionAsync(cancellationToken);
 
         stepStopwatch.Restart();
-        List<OutboxMessage> messages = (await connection.QueryAsync<OutboxMessage>(
+        List<OutboxMessageScale> messages = (await connection.QueryAsync<OutboxMessageScale>(
             """
             SELECT *
             FROM outbox_messages
@@ -38,7 +38,7 @@ internal sealed class OutboxProcessorOld(
         ConcurrentQueue<OutboxUpdate> updateQueue = new();
 
         stepStopwatch.Restart();
-        foreach (OutboxMessage? message in messages)
+        foreach (OutboxMessageScale? message in messages)
         {
             try
             {

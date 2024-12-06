@@ -13,19 +13,24 @@ internal sealed class OutboxProcessor(
     IPublishEndpoint publishEndpoint,
     ILogger<OutboxProcessor> logger)
 {
-    private const int BatchSize = 1000;
+    private const int BatchSize = 10000;
     private static readonly ConcurrentDictionary<string, Type> TypeCache = new();
 
     public async Task<int> Execute(CancellationToken cancellationToken = default)
     {
+        //Measure time of one iteration
         Stopwatch totalStopwatch = Stopwatch.StartNew();
+
+        //Measure Invidual Steps
         Stopwatch stepStopwatch = new();
 
         await using NpgsqlConnection connection = await dataSource.OpenConnectionAsync(cancellationToken);
         await using NpgsqlTransaction transaction = await connection.BeginTransactionAsync(cancellationToken);
 
         stepStopwatch.Restart();
-        List<OutboxMessage> messages = (await connection.QueryAsync<OutboxMessage>(
+
+        //Fetch Messages From Oubox Table
+        List<OutboxMessageScale> messages = (await connection.QueryAsync<OutboxMessageScale>(
             """
             SELECT id AS Id, type AS Type, content AS Content
             FROM outbox_messages
@@ -35,6 +40,7 @@ internal sealed class OutboxProcessor(
             """,
             new { BatchSize },
             transaction: transaction)).AsList();
+
         long queryTime = stepStopwatch.ElapsedMilliseconds;
 
         ConcurrentQueue<OutboxUpdate> updateQueue = new();
@@ -61,7 +67,7 @@ internal sealed class OutboxProcessor(
                 WHERE outbox_messages.id = v.id::uuid
                 """;
 
-            List<OutboxUpdate> updates = [.. updateQueue];
+            List<OutboxUpdate> updates = [.. updateQueue]; //updateQueue.ToList()
             string valuesList = string.Join(",",
                 updateQueue.Select((_, i) => $"(@Id{i}, @ProcessedOn{i}, @Error{i})"));
 
@@ -91,14 +97,15 @@ internal sealed class OutboxProcessor(
     }
 
     private static async Task PublishMessage(
-        OutboxMessage message,
+        OutboxMessageScale message,
         ConcurrentQueue<OutboxUpdate> updateQueue,
         IPublishEndpoint publishEndpoint,
         CancellationToken cancellationToken)
     {
         try
         {
-            Type messageType = GetOrAddMessageType(message.Type);
+            // Publishing Messages To RabbitMQ
+            Type messageType = GetOrAddMessageType(message.Type) ?? throw new InvalidOperationException($"DBZ Unable to resolve type for message type: {message.Type}");
             object deserializedMessage = JsonSerializer.Deserialize(message.Content, messageType)!;
 
             await publishEndpoint.Publish(deserializedMessage, cancellationToken);
