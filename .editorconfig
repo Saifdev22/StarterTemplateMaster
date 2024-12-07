@@ -180,6 +180,10 @@ dotnet_diagnostic.CS0311.severity = none
 # Do not catch general exception types
 dotnet_diagnostic.CA1031.severity = none
 
+# Do not use TypeNameHandling values other than None
+dotnet_diagnostic.CA2326.severity = none
+dotnet_diagnostic.CA2327.severity = none
+
 # Disable CA1062 (Validate arguments of public methods) for files in Migrations folder
 [**/Migrations/*]
 dotnet_diagnostic.CA1062.severity = none
