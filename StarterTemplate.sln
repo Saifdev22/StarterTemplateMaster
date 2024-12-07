@@ -36,6 +36,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "solution-items", "solution-items", "{BD065B3F-B2D1-4C28-98FB-678CB72F862A}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
+		solution-items\aspnetapp.pfx = solution-items\aspnetapp.pfx
 		Directory.Build.props = Directory.Build.props
 		solution-items\packages.txt = solution-items\packages.txt
 		solution-items\process.txt = solution-items\process.txt
@@ -61,6 +62,11 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Client.API", "src\api\Client.API\Client.API.csproj", "{6EB7BD11-67F2-4722-96F8-34A51A18497D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorMaster", "src\clients\BlazorMaster\BlazorMaster.csproj", "{E6044A91-B5D3-47D1-B5A0-5B0146652C41}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "certificates", "certificates", "{5E401183-7C7C-4A79-81E5-488821787D17}"
+	ProjectSection(SolutionItems) = preProject
+		solution-items\aspnetapp.pfx = solution-items\aspnetapp.pfx
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -168,5 +174,6 @@ Global
 		{5599DC9F-561D-4EDE-AF26-CCEAF42B59F9} = {09DFE6EC-A569-43C4-83BE-A135D0637C8B}
 		{6EB7BD11-67F2-4722-96F8-34A51A18497D} = {922F3D27-6430-4824-AF9C-2EA005EA17D8}
 		{E6044A91-B5D3-47D1-B5A0-5B0146652C41} = {C9A523BA-4962-478F-93D3-258674C7EDAA}
+		{5E401183-7C7C-4A79-81E5-488821787D17} = {BD065B3F-B2D1-4C28-98FB-678CB72F862A}
 	EndGlobalSection
 EndGlobal

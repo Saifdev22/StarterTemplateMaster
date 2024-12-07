@@ -88,7 +88,7 @@ internal sealed class DatabaseInitializer(
         //const int batchSize = 500_000;
         //const int totalRecords = 2_000_000;
         const int batchSize = 50_000;
-        const int totalRecords = 500_000;
+        const int totalRecords = 100_000;
 
         await using NpgsqlBinaryImporter writer = await connection.BeginBinaryImportAsync(
             "COPY public.outbox_messages (id, type, content, occurred_on_utc) FROM STDIN (FORMAT BINARY)");

@@ -93,7 +93,12 @@ app.MapControllers();
 if (app.Environment.IsDevelopment() || app.Environment.IsProduction())
 {
     app.MapOpenApi();
-    app.UseSwaggerUI(options => options.SwaggerEndpoint("/openapi/v1.json", "Starter.API"));
+    app.UseSwaggerUI(options =>
+    {
+        options.SwaggerEndpoint("/openapi/v1.json", "Starter.API");
+        options.RoutePrefix = string.Empty;
+        options.ConfigObject.AdditionalItems.Add("useRelativePaths", true);
+    });
 
     await app.ApplyMigrations();
 }

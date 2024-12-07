@@ -1,9 +1,15 @@
 services:
     
-  starter.api:
-    environment:
+  starter.api: 
+    environment: 
       - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_URLS=http://+:8080
+      # - ASPNETCORE_URLS=http://+:80;https://+:443
+      - ASPNETCORE_URLS=http://0.0.0.0:80;https://0.0.0.0:443
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=25122000
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/home/app/.aspnet/https/aspnetapp.pfx
+    ports:
+      - "8091:80"
+      - "8092:443"
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
       - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro

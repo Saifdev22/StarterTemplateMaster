@@ -8,6 +8,9 @@ Inventory
 Add-Migration -Name InitialCreate -Context InventoryDbContext  -OutputDir Common/Database/Migrations  -Project Inventory.Infrastructure -StartupProject Starter.API
 Update-Database -Context InventoryDbContext -Project Inventory.Infrastructure -StartupProject Starter.API 
 
+
+dotnet dev-certs https -ep C:\Users\saifd\Desktop\certs\.aspnet\https\aspnetapp.pfx -p 25122000
+dotnet dev-certs https --trust
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 Project Reference

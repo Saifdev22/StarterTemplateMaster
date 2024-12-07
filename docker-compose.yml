@@ -6,9 +6,9 @@ services:
     build:
       context: .
       dockerfile: src/api/Starter.API/Dockerfile
-    ports:
-      - 6060:8080
-      - 6061:8081    
+    # ports:
+    #   - 6060:8080
+    #   - 6061:8081    
     networks:
       - mynetwork
 

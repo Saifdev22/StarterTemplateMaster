@@ -42,4 +42,9 @@ RUN dotnet publish "./Starter.API.csproj" -c $BUILD_CONFIGURATION -o /app/publis
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
+
+# Add Certificates
+#RUN mkdir -p /app/certificates
+#COPY StarterTemplate-master/solution-items/aspnetapp.pfx /app/certificates/
+
 ENTRYPOINT ["dotnet", "Starter.API.dll"]
