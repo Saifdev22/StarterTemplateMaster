@@ -70,7 +70,9 @@ jobs:
             key: ${{ secrets.SERVER_SSH_KEY }}
             script: |
               cd /home/StarterTemplate
-              docker-compose down || true
+              docker-compose -f docker-compose.yml down || true
               docker image prune -a -f
               docker-compose pull
-              docker-compose up -d
+              docker-compose -f docker-compose.yml  up -d
+              docker-compose -f docker-compose-resources.yml up -d
+
