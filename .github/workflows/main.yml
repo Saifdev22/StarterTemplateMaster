@@ -74,5 +74,5 @@ jobs:
               docker image prune -a -f
               docker-compose pull
               docker-compose -f docker-compose.yml  up -d
-              docker-compose -f docker-compose-resources.yml up -d
+              docker-compose -f docker-compose.resources.yml up -d
 
