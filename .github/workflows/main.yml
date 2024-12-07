@@ -61,7 +61,6 @@ jobs:
       runs-on: ubuntu-latest
       needs: build_images
       steps:
-
         - name: Replacing container
           uses: appleboy/ssh-action@master
           with:
