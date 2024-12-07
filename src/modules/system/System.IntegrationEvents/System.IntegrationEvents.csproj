@@ -4,8 +4,4 @@
     <ProjectReference Include="..\..\..\common\Common.Application\Common.Application.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Events\" />
-  </ItemGroup>
-
 </Project>

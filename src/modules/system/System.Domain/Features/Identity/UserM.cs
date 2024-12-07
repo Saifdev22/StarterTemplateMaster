@@ -1,4 +1,5 @@
-﻿using System.Security.Cryptography;
+﻿using System.Domain.Features.Identity.Events;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace System.Domain.Features.Identity;
@@ -28,6 +29,8 @@ public class UserM : AggregateRoot
             PasswordHash = passwordHash,
             PasswordSalt = passwordSalt
         };
+
+        user.AddDomainEvent(new UserCreatedDomainEvent(Guid.NewGuid()));
 
         return user;
     }

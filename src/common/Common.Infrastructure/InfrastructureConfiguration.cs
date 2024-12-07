@@ -7,7 +7,6 @@ using Common.Infrastructure.Authorization;
 using Common.Infrastructure.Caching;
 using Common.Infrastructure.Clock;
 using Common.Infrastructure.Database;
-using Common.Infrastructure.Outbox;
 using Common.Infrastructure.OutboxScaling;
 using Common.Infrastructure.System;
 using Dapper;
@@ -15,6 +14,8 @@ using MassTransit;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Npgsql;
+using OpenTelemetry.Resources;
+using OpenTelemetry.Trace;
 using Quartz;
 using StackExchange.Redis;
 
@@ -100,7 +101,7 @@ public static class InfrastructureConfiguration
             });
         });
 
-        services.AddHostedService<OutboxBackgroundService>();
+        //services.AddHostedService<OutboxBackgroundService>();
 
         //var host = builder.Build();
 
@@ -108,21 +109,21 @@ public static class InfrastructureConfiguration
 
         //host.Run();
 
-        //services
-        //        .AddOpenTelemetry()
-        //        .ConfigureResource(resource => resource.AddService(serviceName))
-        //        .WithTracing(tracing =>
-        //        {
-        //            tracing
-        //                            .AddAspNetCoreInstrumentation()
-        //                            .AddHttpClientInstrumentation()
-        //                            .AddEntityFrameworkCoreInstrumentation()
-        //                            .AddRedisInstrumentation()
-        //                            .AddNpgsql()
-        //                            .AddSource(MassTransit.Logging.DiagnosticHeaders.DefaultListenerName);
+        services
+                .AddOpenTelemetry()
+                .ConfigureResource(resource => resource.AddService(serviceName))
+                .WithTracing(tracing =>
+                {
+                    tracing
+                        .AddAspNetCoreInstrumentation()
+                        .AddHttpClientInstrumentation()
+                        .AddEntityFrameworkCoreInstrumentation()
+                        .AddRedisInstrumentation()
+                        .AddNpgsql()
+                        .AddSource(MassTransit.Logging.DiagnosticHeaders.DefaultListenerName);
 
-        //            tracing.AddOtlpExporter();
-        //        });
+                    tracing.AddOtlpExporter();
+                });
 
         return services;
     }

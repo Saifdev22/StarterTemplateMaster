@@ -1,10 +1,11 @@
 ﻿using Common.Domain.Abstractions;
+using Common.Infrastructure.Outbox;
 using Common.Infrastructure.Serialization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Newtonsoft.Json;
 
-namespace Common.Infrastructure.Outbox;
+namespace Common.Infrastructure.Database;
 
 public sealed class InsertOutboxMessagesInterceptor : SaveChangesInterceptor
 {

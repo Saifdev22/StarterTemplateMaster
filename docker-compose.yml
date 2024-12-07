@@ -9,27 +9,4 @@ services:
       - 6060:8080
       - 6061:8081
  
-  seq:
-    image: datalust/seq:latest
-    container_name: Starter.Seq
-    environment:
-      - ACCEPT_EULA=Y
-    ports:
-      - 5341:5341
-      - 8081:80
- 
-  rabbitmq:
-    image: rabbitmq:management-alpine
-    container_name: Starter.RabbitMQ
-    hostname: starter-rabbitmq
-    volumes:
-        - ./.containers/queue/data/:/var/lib/rabbitmq
-        - ./.containers/queue/log/:/var/log/rabbitmq
-    environment:
-        RABBITMQ_DEFAULT_USER: guest
-        RABBITMQ_DEFAULT_PASS: guest
-    ports:
-      - 5672:5672
-      - 15672:15672
-    restart: always
 

@@ -20,6 +20,7 @@ internal sealed class RequestLoggingPipelineBehavior<TRequest, TResponse>(
         string moduleName = GetModuleName(typeof(TRequest).FullName!);
         string requestName = typeof(TRequest).Name;
 
+        //Open Telemetry For Jaegar
         Activity.Current?.SetTag("request.module", moduleName);
         Activity.Current?.SetTag("request.name", requestName);
 

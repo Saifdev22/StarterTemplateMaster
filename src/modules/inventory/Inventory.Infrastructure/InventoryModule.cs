@@ -1,6 +1,6 @@
 ﻿using Common.Application.EventBus;
 using Common.Application.Messaging;
-using Common.Infrastructure.Outbox;
+using Common.Infrastructure.Database;
 using Common.Infrastructure.System;
 using Common.Presentation.Endpoints;
 using Inventory.Application.Common;

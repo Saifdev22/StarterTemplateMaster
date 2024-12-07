@@ -90,14 +90,12 @@ app.UseCors("MyPolicy");
 
 app.MapControllers();
 
-if (app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment() || app.Environment.IsProduction())
 {
     app.MapOpenApi();
     app.UseSwaggerUI(options => options.SwaggerEndpoint("/openapi/v1.json", "Starter.API"));
 
     await app.ApplyMigrations();
-
-
 }
 
 app.MapHealthChecks("health", new HealthCheckOptions
