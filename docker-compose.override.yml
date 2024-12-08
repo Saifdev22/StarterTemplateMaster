@@ -4,7 +4,6 @@ services:
     volumes:
       # - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
       # - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
-      - /home/username/.microsoft/usersecrets:/home/app/.microsoft/usersecrets:ro # Adjusted for Linux path
-      - /home/username/ASP.NET/Https:/home/app/.aspnet/https:ro  # Adjusted for Linux path
-      - ./solution-items/certificates:/home/app/.aspnet/https:ro
+      - ${HOME}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
+      - ${HOME}/ASP.NET/Https:/home/app/.aspnet/https:ro
 
