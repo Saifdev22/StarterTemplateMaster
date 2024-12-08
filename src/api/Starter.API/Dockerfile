@@ -43,4 +43,7 @@ FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
 
+RUN mrdir -p /app/certificates
+COPY solution-items/certificates/aspnetapp.pfx /app/certificates/
+
 ENTRYPOINT ["dotnet", "Starter.API.dll"]
