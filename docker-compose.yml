@@ -11,9 +11,6 @@ services:
       - ASPNETCORE_URLS=http://+:80;https://+:443
       - ASPNETCORE_Kestrel__Certificates__Default__Password=25122000
       - ASPNETCORE_Kestrel__Certificates__Default__Path=/home/app/.aspnet/https/aspnetapp.pfx 
-    volumes:
-      - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
-      - solution-items/certificates:/home/app/.aspnet/https:ro
       # - Database__DefaultConnection=Server=102.214.10.24,1433;Database=MasterSystem2;User Id=sa;Password=25122000SK;Encrypt=False;Trusted_Connection=True;TrustServerCertificate=True;Integrated Security=False
       # - Database__Postgres=Host=102.214.10.24;Port=5432;Database=test-db2;Username=postgres;Password=postgres;Pooling=true;MinPoolSize=10;MaxPoolSize=100;Include Error Detail=true
     ports:
