@@ -11,6 +11,8 @@ Update-Database -Context InventoryDbContext -Project Inventory.Infrastructure -S
 
 dotnet dev-certs https -ep C:\Users\saifd\Desktop\certs\.aspnet\https\aspnetapp.pfx -p 25122000
 dotnet dev-certs https --trust
+
+docker exec -it Starter.SQLServer sqlcmd -S host.docker.internal -U sa -P 25122000SK
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 Project Reference
