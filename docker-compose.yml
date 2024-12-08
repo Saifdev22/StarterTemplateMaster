@@ -6,9 +6,11 @@ services:
     build:
       context: .
       dockerfile: src/api/Starter.API/Dockerfile
-    # ports:
-    #   - 6060:8080
-    #   - 6061:8081    
+    depends_on:
+      - mssql.database
+      - postgres.database
+      - redis.database
+      - rabbit.mq
 
   mssql.database:
     image: mcr.microsoft.com/mssql/server:2019-latest
@@ -26,7 +28,7 @@ services:
       - sqlserver_data:/var/opt/mssql 
     
   postgres.database:
-    image: postgres:latest
+    image: postgres:17
     container_name: Starter.Postgres
     environment:
       - POSTGRES_DB=test-db
@@ -49,7 +51,7 @@ services:
       - redis_data:/data
  
   rabbit.mq:
-    image: rabbitmq:management-alpine
+    image: rabbitmq:4.1-rc-management-alpine
     container_name: Starter.RabbitMQ
     hostname: starter-rabbitmq
     volumes:
