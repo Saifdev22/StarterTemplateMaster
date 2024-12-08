@@ -6,8 +6,8 @@ services:
       - ASPNETCORE_URLS=http://+:80;https://+:443
       - ASPNETCORE_Kestrel__Certificates__Default__Password=25122000
       - ASPNETCORE_Kestrel__Certificates__Default__Path=/home/app/.aspnet/https/aspnetapp.pfx 
-      - Database__DefaultConnection=Server=mssql.database;Database=MasterSystem;User Id=sa;Password=25122000SK;Encrypt=False;Trusted_Connection=True;TrustServerCertificate=True;Integrated Security=False
-      - Database__Postgres=Host=postgres.database;Port=5432;Database=test-db;Username=postgres;Password=postgres;Pooling=true;MinPoolSize=10;MaxPoolSize=100;Include Error Detail=true
+      - Database__DefaultConnection=Server=102.214.10.24,1433;Database=MasterSystem;User Id=sa;Password=25122000SK;Encrypt=False;Trusted_Connection=True;TrustServerCertificate=True;Integrated Security=False
+      - Database__Postgres=Host=102.214.10.24;Port=5432;Database=test-db;Username=postgres;Password=postgres;Pooling=true;MinPoolSize=10;MaxPoolSize=100;Include Error Detail=true
 
     ports:
       - "8091:80"
