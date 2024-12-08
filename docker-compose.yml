@@ -1,8 +1,7 @@
 services:
-    
   starter.api:
     image: saifdev22/starterapi
-    container_name: Starter.API
+    container_name: Starter.API 
     build:
       context: .
       dockerfile: src/api/Starter.API/Dockerfile
