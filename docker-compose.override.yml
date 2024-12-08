@@ -5,5 +5,5 @@ services:
       # - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
       # - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
       - ${HOME}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
-      - ${HOME}/ASP.NET/Https:/home/app/.aspnet/https:ro
+      - ${HOME}/ASP.NET/Https:/app/.aspnet/https:ro
 
