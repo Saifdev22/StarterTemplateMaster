@@ -35,12 +35,10 @@ internal sealed class IdempotentDomainEventHandler<TDomainEvent>(
     {
         const string sql =
                 """
-            SELECT EXISTS(
                 SELECT 1
-                FROM inventory.outbox_message_consumers
-                WHERE outbox_message_id = @OutboxMessageId AND
-                      name = @Name
-            )
+                FROM inventory.OutboxMessageConsumers
+                WHERE OutboxMessageId = @OutboxMessageId AND
+                      Name = @Name
             """;
 
         return await dbConnection.ExecuteScalarAsync<bool>(sql, outboxMessageConsumer);
@@ -52,7 +50,7 @@ internal sealed class IdempotentDomainEventHandler<TDomainEvent>(
     {
         const string sql =
                 """
-            INSERT INTO inventory.outbox_message_consumers(outbox_message_id, name)
+            INSERT INTO inventory.OutboxMessageConsumers(OutboxMessageId, Name)
             VALUES (@OutboxMessageId, @Name)
             """;
 

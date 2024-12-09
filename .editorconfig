@@ -174,9 +174,6 @@ dotnet_diagnostic.CA1305.severity = none
 # Dereference of a possibly null reference.
 dotnet_diagnostic.CS8602.severity = none
 
-# Compiler Error (Quartz)
-dotnet_diagnostic.CS0311.severity = none
-
 # Do not catch general exception types
 dotnet_diagnostic.CA1031.severity = none
 

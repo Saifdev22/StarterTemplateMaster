@@ -37,3 +37,8 @@ docker-compose -f docker-compose.resources.yml up -d postgres.database
 docker-compose up -d
 docker-compose down
 
+--------------------------------------------------------------------------------------------------------------------------
+
+
+Creating A Module
+

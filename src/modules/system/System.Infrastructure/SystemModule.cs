@@ -1,4 +1,5 @@
 ﻿using Common.Application.Authorization;
+using Common.Application.EventBus;
 using Common.Application.Messaging;
 using Common.Domain.Abstractions;
 using Common.Infrastructure.Database;
@@ -30,7 +31,7 @@ public static class SystemModule
 
         services.AddDomainEventHandlers();
 
-        //services.AddIntegrationEventHandlers();
+        services.AddIntegrationEventHandlers();
 
         services.AddInfrastructure(configuration);
 
@@ -102,29 +103,29 @@ public static class SystemModule
         }
     }
 
-    //private static void AddIntegrationEventHandlers(this IServiceCollection services)
-    //{
-    //    Type[] integrationEventHandlers = Presentation.AssemblyReference.Assembly
-    //            .GetTypes()
-    //            .Where(t => t.IsAssignableTo(typeof(IIntegrationEventHandler)))
-    //            .ToArray();
+    private static void AddIntegrationEventHandlers(this IServiceCollection services)
+    {
+        Type[] integrationEventHandlers = Presentation.AssemblyReference.Assembly
+                .GetTypes()
+                .Where(t => t.IsAssignableTo(typeof(IIntegrationEventHandler)))
+                .ToArray();
 
-    //    foreach (Type integrationEventHandler in integrationEventHandlers)
-    //    {
-    //        services.TryAddScoped(integrationEventHandler);
+        foreach (Type integrationEventHandler in integrationEventHandlers)
+        {
+            services.TryAddScoped(integrationEventHandler);
 
-    //        Type integrationEvent = integrationEventHandler
-    //                .GetInterfaces()
-    //                .Single(i => i.IsGenericType)
-    //                .GetGenericArguments()
-    //                .Single();
+            Type integrationEvent = integrationEventHandler
+                    .GetInterfaces()
+                    .Single(i => i.IsGenericType)
+                    .GetGenericArguments()
+                    .Single();
 
-    //        Type closedIdempotentHandler =
-    //                typeof(IdempotentIntegrationEventHandler<>).MakeGenericType(integrationEvent);
+            Type closedIdempotentHandler =
+                    typeof(IdempotentIntegrationEventHandler<>).MakeGenericType(integrationEvent);
 
-    //        services.Decorate(integrationEventHandler, closedIdempotentHandler);
-    //    }
-    //}
+            services.Decorate(integrationEventHandler, closedIdempotentHandler);
+        }
+    }
 
 }
 

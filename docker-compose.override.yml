@@ -2,7 +2,7 @@ services:
     
   starter.api: 
     volumes:
-      # - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
+      # - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro 
       # - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
       - /Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
       - /ASP.NET/Https:/app/.aspnet/https:ro
