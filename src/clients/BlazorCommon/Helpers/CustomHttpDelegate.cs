@@ -1,14 +1,16 @@
-﻿using BlazorMaster.Dtos;
-using BlazorMaster.Services;
+﻿using BlazorCommon.Dtos;
+using BlazorCommon.Services.Contracts;
 using System.Net;
 using System.Net.Http.Headers;
 
-namespace BlazorMaster.Helpers;
+namespace BlazorCommon.Helpers;
 
-internal sealed class CustomHttpDelegate(LocalStorageService _localStorageService, ITokenService _tokenService) : DelegatingHandler
+public sealed class CustomHttpDelegate(LocalStorageService localStorageService, ITokenService tokenService) : DelegatingHandler
 {
     protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(request);
+
         bool loginUrl = request.RequestUri!.AbsoluteUri.Contains("login", StringComparison.OrdinalIgnoreCase);
         bool registerUrl = request.RequestUri!.AbsoluteUri.Contains("accesstoken", StringComparison.OrdinalIgnoreCase);
         bool refreshTokenUrl = request.RequestUri!.AbsoluteUri.Contains("refresh-token", StringComparison.OrdinalIgnoreCase);
@@ -21,7 +23,7 @@ internal sealed class CustomHttpDelegate(LocalStorageService _localStorageServic
         HttpResponseMessage result = await base.SendAsync(request, cancellationToken);
         if (result.StatusCode == HttpStatusCode.Unauthorized)
         {
-            string? stringToken = await _localStorageService.GetToken();
+            string? stringToken = await localStorageService.GetToken();
             if (stringToken == null)
             {
                 return result;
@@ -32,9 +34,9 @@ internal sealed class CustomHttpDelegate(LocalStorageService _localStorageServic
             {
                 token = request.Headers.Authorization!.Parameter!;
             }
-            catch
+            catch (Exception ex)
             {
-                ArgumentNullException.ThrowIfNull(token);
+                Console.WriteLine($"Error: {ex.Message}");
             }
 
             TokenResponse? deserializedToken = Serialization.DeserializeJsonString<TokenResponse>(stringToken);
@@ -57,8 +59,8 @@ internal sealed class CustomHttpDelegate(LocalStorageService _localStorageServic
             }
 
             request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", newJwtToken.Token);
-            return await base.SendAsync(request, cancellationToken);
 
+            return await base.SendAsync(request, cancellationToken);
         }
 
         return result;
@@ -66,9 +68,9 @@ internal sealed class CustomHttpDelegate(LocalStorageService _localStorageServic
 
     private async Task<TokenResponse> GetRefreshToken(TokenResponse tokens, CancellationToken cancellationToken)
     {
-        TokenResponse result = await _tokenService.GetTokenWithRefreshToken(new TokenRequest(tokens.Token, tokens.RefreshToken), "N/A", cancellationToken);
+        TokenResponse result = await tokenService.GetTokenWithRefreshToken(new TokenRequest(tokens.Token, tokens.RefreshToken), "N/A", cancellationToken);
         string serializedToken = Serialization.SerializeObj(new TokenResponse() { Token = result.Token, RefreshToken = result.RefreshToken, RefreshTokenExpiryTime = result.RefreshTokenExpiryTime });
-        await _localStorageService.SetToken(serializedToken);
+        await localStorageService.SetToken(serializedToken);
         return result!;
     }
 

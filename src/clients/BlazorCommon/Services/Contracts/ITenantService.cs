@@ -1,10 +1,10 @@
 ﻿using Common.Domain.SharedClient;
 
-namespace BlazorMaster.Services.Tenant;
+namespace BlazorCommon.Services.Contracts;
 
-internal interface ITenantService
+public interface ITenantService
 {
-    Task<List<CreateTenantDto>> GetTenants();
+    Task<List<GetAllTenants>> GetTenants();
     Task AddCategory(CreateTenantDto tenant);
     Task UpdateCategory(CreateTenantDto tenant);
     Task DeleteCategory(int tenantId);

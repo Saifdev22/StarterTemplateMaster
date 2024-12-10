@@ -1,6 +1,6 @@
 ﻿namespace Parent.Infrastructure;
 
-public static class ParentModule
+internal static class ParentModule
 {
     //public static IServiceCollection AddSystemModule(this IServiceCollection services, IConfiguration configuration)
     //{

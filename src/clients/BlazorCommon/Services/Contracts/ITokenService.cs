@@ -1,8 +1,8 @@
-﻿using BlazorMaster.Dtos;
+﻿using BlazorCommon.Dtos;
 
-namespace BlazorMaster.Services;
+namespace BlazorCommon.Services.Contracts;
 
-internal interface ITokenService
+public interface ITokenService
 {
     Task<TokenResponse> LoginUser(LoginDto request);
     Task<TokenResponse> GetTokenWithRefreshToken(TokenRequest request, string ipAddress, CancellationToken? cancellationToken);

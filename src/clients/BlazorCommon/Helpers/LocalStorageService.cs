@@ -1,8 +1,8 @@
 ﻿using Blazored.LocalStorage;
 
-namespace BlazorMaster.Helpers;
+namespace BlazorCommon.Helpers;
 
-internal sealed class LocalStorageService(ILocalStorageService localStorageService)
+public sealed class LocalStorageService(ILocalStorageService localStorageService)
 {
     private const string StorageKey = "authentication-token";
     public async Task<string?> GetToken()
