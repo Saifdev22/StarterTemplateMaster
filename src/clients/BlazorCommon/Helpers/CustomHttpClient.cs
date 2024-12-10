@@ -1,9 +1,9 @@
-﻿using BlazorMaster.Dtos;
+﻿using BlazorCommon.Dtos;
 using System.Net.Http.Headers;
 
-namespace BlazorMaster.Helpers;
+namespace BlazorCommon.Helpers;
 
-internal sealed class CustomHttpClient(IHttpClientFactory httpClientFactory, LocalStorageService localStorageService)
+public sealed class CustomHttpClient(IHttpClientFactory httpClientFactory, LocalStorageService localStorageService)
 {
     private const string HeaderKey = "Authorization";
     public async Task<HttpClient> GetPrivateHttpClient()
@@ -22,7 +22,6 @@ internal sealed class CustomHttpClient(IHttpClientFactory httpClientFactory, Loc
         }
 
         client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", deserializeToken.Token);
-
         return client;
     }
 

@@ -1,9 +1,11 @@
-﻿using Common.Domain.SharedClient;
+﻿using BlazorCommon.Helpers;
+using BlazorCommon.Services.Contracts;
+using Common.Domain.SharedClient;
 using System.Net.Http.Json;
 
-namespace BlazorMaster.Services.Tenant;
+namespace BlazorCommon.Services.Implementations;
 
-internal sealed class TenantService(HttpClient _http) : ITenantService
+public sealed class TenantService(HttpClient http) : ITenantService
 {
     public Task AddCategory(CreateTenantDto tenant)
     {
@@ -15,9 +17,9 @@ internal sealed class TenantService(HttpClient _http) : ITenantService
         throw new NotImplementedException();
     }
 
-    public async Task<List<CreateTenantDto>> GetTenants()
+    public async Task<List<GetAllTenants>> GetTenants()
     {
-        List<CreateTenantDto>? response = await _http.GetFromJsonAsync<List<CreateTenantDto>>("tenant/all");
+        List<GetAllTenants>? response = await http.GetFromJsonAsync<List<GetAllTenants>>("tenant/all");
 
         return response!;
     }

@@ -1,42 +1,86 @@
 ﻿@page "/tenant/list"
-@using Common.Domain.SharedClient
 
-<h3>TenantList</h3>
+<h1>People</h1>
+<br/>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th scope="col">Tenant Code</th>
-            <th scope="col">Tenant Name</th>
-            <th scope="col"></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var tenant in Tenants)
-        {
+<div class="row mb-3">
+    <div class="col-md-7">
+        <NavLink href="/person/createperson" class="btn btn-sm btn-success mb-2">Add Person</NavLink>
+    </div>
+    @*     <div class="input-group col-md-5 text-md-right">
+        <input name="PersonSearchInput" type="text" class="form-control" placeholder="Person Name" @bind="this.SearchTerm" @onkeyup="SearchBoxKeyPress" />
+        <div class="input-group-btn">
+            <button name="PersonSearchButton" class="btn btn-default" @onclick="SearchClick">
+                <i class="oi oi-magnifying-glass" title="search" aria-hidden="true"></i>
+            </button>
+        </div>
+        <div class="input-group-btn">
+            <button name="PersonSearchClear" class="btn btn-default" @onclick="ClearSearch">
+                <i class="oi oi-x" title="clear" aria-hidden="true"></i>
+            </button>
+        </div>
+    </div> *@
+</div>
+
+@if (Tenants == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
             <tr>
-                <th scope="row">1</th>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>
-                    <button class="btn btn-primary">
-                        <i class="oi oi-pencil"></i>
-                    </button>
-                    <button class="btn btn-primary">
-                        <i class="oi oi-trash"></i>
-                    </button>
-                </td>
+                <th style="width:25%">Tenant Code</th>
+                <th style="width:25%">Tenant Name</th>
+                <th style="width:5%"></th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var person in Tenants)
+            {
+                <tr>
+                    <td>@person.TenantTypeCode</td>
+                    <td>@person.TenantTypeName</td>
+                    <td style="white-space: nowrap">
+                        <NavLink href="@($"/person/viewperson/{person.TenantTypeName}")" class="oi oi-eye text-primary mr-3 nounderline"></NavLink>
+                        <NavLink href="@($"/person/updateperson/{person.TenantTypeName}")" class="oi oi-pencil text-warning mr-2 nounderline"></NavLink>                         
+                        @*                         @if (person.IsDeleting) 
+                        {
+                            <button @onclick="@(() => DeletePerson(person))" disabled="@person.IsDeleting" class=" btn btn-link oi oi-trash text-danger mr-1 nounderline">
+                                <span class="spinner-border spinner-border-sm"></span>
+                            </button>
+                        }
+                        else
+                        {
+                            <button @onclick="@(() => DeletePerson(person))" disabled="@person.IsDeleting" class=" btn btn-link oi oi-trash text-danger mr-1 nounderline">
+                                <span></span>
+                            </button>
+                        } *@
+                    </td>
+                </tr> 
+            }
+        </tbody>
+    </table>
+}
 
 @code {
     public List<GetAllTenants> Tenants { get; set; } = new List<GetAllTenants>();
 
-    // protected override async Task OnInitializedAsync()
-    // {
+    protected override async void OnInitialized()
+    {
+        Console.WriteLine("e");
+        Tenants = await _tenantService.GetAll(Constants.TenantBaseUrl);
+        Console.WriteLine("e2");
+    }
 
+    // private async void DeletePerson(Person _person)
+    // {
+    //     var person = _person;
+    //     person.IsDeleting = true;
+    //     await PersonService.DeletePerson(person.PersonId);
+    //     people = await PersonService.GetPeople(null, Page);
+    //     StateHasChanged();
     // }
 
 }

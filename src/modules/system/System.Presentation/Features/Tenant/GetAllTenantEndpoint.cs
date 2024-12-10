@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using Common.Domain.SharedClient;
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
@@ -14,7 +15,7 @@ internal sealed class GetAllTenantEndpoint : IEndpoint
     {
         app.MapGet("tenant/all", async (ISender sender) =>
         {
-            Result<List<TenantM>> result = await sender.Send(new GetAllTenantQuery());
+            Result<List<GetAllTenants>> result = await sender.Send(new GetAllTenantQuery());
 
             return result.Match(Results.Ok, ApiResults.Problem);
         })
