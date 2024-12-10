@@ -43,8 +43,8 @@ else
                     <td>@person.TenantTypeCode</td>
                     <td>@person.TenantTypeName</td>
                     <td style="white-space: nowrap">
-                        <NavLink href="@($"/person/viewperson/{person.TenantTypeName}")" class="oi oi-eye text-primary mr-3 nounderline"></NavLink>
-                        <NavLink href="@($"/person/updateperson/{person.TenantTypeName}")" class="oi oi-pencil text-warning mr-2 nounderline"></NavLink>                         
+                        <NavLink href="@($"/tenant/edit")" class="btn btn-dark"></NavLink>
+                        @* <NavLink href="@($"/person/updateperson/{person.TenantTypeName}")" class="oi oi-pencil text-warning mr-2 nounderline"></NavLink>    *@                      
                         @*                         @if (person.IsDeleting) 
                         {
                             <button @onclick="@(() => DeletePerson(person))" disabled="@person.IsDeleting" class=" btn btn-link oi oi-trash text-danger mr-1 nounderline">
@@ -67,11 +67,10 @@ else
 @code {
     public List<GetAllTenants> Tenants { get; set; } = new List<GetAllTenants>();
 
-    protected override async void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
-        Console.WriteLine("e");
         Tenants = await _tenantService.GetAll(Constants.TenantBaseUrl);
-        Console.WriteLine("e2");
+        StateHasChanged();
     }
 
     // private async void DeletePerson(Person _person)

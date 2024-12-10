@@ -1,0 +1,32 @@
+﻿@page "/tenant/edit"
+@using System.Text.RegularExpressions
+@using System.ComponentModel.DataAnnotations
+
+<h3>TenantForm</h3>
+
+<EditForm Model="@model" OnValidSubmit="OnValidSubmit" >
+    <DataAnnotationsValidator />
+    <MudCard>
+        <MudCardContent>
+            <MudNumericField @bind-Value="model.TenantTypeId"  Label="Tenant Type" HideSpinButtons="true" />
+            <MudNumericField @bind-Value="model.ParentTenantId" Label="Parent Tenant" HideSpinButtons="true" />
+            <MudTextField @bind-Value="model.TenantName" Label="Username" HelperText="Max. 8 characters" ErrorText="44" For="@(() => model.TenantName)" />
+            <MudTextField @bind-Value="model.DatabaseName" Label="Username" HelperText="Max. 8 characters" For="@(() => model.DatabaseName)" />
+        </MudCardContent>
+        <MudCardActions>
+            <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="demo-form-button">Register</MudButton>
+        </MudCardActions>
+    </MudCard>
+</EditForm>
+
+
+
+@code {
+    CreateTenantDto model = new CreateTenantDto();
+
+    private void OnValidSubmit(EditContext context)
+    {
+        Console.WriteLine("Form Submitted");
+    }
+
+}
