@@ -29,8 +29,8 @@ public static class ClientSharedModule
         services.AddAuthorizationCore();
 
         services.AddScoped<ITokenService, TokenService>();
-        services.AddScoped<ITenantService, TenantService>();
-        services.AddScoped<IGenericService<GetAllTenants>, GenericService<GetAllTenants>>();
+
+        services.AddScoped<IGenericService<GetAllTenants, CreateTenantDto>, GenericService<GetAllTenants, CreateTenantDto>>();
 
         return services;
     }

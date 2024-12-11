@@ -26,6 +26,6 @@
 @inject NavigationManager _navigationManager
 @inject IJSRuntime _js
 @inject HttpClient _httpClient
+
 @inject ITokenService _tokenService
-@inject ITenantService _tenantService2
-@inject IGenericService<GetAllTenants> _tenantService
+@inject IGenericService<GetAllTenants, CreateTenantDto> _genericService

@@ -6,9 +6,9 @@
     <MudCard>
         <MudCardContent>
             <MudTextField @bind-Value="User.Email" Variant="Variant.Outlined" InputType="InputType.Email" Label="Email" ErrorText="44" For="@(() => User.Email)" />
-            <MudTextField @bind-Value="User.Password" InputType="InputType.Password" Variant="Variant.Outlined" Label="Password" Clearable="true" For="@(() => User.Password)" /> 
+            <MudTextField @bind-Value="User.Password" InputType="InputType.Password" Variant="Variant.Outlined" Label="Password" Clearable="true" For="@(() => User.Password)" />
         </MudCardContent>
-        <MudCardActions>        
+        <MudCardActions>
             @if (ShowLoadingButton)
             {
                 <BlazorMaster.Pages.Components.ButtonLoader />
@@ -21,8 +21,6 @@
     </MudCard>
     <ValidationSummary />
 </EditForm>
-
-
 
 @code {
     [CascadingParameter]

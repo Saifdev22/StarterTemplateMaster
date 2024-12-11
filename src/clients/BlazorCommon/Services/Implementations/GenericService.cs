@@ -5,41 +5,41 @@ using System.Net.Http.Json;
 
 namespace BlazorCommon.Services.Implementations;
 
-public class GenericService<T>(CustomHttpClient getHttpClient) : IGenericService<T>
+public class GenericService<TRead, TWrite>(CustomHttpClient getHttpClient) : IGenericService<TRead, TWrite>
 {
-    public async Task<GeneralResponse> Insert(T item, Uri baseUrl)
+    public async Task<GeneralResponse> Insert(string basePath, TWrite item)
     {
         HttpClient httpClient = await getHttpClient.GetPrivateHttpClient();
-        HttpResponseMessage response = await httpClient.PostAsJsonAsync($"{baseUrl}/add", item);
+        HttpResponseMessage response = await httpClient.PostAsJsonAsync($"{basePath}/create", item);
         GeneralResponse? result = await response.Content.ReadFromJsonAsync<GeneralResponse>();
         return result!;
     }
 
-    public async Task<List<T>> GetAll(string basePath)
+    public async Task<Result<List<TRead>>> GetAll(string basePath)
     {
         HttpClient httpClient = getHttpClient.GetPublicHttpClient();
-        List<T>? results = await httpClient.GetFromJsonAsync<List<T>>($"{basePath}/all");
+        List<TRead>? results = await httpClient.GetFromJsonAsync<List<TRead>>($"{basePath}/all");
         return results!;
     }
 
-    public async Task<T> GetById(int id, Uri baseUrl)
+    public async Task<TRead> GetById(string basePath, int id)
     {
         HttpClient httpClient = await getHttpClient.GetPrivateHttpClient();
-        T? result = await httpClient.GetFromJsonAsync<T>($"{baseUrl}/single{id}");
+        TRead? result = await httpClient.GetFromJsonAsync<TRead>($"{basePath}/single/{id}");
         return result!;
     }
 
-    public async Task<GeneralResponse> Update(T item, Uri baseUrl)
+    public async Task<GeneralResponse> Update(string basePath, TWrite item)
     {
         HttpClient httpClient = await getHttpClient.GetPrivateHttpClient();
-        HttpResponseMessage response = await httpClient.PutAsJsonAsync($"{baseUrl}/update", item);
+        HttpResponseMessage response = await httpClient.PutAsJsonAsync($"{basePath}/update", item);
         GeneralResponse? result = await response.Content.ReadFromJsonAsync<GeneralResponse>();
         return result!;
     }
 
-    public async Task<GeneralResponse> DeleteById(int id, Uri baseUrl)
+    public async Task<GeneralResponse> DeleteById(Uri basePath, int id)
     {
-        Uri deleteUri = new(baseUrl, $"/delete/{id}");
+        Uri deleteUri = new(basePath, $"/delete/{id}");
 
         HttpClient httpClient = await getHttpClient.GetPrivateHttpClient();
         HttpResponseMessage response = await httpClient.DeleteAsync(deleteUri);

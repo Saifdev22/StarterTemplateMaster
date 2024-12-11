@@ -2,11 +2,11 @@
 
 namespace BlazorCommon.Services.Contracts;
 
-public interface IGenericService<T>
+public interface IGenericService<TRead, TWrite>
 {
-    Task<List<T>> GetAll(string basePath);
-    Task<T> GetById(int id, Uri baseUrl);
-    Task<GeneralResponse> Insert(T item, Uri baseUrl);
-    Task<GeneralResponse> Update(T item, Uri baseUrl);
-    Task<GeneralResponse> DeleteById(int id, Uri baseUrl);
+    Task<Result<List<TRead>>> GetAll(string basePath);
+    Task<TRead> GetById(string basePath, int id);
+    Task<GeneralResponse> Insert(string basePath, TWrite item);
+    Task<GeneralResponse> Update(string basePath, TWrite item);
+    Task<GeneralResponse> DeleteById(Uri basePath, int id);
 }
