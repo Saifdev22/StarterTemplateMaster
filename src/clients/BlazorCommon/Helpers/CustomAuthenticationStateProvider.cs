@@ -1,11 +1,11 @@
-﻿using BlazorMaster.Dtos;
+﻿using BlazorCommon.Dtos;
 using Microsoft.AspNetCore.Components.Authorization;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
-namespace BlazorMaster.Helpers;
+namespace BlazorCommon.Helpers;
 
-internal sealed class CustomAuthenticationStateProvider(LocalStorageService localStorageService) : AuthenticationStateProvider
+public class CustomAuthenticationStateProvider(LocalStorageService localStorageService) : AuthenticationStateProvider
 {
     private readonly ClaimsPrincipal anonymous = new(new ClaimsIdentity());
     public override async Task<AuthenticationState> GetAuthenticationStateAsync()
@@ -28,14 +28,14 @@ internal sealed class CustomAuthenticationStateProvider(LocalStorageService loca
             return await Task.FromResult(new AuthenticationState(anonymous));
         }
 
-        // Checks the exp field of the token
+        // Token Expiration Validation
+        // The Exp field is in Unix time
         string expiry = getUserClaims.Exp;
         if (expiry == null)
         {
             return await Task.FromResult(new AuthenticationState(anonymous));
         }
 
-        // The exp field is in Unix time
         DateTimeOffset datetime = DateTimeOffset.FromUnixTimeSeconds(long.Parse(expiry));
         if (datetime.UtcDateTime <= DateTime.UtcNow)
         {
@@ -50,7 +50,12 @@ internal sealed class CustomAuthenticationStateProvider(LocalStorageService loca
     {
         ClaimsPrincipal claimsPrincipal;
 
-        if (!string.IsNullOrEmpty(session.Token))
+        if (session == null)
+        {
+            return;
+        }
+
+        if (!string.IsNullOrEmpty(session.Token) || !string.IsNullOrEmpty(session.RefreshToken))
         {
             string serializeSession = Serialization.SerializeObj(session);
             await localStorageService.SetToken(serializeSession);
@@ -68,15 +73,17 @@ internal sealed class CustomAuthenticationStateProvider(LocalStorageService loca
 
     public static ClaimsPrincipal SetClaimPrincipal(CustomUserClaim model)
     {
+        ArgumentNullException.ThrowIfNull(model);
+
         return new ClaimsPrincipal
         (
             new ClaimsIdentity
             (
                 [
-                        new(ClaimTypes.NameIdentifier, model.Id),
-                        new(ClaimTypes.Name, model.Username),
-                        new(ClaimTypes.Email, model.Email),
-                        new("tenant", model.Tenant),
+                    new(ClaimTypes.NameIdentifier, model.Id),
+                    new(ClaimTypes.Name, model.Username),
+                    new(ClaimTypes.Email, model.Email),
+                    new("tenant", model.Tenant),
                 ], "JwtAuth"
             )
         );
@@ -93,11 +100,11 @@ internal sealed class CustomAuthenticationStateProvider(LocalStorageService loca
         JwtSecurityToken token = handler.ReadJwtToken(jwtToken);
         IEnumerable<Claim> claims = token.Claims;
 
-        string Id = claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value!;
-        string TenantId = claims.First(c => c.Type == "TenantId").Value!;
-        string Email = claims.First(c => c.Type == ClaimTypes.Email).Value!;
-        string TenantDb = claims.First(c => c.Type == "TenantDb").Value!;
-        string exp = claims.First(claim => claim.Type.Equals("exp", StringComparison.Ordinal)).Value;
+        string Id = claims.First(_ => _.Type == ClaimTypes.NameIdentifier).Value!;
+        string TenantId = claims.First(_ => _.Type == "TenantId").Value!;
+        string Email = claims.First(_ => _.Type == ClaimTypes.Email).Value!;
+        string TenantDb = claims.First(_ => _.Type == "TenantDb").Value!;
+        string exp = claims.First(_ => _.Type.Equals("exp", StringComparison.Ordinal)).Value;
 
         return new CustomUserClaim(Id!, TenantId!, Email!, TenantDb!, exp);
     }

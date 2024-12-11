@@ -1,0 +1,46 @@
+﻿using BlazorCommon.Helpers;
+using BlazorCommon.Services.Contracts;
+using BlazorCommon.Services.Implementations;
+using Blazored.LocalStorage;
+using Common.Domain.SharedClient;
+using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.Extensions.DependencyInjection;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics.Metrics;
+using System.Linq;
+using System.Numerics;
+using System.Reflection;
+using System.Runtime.Intrinsics.Arm;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace BlazorCommon;
+
+public static class ClientSharedModule
+{
+    public static IServiceCollection AddClientLibrary(this IServiceCollection services)
+    {
+        string apiBase = "https://starter.webport.co.za/";
+
+        services.AddScoped<LocalStorageService>();
+        services.AddTransient<CustomHttpDelegate>();
+        services.AddScoped<CustomHttpClient>();
+        services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();
+
+        services.AddHttpClient("SystemApiClient", client =>
+        {
+            client.BaseAddress = new Uri(apiBase);
+        })
+            .AddHttpMessageHandler<CustomHttpDelegate>();
+
+        services.AddBlazoredLocalStorage();
+        services.AddAuthorizationCore();
+
+        services.AddScoped<ITokenService, TokenService>();
+        services.AddScoped<ITenantService, TenantService>();
+        services.AddScoped<IGenericService<GetAllTenants>, GenericService<GetAllTenants>>();
+
+        return services;
+    }
+}

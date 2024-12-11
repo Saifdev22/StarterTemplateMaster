@@ -1,10 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace BlazorMaster.Dtos;
+namespace BlazorCommon.Dtos;
 
-internal sealed record TokenRequest(string Token, string RefreshToken);
+public record TokenRequest(string Token, string RefreshToken);
 
-internal sealed class TokenResponse
+public class TokenResponse
 {
     public string Token { get; set; } = string.Empty;
     public string RefreshToken { get; set; } = string.Empty;
@@ -12,9 +12,9 @@ internal sealed class TokenResponse
     public bool Flag { get; set; } = true;
 }
 
-internal sealed record CustomUserClaim(string Id = null!, string Username = null!, string Email = null!, string Tenant = null!, string Exp = null!);
+public record CustomUserClaim(string Id = null!, string Username = null!, string Email = null!, string Tenant = null!, string Exp = null!);
 
-internal sealed class LoginDto
+public class LoginDto
 {
     [Required]
     [EmailAddress]
