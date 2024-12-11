@@ -1,12 +1,11 @@
 ﻿using Common.Application.EventBus;
-using MediatR;
 using Serilog;
 using System.Domain.Features.Identity.Events;
 using System.IntegrationEvents.Events;
 
 namespace System.Application.Features.Users.CreateUser;
 
-internal sealed class CreateUserDomainEventHandler(ISender sender, IEventBus bus)
+internal sealed class CreateUserDomainEventHandler(/*ISender sender*/ IEventBus bus)
     : DomainEventHandler<UserCreatedDomainEvent>
 {
     public override async Task Handle(
