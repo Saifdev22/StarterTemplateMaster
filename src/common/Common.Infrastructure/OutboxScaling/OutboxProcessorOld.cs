@@ -1,10 +1,10 @@
-﻿using System.Collections.Concurrent;
-using System.Diagnostics;
-using Dapper;
+﻿using Dapper;
 using MassTransit;
-using Npgsql;
-using System.Text.Json;
 using Microsoft.Extensions.Logging;
+using Npgsql;
+using System.Collections.Concurrent;
+using System.Diagnostics;
+using System.Text.Json;
 
 namespace Common.Infrastructure.OutboxScaling;
 

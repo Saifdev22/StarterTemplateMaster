@@ -5,15 +5,6 @@ using Blazored.LocalStorage;
 using Common.Domain.SharedClient;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics.Metrics;
-using System.Linq;
-using System.Numerics;
-using System.Reflection;
-using System.Runtime.Intrinsics.Arm;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BlazorCommon;
 

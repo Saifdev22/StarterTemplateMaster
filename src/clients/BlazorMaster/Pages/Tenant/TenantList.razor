@@ -1,11 +1,11 @@
 ﻿@page "/tenant/list"
 
-<h1>People</h1>
+<h1>Tenant List</h1>
 <br/>
 
 <div class="row mb-3">
     <div class="col-md-7">
-        <NavLink href="/person/createperson" class="btn btn-sm btn-success mb-2">Add Person</NavLink>
+        <NavLink href="/tenant/create" class="btn btn-sm btn-success mb-2">Create Tenant</NavLink>
     </div>
     @*     <div class="input-group col-md-5 text-md-right">
         <input name="PersonSearchInput" type="text" class="form-control" placeholder="Person Name" @bind="this.SearchTerm" @onkeyup="SearchBoxKeyPress" />
@@ -31,7 +31,7 @@ else
     <table class="table table-striped">
         <thead>
             <tr>
-                <th style="width:25%">Tenant Code</th>
+                <th style="width:25%">Tenant Code Noise</th>
                 <th style="width:25%">Tenant Name</th>
                 <th style="width:5%"></th>
             </tr>

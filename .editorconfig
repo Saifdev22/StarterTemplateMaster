@@ -188,4 +188,4 @@ dotnet_diagnostic.IDE0161.severity = none
 
 # Blazor 
 [*.{cs,vb}]
-dotnet_diagnostic.IDE0005.severity = none
+# dotnet_diagnostic.IDE0005.severity = none

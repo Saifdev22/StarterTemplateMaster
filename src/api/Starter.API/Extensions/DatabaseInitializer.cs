@@ -1,8 +1,8 @@
-﻿using System.Text.Json;
-using Common.Application.OutboxPattern;
+﻿using Common.Application.OutboxPattern;
 using Dapper;
 using Npgsql;
 using NpgsqlTypes;
+using System.Text.Json;
 
 namespace Starter.API.Extensions;
 

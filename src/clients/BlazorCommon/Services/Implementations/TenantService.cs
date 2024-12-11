@@ -1,5 +1,4 @@
-﻿using BlazorCommon.Helpers;
-using BlazorCommon.Services.Contracts;
+﻿using BlazorCommon.Services.Contracts;
 using Common.Domain.SharedClient;
 using System.Net.Http.Json;
 
