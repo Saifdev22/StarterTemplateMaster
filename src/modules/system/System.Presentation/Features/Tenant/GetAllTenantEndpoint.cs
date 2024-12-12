@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using System.Application.Features.Tenant.GetAllTenant;
-using System.Domain.Features.Tenant;
 using System.Presentation.Common;
 
 namespace System.Presentation.Features.Tenant;

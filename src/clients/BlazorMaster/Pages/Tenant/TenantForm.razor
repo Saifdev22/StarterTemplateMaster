@@ -6,17 +6,17 @@
 
 <EditForm Model="@model" OnValidSubmit="OnValidSubmit" >
     <DataAnnotationsValidator />
-     <MudCard> 
-         <MudCardContent> 
+    <MudCard> 
+        <MudCardContent> 
             <MudNumericField @bind-Value="model.TenantTypeId" Variant="Variant.Outlined" Label="Tenant Type" HideSpinButtons="true" />
             <MudNumericField @bind-Value="model.ParentTenantId" Variant="Variant.Outlined" Label="Parent Tenant" HideSpinButtons="true" />
             <MudTextField @bind-Value="model.TenantName" Variant="Variant.Outlined" Label="Username" ErrorText="44" For="@(() => model.TenantName)" />
             <MudTextField @bind-Value="model.DatabaseName" Variant="Variant.Outlined" Label="Username" For="@(() => model.DatabaseName)" />
-         </MudCardContent> 
-         <MudCardActions> 
+        </MudCardContent> 
+        <MudCardActions> 
             <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="demo-form-button">Register</MudButton>
-         </MudCardActions> 
-     </MudCard> 
+        </MudCardActions> 
+    </MudCard> 
 </EditForm>
 
 
@@ -24,9 +24,18 @@
 @code {
     CreateTenantDto model = new CreateTenantDto();
 
-    private void OnValidSubmit(EditContext context)
-    {
-        Console.WriteLine("Form Submitted");
+    private async void OnValidSubmit(EditContext context)
+    {   
+        var response = await _genericService.Insert(Constants.TenantBaseUrl, model);
+
+        // if (response.Flag)
+        // {
+        //     model = response.Message.ToList();
+        // }
+        // else
+        // {
+        //     Console.WriteLine("Error Occured");
+        // }
     }
 
 }
