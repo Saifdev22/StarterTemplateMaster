@@ -13,9 +13,7 @@ Creating Endpoint
 5. Add Endpoint
 
 
-ToDo
-
-0. Blazor CRUD (Pages, Services, Tables)
+API/Devopz
 
 1. Finalize API (Get TODO Tasks).
 
@@ -28,3 +26,12 @@ ToDo
 5. Create a R60 Seperate VPS. (Make it a worker/control node) - For databases. (Postgres/MSSQL)
 
 6. Develop A Basic CI/CD Pipeline.
+
+
+Blazor
+
+
+_ Blazor CRUD (Forms, Pages, Services, Tables, Models)
+- Fix Login Screen
+_ Create A Custom Navbar & Footer
+

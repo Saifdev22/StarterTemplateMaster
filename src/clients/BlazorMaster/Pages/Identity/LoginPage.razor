@@ -45,12 +45,12 @@
             await _js.InvokeVoidAsync("alert", customMessage);
 
             var customAuthStateProvider = (CustomAuthenticationStateProvider)_authenticationStateProvider;
-            await customAuthStateProvider.UpdateAuthenticationState(new TokenResponse() 
-            { 
-                Token = result.Token, 
-                RefreshToken = result.RefreshToken, 
-                RefreshTokenExpiryTime = result.RefreshTokenExpiryTime 
-            });
+            await customAuthStateProvider.UpdateAuthenticationState(new TokenResponse()
+                {
+                    Token = result.Token,
+                    RefreshToken = result.RefreshToken,
+                    RefreshTokenExpiryTime = result.RefreshTokenExpiryTime
+                });
 
             _navigationManager.NavigateTo("/home/dashboard", forceLoad: true);
         }

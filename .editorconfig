@@ -185,7 +185,3 @@ dotnet_diagnostic.CA2327.severity = none
 [**/Migrations/*]
 dotnet_diagnostic.CA1062.severity = none
 dotnet_diagnostic.IDE0161.severity = none
-
-# Blazor 
-[*.{cs,vb}]
-# dotnet_diagnostic.IDE0005.severity = none

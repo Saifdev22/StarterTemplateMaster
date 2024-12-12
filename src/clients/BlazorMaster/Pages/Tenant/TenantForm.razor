@@ -1,6 +1,4 @@
 ﻿@page "/tenant/create"
-@using System.Text.RegularExpressions
-@using System.ComponentModel.DataAnnotations
 
 <h3>TenantForm</h3>
 
@@ -8,6 +6,13 @@
     <DataAnnotationsValidator />
     <MudCard> 
         <MudCardContent> 
+@*             <MudSelect Placeholder="Select culture" @bind-Value="cultureValue" HelperText="CultureInfo" ToStringFunc="@convertFunc" CloseIcon="@Icons.Material.Filled.Flag" AdornmentColor="Color.Tertiary">
+                <MudSelectItem Value="ss"></MudSelectItem>
+                <MudSelectItem Value="ss"></MudSelectItem>
+                <MudSelectItem Value="ss"></MudSelectItem>
+                <MudSelectItem Value="ss"></MudSelectItem>
+            </MudSelect> *@
+            <MudCheckBox @bind-Value="Basic_CheckBox1">Is Parent</MudCheckBox>
             <MudNumericField @bind-Value="model.TenantTypeId" Variant="Variant.Outlined" Label="Tenant Type" HideSpinButtons="true" />
             <MudNumericField @bind-Value="model.ParentTenantId" Variant="Variant.Outlined" Label="Parent Tenant" HideSpinButtons="true" />
             <MudTextField @bind-Value="model.TenantName" Variant="Variant.Outlined" Label="Username" ErrorText="44" For="@(() => model.TenantName)" />
@@ -23,6 +28,7 @@
 
 @code {
     CreateTenantDto model = new CreateTenantDto();
+    public bool Basic_CheckBox1 { get; set; } = true;
 
     private async void OnValidSubmit(EditContext context)
     {   

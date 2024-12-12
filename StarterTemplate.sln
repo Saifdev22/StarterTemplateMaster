@@ -39,8 +39,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "solution-items", "solution-
 		solution-items\aspnetapp.pfx = solution-items\aspnetapp.pfx
 		Directory.Build.props = Directory.Build.props
 		solution-items\packages.txt = solution-items\packages.txt
-		solution-items\process.txt = solution-items\process.txt
 		solution-items\scripts.txt = solution-items\scripts.txt
+		solution-items\Tasks.txt = solution-items\Tasks.txt
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "System.IntegrationEvents", "src\modules\system\System.IntegrationEvents\System.IntegrationEvents.csproj", "{3EE7ADCD-175E-4149-994F-4FA1D3FC141E}"

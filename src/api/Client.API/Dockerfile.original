@@ -14,9 +14,6 @@ ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["Directory.Build.props", "."]
 COPY ["src/api/Client.API/Client.API.csproj", "src/api/Client.API/"]
-COPY ["src/clients/BlazorMaster/BlazorMaster.csproj", "src/clients/BlazorMaster/"]
-COPY ["src/common/Common.Domain/Common.Domain.csproj", "src/common/Common.Domain/"]
-COPY ["src/clients/BlazorCommon/BlazorCommon.csproj", "src/clients/BlazorCommon/"]
 RUN dotnet restore "./src/api/Client.API/Client.API.csproj"
 COPY . .
 WORKDIR "/src/src/api/Client.API"
