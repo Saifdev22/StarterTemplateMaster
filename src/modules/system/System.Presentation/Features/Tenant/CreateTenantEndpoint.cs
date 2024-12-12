@@ -1,4 +1,4 @@
-﻿using Common.Domain.SharedClient;
+﻿using Common.Domain.TransferObjects.System;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;

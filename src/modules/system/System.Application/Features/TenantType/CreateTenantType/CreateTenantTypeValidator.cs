@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace System.Application.Features.TenantTypes.CreateTenantType;
+namespace System.Application.Features.TenantType.CreateTenantType;
 
 internal sealed class CreateTenantTypeValidator : AbstractValidator<CreateTenantTypeCommand>
 {

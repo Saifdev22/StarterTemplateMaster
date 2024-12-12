@@ -1,5 +1,5 @@
 ﻿using Common.Domain.Abstractions;
-using Common.Domain.SharedClient;
+using Common.Domain.TransferObjects.System;
 using System.Domain.Features.Tenant;
 
 namespace System.Application.Features.Tenant.GetAllTenant;

@@ -5,6 +5,7 @@ namespace Common.Domain.Abstractions;
 public interface IGenericRepository<TEntity> where TEntity : class
 {
     Task<List<TEntity>> GetAllAsync();
+    Task<TEntity> GetByIdAsync(int id);
     IQueryable<TEntity> GetAll(FindOptions? findOptions = null);
     TEntity FindOne(Expression<Func<TEntity, bool>> predicate, FindOptions? findOptions = null, CancellationToken cancellationToken = default);
     IQueryable<TEntity> Find(Expression<Func<TEntity, bool>> predicate, FindOptions? findOptions = null);
@@ -18,6 +19,7 @@ public interface IGenericRepository<TEntity> where TEntity : class
 
     //Delete
     void Delete(TEntity entity);
+    Task DeleteById(int id);
     void DeleteMany(Expression<Func<TEntity, bool>> predicate);
 
     //Other

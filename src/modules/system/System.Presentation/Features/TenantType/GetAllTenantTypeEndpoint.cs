@@ -3,21 +3,21 @@ using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
-using System.Application.Features.Tenant.GetAllTenant;
+using System.Application.Features.TenantType.GetAllTenantType;
 using System.Presentation.Common;
 
-namespace System.Presentation.Features.Tenant;
+namespace System.Presentation.Features.TenantType;
 
 internal sealed class GetAllTenantTypeEndpoint : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapGet("tenant/all", async (ISender sender) =>
+        app.MapGet("tenanttype/all", async (ISender sender) =>
         {
-            Result<List<GetAllTenants>> result = await sender.Send(new GetAllTenantQuery());
+            Result<List<ReadTenantTypeDto>> result = await sender.Send(new GetAllTenantTypeQuery());
 
             return result.Match(Results.Ok, ApiResults.Problem);
         })
-        .WithTags(Tags.Tenant);
+        .WithTags(Tags.TenantType);
     }
 }

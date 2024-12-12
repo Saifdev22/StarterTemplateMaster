@@ -1,4 +1,4 @@
-﻿using Common.Domain.SharedClient;
+﻿using Common.Domain.TransferObjects.System;
 
 namespace System.Application.Features.Tenant.GetAllTenant;
 

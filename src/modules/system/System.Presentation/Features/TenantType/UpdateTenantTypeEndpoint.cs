@@ -3,19 +3,18 @@ using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
-using System.Application.Features.TenantType.CreateTenantType;
-using System.Domain.Features.Tenant;
+using System.Application.Features.TenantType.UpdateTenantType;
 using System.Presentation.Common;
 
 namespace System.Presentation.Features.TenantType;
 
-internal sealed class CreateTenantTypeEndpoint : IEndpoint
+internal sealed class UpdateTenantTypeEndpoint : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapPost("tenanttype/create", async (WriteTenantTypeDto request, ISender sender) =>
+        app.MapPut("tenanttype", async (WriteTenantTypeDto request, ISender sender) =>
         {
-            Result<TenantTypeM> result = await sender.Send(new CreateTenantTypeCommand(request));
+            Result<bool> result = await sender.Send(new UpdateTenantTypeCommand(request));
 
             return result.Match(Results.Ok, ApiResults.Problem);
         })

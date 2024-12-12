@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Common.Domain.SharedClient;
+namespace Common.Domain.TransferObjects.System;
 
 public class CreateTenantDto
 {
@@ -11,12 +11,6 @@ public class CreateTenantDto
     public string TenantName { get; set; } = string.Empty;
     public string DatabaseName { get; set; } = string.Empty;
 }
-
-public sealed record CreateTenantTypeDto
-(
-    string TenantTypeCode,
-    string TenantTypeName
-);
 
 public sealed record GetAllTenants
 (
