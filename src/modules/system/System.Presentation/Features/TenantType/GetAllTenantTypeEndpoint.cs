@@ -1,8 +1,5 @@
 ﻿using Common.Domain.TransferObjects.System;
 using MediatR;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Routing;
 using System.Application.Features.TenantType.GetAllTenantType;
 using System.Presentation.Common;
 

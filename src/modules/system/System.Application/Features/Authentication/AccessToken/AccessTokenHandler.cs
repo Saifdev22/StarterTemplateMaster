@@ -2,13 +2,14 @@
 using System.Domain.Features.Token;
 
 
-namespace System.Application.Features.Token;
+namespace System.Application.Features.Authentication.AccessToken;
 
 internal sealed class CreateTenantHandler(ITokenService _tokenService)
         : ICommandHandler<AccessTokenCommand, TokenResponse>
 {
     public async Task<Result<TokenResponse>> Handle(AccessTokenCommand request, CancellationToken cancellationToken)
     {
-        return await _tokenService.AccessToken(request.Request);
+        Result<TokenResponse> result = await _tokenService.AccessToken(request.Request);
+        return result;
     }
 }

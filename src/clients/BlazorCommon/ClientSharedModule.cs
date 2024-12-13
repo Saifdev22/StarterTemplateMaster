@@ -12,7 +12,8 @@ public static class ClientSharedModule
 {
     public static IServiceCollection AddClientLibrary(this IServiceCollection services)
     {
-        string apiBase = "https://starter.webport.co.za/";
+        //string apiBase = "https://starter.webport.co.za/";
+        string apiBase = "https://localhost:7283/";
 
         services.AddScoped<LocalStorageService>();
         services.AddTransient<CustomHttpDelegate>();

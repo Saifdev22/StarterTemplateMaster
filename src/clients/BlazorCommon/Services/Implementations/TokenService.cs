@@ -13,7 +13,7 @@ public class TokenService(CustomHttpClient httpClient) : ITokenService
     {
         HttpClient httpclient = httpClient.GetPublicHttpClient();
 
-        HttpResponseMessage response = await httpclient.PostAsJsonAsync($"{baseUrl}/refresh", request);
+        HttpResponseMessage response = await httpclient.PostAsJsonAsync($"{Constants.TokenBaseUrl}/refresh", request);
         TokenResponse? result = await response.Content.ReadFromJsonAsync<TokenResponse>();
         return result!;
     }
@@ -22,7 +22,7 @@ public class TokenService(CustomHttpClient httpClient) : ITokenService
     {
         HttpClient httpclient = httpClient.GetPublicHttpClient();
 
-        HttpResponseMessage response = await httpclient.PostAsJsonAsync($"/token/accesstoken", request);
+        HttpResponseMessage response = await httpclient.PostAsJsonAsync($"{Constants.TokenBaseUrl}/accesstoken", request);
         TokenResponse? result = await response.Content.ReadFromJsonAsync<TokenResponse>();
         return result!;
     }

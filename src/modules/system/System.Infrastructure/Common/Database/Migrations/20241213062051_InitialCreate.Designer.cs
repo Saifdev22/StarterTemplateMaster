@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace System.Infrastructure.Common.Database.Migrations
 {
     [DbContext(typeof(SystemDbContext))]
-    [Migration("20241130031023_InitialCreate")]
+    [Migration("20241213062051_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -268,7 +268,7 @@ namespace System.Infrastructure.Common.Database.Migrations
                     b.Property<DateTime>("LicenceExpiryDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("ParentTenantId")
+                    b.Property<int?>("ParentTenantId")
                         .HasColumnType("int");
 
                     b.Property<string>("TenantName")

@@ -8,7 +8,7 @@ public class UserM : AggregateRoot
 {
     public int UserId { get; }
     public int TenantId { get; private set; }
-    public string Email { get; private set; } = string.Empty;
+    public string Email { get; set; } = string.Empty;
     public byte[] PasswordHash { get; set; } = [];
     public byte[] PasswordSalt { get; set; } = [];
     public string RefreshToken { get; set; } = string.Empty;

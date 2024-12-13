@@ -2,7 +2,7 @@
 using MassTransit;
 using System.IntegrationEvents.Events;
 
-namespace System.Presentation.Features.User;
+namespace System.Presentation.Consumers;
 
 public sealed class GetUserPermissionsRequestConsumer(IPermissionService permissionService)
         : IConsumer<GetUserPermissionsRequest>

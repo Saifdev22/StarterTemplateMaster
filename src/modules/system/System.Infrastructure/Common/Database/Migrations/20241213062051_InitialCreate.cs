@@ -157,7 +157,7 @@ namespace System.Infrastructure.Common.Database.Migrations
                     TenantId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     TenantTypeId = table.Column<int>(type: "int", nullable: false),
-                    ParentTenantId = table.Column<int>(type: "int", nullable: false),
+                    ParentTenantId = table.Column<int>(type: "int", nullable: true),
                     TenantName = table.Column<string>(type: "nvarchar(5)", maxLength: 5, nullable: false),
                     DatabaseName = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
                     ConnectionString = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: false),
