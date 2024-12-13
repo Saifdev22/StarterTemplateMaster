@@ -1,6 +1,7 @@
 name: API Pipeline
 
 on:
+ workflow_dispatch:
  push:
    branches: 
      - "master"
