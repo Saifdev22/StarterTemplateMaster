@@ -1,19 +1,14 @@
-name: Docker Image CI
+name: API Pipeline
 
 on:
-#  push:
-#    branches: 
-#      - "master"
-#    paths-ignore:
-#      - src/clients/BlazorMaster/**
-#      - src/api/Client.API/**
-#  pull_request:
-#    branches:
-#      - "master"
-#    paths-ignore:
-#      - src/clients/BlazorMaster/**
-#      - src/api/Client.API/**
-#
+ push:
+   branches: 
+     - "master"
+   paths-ignore:
+     - src/clients/BlazorMaster/**
+     - src/clients/BlazorCommon/**
+     - src/api/Client.API/**
+
 jobs:
 
   build_images:

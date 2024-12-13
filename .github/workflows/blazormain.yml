@@ -1,17 +1,13 @@
-name: Blazor Client Pipeline
-'on':
+name: Blazor Pipeline
+
+on:
   push:
     branches:
       - master
     paths:
       - src/clients/BlazorMaster/**
       - src/api/Client.API/**
-  pull_request:
-    branches:
-      - master
-    paths:
-      - src/clients/BlazorMaster/**
-      - src/api/Client.API/**
+ 
 jobs:
   build_images:
     name: Build Docker Images
