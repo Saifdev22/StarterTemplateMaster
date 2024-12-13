@@ -14,10 +14,10 @@ services:
     ports:
       - "8091:8080"
  
-  client.api:
-    image: ${DOCKER_REGISTRY-}clientapi
-    container_name: Starter.Blazor 
-    build:
-      context: .
-      dockerfile: src/api/Client.API/Dockerfile
+  # client.api:
+  #   image: ${DOCKER_REGISTRY-}clientapi
+  #   container_name: Starter.Blazor 
+  #   build:
+  #     context: .
+  #     dockerfile: src/api/Client.API/Dockerfile
 
