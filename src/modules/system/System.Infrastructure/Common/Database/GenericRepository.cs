@@ -99,4 +99,15 @@ public class GenericRepository<TEntity> : IGenericRepository<TEntity>
         await _dbContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
     }
 
+    public async Task<TEntity> GetByIdAsync(int id)
+    {
+        TEntity? entity = await _dbSet.FindAsync(id);
+        return entity!;
+    }
+
+    public async Task DeleteById(int id)
+    {
+        TEntity entity = await GetByIdAsync(id);
+        _dbSet.Remove(entity);
+    }
 }

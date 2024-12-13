@@ -2,7 +2,7 @@
 using BlazorCommon.Services.Contracts;
 using BlazorCommon.Services.Implementations;
 using Blazored.LocalStorage;
-using Common.Domain.SharedClient;
+using Common.Domain.TransferObjects.System;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.Extensions.DependencyInjection;
 

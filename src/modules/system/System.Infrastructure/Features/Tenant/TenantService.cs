@@ -1,4 +1,4 @@
-﻿using Common.Domain.SharedClient;
+﻿using Common.Domain.TransferObjects.System;
 using Common.Infrastructure.System;
 using Dapper;
 using Inventory.Infrastructure.Common.Database;
