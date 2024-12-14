@@ -1,12 +1,9 @@
 ﻿using MediatR;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Routing;
-using System.Application.Features.Token;
+using System.Application.Features.Authentication.AccessToken;
 using System.Domain.Features.Token;
 using System.Presentation.Common;
 
-namespace System.Presentation.Features.Token;
+namespace System.Presentation.Features.Authentication;
 
 internal sealed class AccessTokenEndpoint : IEndpoint
 {

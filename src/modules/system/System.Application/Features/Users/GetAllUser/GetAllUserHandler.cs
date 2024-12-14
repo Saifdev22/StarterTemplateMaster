@@ -1,0 +1,26 @@
+﻿using Common.Domain.Abstractions;
+using Common.Domain.TransferObjects.System;
+using System.Domain.Features.Identity;
+
+namespace System.Application.Features.Users.GetAllUser;
+
+internal sealed class GetAllUserHandler(IGenericRepository<UserM> genericRepository)
+    : IQueryHandler<GetAllUserQuery, List<ReadUserDto>>
+{
+    public async Task<Result<List<ReadUserDto>>> Handle(
+        GetAllUserQuery request,
+        CancellationToken cancellationToken)
+    {
+        List<UserM> objects = await genericRepository.GetAllAsync();
+
+        List<ReadUserDto> result = objects.Select(obj => new ReadUserDto
+        (
+            obj.UserId,
+            obj.Email,
+            obj.TenantId,
+            obj.IsActive
+        )).ToList();
+
+        return result;
+    }
+}

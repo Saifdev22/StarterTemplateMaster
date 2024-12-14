@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace System.Application.Features.Token;
+namespace System.Application.Features.Authentication.AccessToken;
 
 internal sealed class AccessTokenValidator : AbstractValidator<AccessTokenCommand>
 {

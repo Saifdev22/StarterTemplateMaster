@@ -6,8 +6,4 @@
     <ProjectReference Include="..\System.IntegrationEvents\System.IntegrationEvents.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Features\Token\" />
-  </ItemGroup>
-
 </Project>

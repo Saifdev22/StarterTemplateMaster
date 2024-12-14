@@ -27,6 +27,10 @@ API/Devopz
 
 6. Develop A Basic CI/CD Pipeline.
 
+7. Fix Time On Audit Fields
+
+8. Validation Error
+
 
 Blazor
 

@@ -19,7 +19,7 @@ using System.Infrastructure.Common.Inbox;
 using System.Infrastructure.Common.Outbox;
 using System.Infrastructure.Features.Identity;
 using System.Infrastructure.Features.Tenant;
-using System.Presentation.Features.User;
+using System.Presentation.Consumers;
 
 namespace System.Infrastructure;
 

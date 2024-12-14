@@ -265,7 +265,7 @@ namespace System.Infrastructure.Common.Database.Migrations
                     b.Property<DateTime>("LicenceExpiryDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("ParentTenantId")
+                    b.Property<int?>("ParentTenantId")
                         .HasColumnType("int");
 
                     b.Property<string>("TenantName")
