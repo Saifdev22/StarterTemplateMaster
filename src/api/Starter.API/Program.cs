@@ -3,8 +3,9 @@ using Common.Infrastructure;
 using Common.Infrastructure.Configuration;
 using Common.Presentation.Endpoints;
 using HealthChecks.UI.Client;
-using Inventory.Infrastructure;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Parent.Infrastructure;
+using Scalar.AspNetCore;
 using Serilog;
 using Starter.API.Extensions;
 using Starter.API.Middlewares;
@@ -33,7 +34,7 @@ builder.Services.AddEndpointsApiExplorer();
 Assembly[] moduleApplicationAssemblies =
 [
     System.Application.AssemblyReference.Assembly,
-    Inventory.Application.AssemblyReference.Assembly
+    Parent.Application.AssemblyReference.Assembly
 ];
 
 // Adding Common Application Module
@@ -57,18 +58,19 @@ builder.Services.AddCommonInfrastructure(
 
 //Adding Other Modules
 builder.Services.AddSystemModule(builder.Configuration);
-builder.Services.AddInventoryModule(builder.Configuration);
+builder.Services.AddParentModule(builder.Configuration);
 
-//Module Configurations
-builder.Configuration.AddModuleConfiguration(["system", "inventory"]);
+//Module Configuration Settings
+builder.Configuration.AddModuleConfiguration(["system", "parent"]);
 
 //API Documentation
 builder.Services.AddOpenApi();
 
 //Health Checks
-builder.Services.AddHealthChecks();
+builder.Services.AddHealthChecks()
+    .AddRedis(redisConnectionString);
+//.AddRabbitMQ(rabbitmqConnectionString: rabbitMqSettings.Host);
 //.AddSqlServer(testDatabase!)
-//.AddRedis(redisConnectionString);
 
 // Add CORS services
 builder.Services.AddCors(options =>
@@ -93,13 +95,7 @@ app.MapControllers();
 if (app.Environment.IsDevelopment() || app.Environment.IsProduction())
 {
     app.MapOpenApi();
-    app.UseSwaggerUI(options =>
-    {
-        options.SwaggerEndpoint("/openapi/v1.json", "Starter.API");
-        options.RoutePrefix = string.Empty;
-        options.ConfigObject.AdditionalItems.Add("useRelativePaths", true);
-    });
-
+    app.MapScalarApiReference(_ => _.Servers = []);
     await app.ApplyMigrations();
 }
 

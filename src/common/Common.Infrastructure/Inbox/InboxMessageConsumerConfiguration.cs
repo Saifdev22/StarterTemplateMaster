@@ -9,7 +9,7 @@ public sealed class InboxMessageConsumerConfiguration : IEntityTypeConfiguration
     {
         if (builder is null)
         {
-            throw new ArgumentNullException(nameof(builder), "EntityTypeBuilder cannot be null");
+            throw new ArgumentNullException(nameof(builder), "InboxMessageConsumerConfiguration - EntityTypeBuilder cannot be null");
         }
 
         builder.ToTable("InboxMessageConsumers");

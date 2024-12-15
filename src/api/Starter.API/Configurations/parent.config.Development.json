@@ -1,0 +1,15 @@
+﻿{
+  "Parent": {
+    "Database": {
+      "DefaultConnection": "Server=102.214.10.24,1433;Database=Parent-Default;User Id=sa;Password=25122000SK;Encrypt=False;Trusted_Connection=True;TrustServerCertificate=True;Integrated Security=False"
+    },
+    "Outbox": {
+      "IntervalInSeconds": 30,
+      "BatchSize": 20
+    },
+    "Inbox": {
+      "IntervalInSeconds": 50,
+      "BatchSize": 20
+    }
+  }
+}

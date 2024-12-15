@@ -1,15 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net9.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-  </PropertyGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\..\..\common\Common.Infrastructure\Common.Infrastructure.csproj" />
     <ProjectReference Include="..\Parent.Application\Parent.Application.csproj" />
     <ProjectReference Include="..\Parent.Presentation\Parent.Presentation.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Common\Inbox\" />
+    <Folder Include="Common\Outbox\" />
   </ItemGroup>
 
 </Project>

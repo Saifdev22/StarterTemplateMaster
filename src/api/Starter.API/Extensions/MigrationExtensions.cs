@@ -1,5 +1,5 @@
-﻿using Inventory.Infrastructure.Common.Database;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using Parent.Infrastructure.Common.Database;
 using System.Domain.Features.Tenant;
 using System.Infrastructure.Common.Database;
 
@@ -16,16 +16,13 @@ internal static class MigrationExtensions
         SystemDbContext systemDbContext = scope.ServiceProvider.GetRequiredService<SystemDbContext>();
 
         List<TenantM> tenantsInDb = [.. systemDbContext.Tenants];
-        List<TenantM> subTenantsInDb = [.. systemDbContext.Tenants];
 
         foreach (TenantM tenant in tenantsInDb)
         {
-            ApplyMigration<InventoryDbContext>(app, tenant.ConnectionString!);
-        }
-
-        foreach (TenantM subTenant in subTenantsInDb)
-        {
-            ApplyMigration<InventoryDbContext>(app, subTenant.ConnectionString!);
+            if (tenant.TenantTypeId == 1)
+            {
+                ApplyMigration<ParentDbContext>(app, tenant.ConnectionString!);
+            }
         }
 
     }

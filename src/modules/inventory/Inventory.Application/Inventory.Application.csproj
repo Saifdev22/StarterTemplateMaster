@@ -1,9 +1,0 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\common\Common.Application\Common.Application.csproj" />
-    <ProjectReference Include="..\Inventory.Domain\Inventory.Domain.csproj" />
-    <ProjectReference Include="..\Inventory.IntegrationEvents\Inventory.IntegrationEvents.csproj" />
-  </ItemGroup>
-
-</Project>

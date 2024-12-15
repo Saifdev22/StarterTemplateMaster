@@ -15,6 +15,7 @@ public sealed class InsertOutboxMessagesInterceptor : SaveChangesInterceptor
             CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(eventData);
+
         if (eventData.Context is not null)
         {
             InsertOutboxMessages(eventData.Context);

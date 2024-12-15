@@ -1,7 +1,7 @@
 ﻿using Common.Application.Clock;
 using Common.Application.Database;
 using Common.Application.EventBus;
-using Common.Infrastructure.Inbox;
+using Common.Infrastructure.Events;
 using Common.Infrastructure.Serialization;
 using Dapper;
 using Microsoft.Extensions.DependencyInjection;

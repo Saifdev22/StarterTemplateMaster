@@ -26,22 +26,23 @@ public static class InfrastructureConfiguration
     public static IServiceCollection AddCommonInfrastructure(
         this IServiceCollection services,
         string serviceName,
-        Action<IRegistrationConfigurator,
-        string>[] moduleConfigureConsumers,
+        Action<IRegistrationConfigurator, string>[] moduleConfigureConsumers,
         string redisConnectionString,
         string rabbitmqConnectionString,
         string postgresConnectionString)
     {
+        //Authentication & Authorization
         services.AddAuthenticationInternal();
         services.AddAuthorizationInternal();
 
+        //Service
+        services.AddScoped<CurrentTenant>();
         services.TryAddSingleton<IDateTimeProvider, DateTimeProvider>();
+        services.TryAddSingleton<IEventBus, Events.EventBus>();
 
-        services.TryAddSingleton<IEventBus, EventBus.EventBus>();
-
+        //Interceptors
         services.TryAddSingleton<InsertOutboxMessagesInterceptor>();
 
-        services.AddScoped<CurrentTenant>();
         services.AddScoped<IDbConnectionFactory, DbConnectionFactory>();
 
         //Dapper
@@ -57,6 +58,7 @@ public static class InfrastructureConfiguration
 
         services.AddQuartzHostedService(options => options.WaitForJobsToComplete = true);
 
+        //Redis
         try
         {
             IConnectionMultiplexer connectionMultiplexer = ConnectionMultiplexer.Connect(redisConnectionString);
@@ -102,12 +104,6 @@ public static class InfrastructureConfiguration
         });
 
         //services.AddHostedService<OutboxBackgroundService>();
-
-        //var host = builder.Build();
-
-        //await host.Services.GetRequiredService<DatabaseInitializer>().Execute();
-
-        //host.Run();
 
         services
                 .AddOpenTelemetry()

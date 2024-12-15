@@ -39,6 +39,18 @@ public sealed class CurrentTenant(IConfiguration config, IHttpContextAccessor ht
         return newConnectionString;
     }
 
+    public string GetTenantConnectionString()
+    {
+        if (string.IsNullOrWhiteSpace(TenantClaim))
+        {
+            return _configuration.GetValueOrThrow<string>("Parent:Database:DefaultConnection");
+        }
+
+        string pattern = @"(?<=Database=)([^;]*)";
+        string newConnectionString = Regex.Replace(GetDefaultConnectionstring(), pattern, TenantClaim);
+        return newConnectionString;
+    }
+
 }
 
 

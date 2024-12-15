@@ -1,10 +1,10 @@
 ﻿using Common.Domain.TransferObjects.System;
 using Common.Infrastructure.System;
 using Dapper;
-using Inventory.Infrastructure.Common.Database;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Parent.Infrastructure.Common.Database;
 using System.Application.Common.Interfaces;
 using System.Domain.Features.Tenant;
 using System.Infrastructure.Common.Database;
@@ -26,7 +26,7 @@ internal sealed class TenantService(
         try
         {
             using IServiceScope scopeTenant = serviceProvider.CreateScope();
-            InventoryDbContext dbContext = scopeTenant.ServiceProvider.GetRequiredService<InventoryDbContext>();
+            ParentDbContext dbContext = scopeTenant.ServiceProvider.GetRequiredService<ParentDbContext>();
             dbContext.Database.SetConnectionString(newConnectionString);
 
             IEnumerable<string> pendingMigrations = await dbContext.Database.GetPendingMigrationsAsync(cancellationToken);

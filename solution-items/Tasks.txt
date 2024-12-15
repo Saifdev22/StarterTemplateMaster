@@ -39,3 +39,5 @@ _ Blazor CRUD (Forms, Pages, Services, Tables, Models)
 - Fix Login Screen
 _ Create A Custom Navbar & Footer
 
+- Create Layouts for diffent tenant
+

@@ -2,7 +2,7 @@
 using Common.Application.Database;
 using Common.Application.Messaging;
 using Common.Domain.Abstractions;
-using Common.Infrastructure.Outbox;
+using Common.Infrastructure.Events;
 using Common.Infrastructure.Serialization;
 using Dapper;
 using Microsoft.Extensions.DependencyInjection;

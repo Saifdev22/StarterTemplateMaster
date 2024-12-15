@@ -10,5 +10,6 @@ public interface IDbConnectionFactory
     Task<int> ExecuteAsync(string sql, object parameters = null!);
     DbConnection GetConnection(bool systemDb = false);
     ValueTask<DbConnection> OpenConnectionAsync(string? connectionString = null);
+    ValueTask<DbConnection> OpenParentConnectionAsync(string? connectionString = null);
 
 }

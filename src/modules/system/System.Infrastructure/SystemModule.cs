@@ -76,7 +76,8 @@ public static class SystemModule
     {
         ArgumentNullException.ThrowIfNull(registrationConfigurator);
 
-        registrationConfigurator.AddConsumer<GetUserPermissionsRequestConsumer>()
+        registrationConfigurator.
+            AddConsumer<GetUserPermissionsRequestConsumer>()
                 .Endpoint(c => c.InstanceId = instanceId);
     }
 

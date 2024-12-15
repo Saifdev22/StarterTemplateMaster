@@ -60,4 +60,11 @@ internal sealed class DbConnectionFactory(CurrentTenant ct) : IDbConnectionFacto
         return connection;
     }
 
+    public async ValueTask<DbConnection> OpenParentConnectionAsync(string? connectionString = null)
+    {
+        SqlConnection connection = new(ct.GetTenantConnectionString());
+
+        await connection.OpenAsync();
+        return connection;
+    }
 }
