@@ -32,14 +32,14 @@ public class AuditableEntityInterceptor() : SaveChangesInterceptor
         {
             if (entry.State == EntityState.Added)
             {
-                entry.Entity.CreatedBy = "ADMIN";
-                entry.Entity.CreatedDt = DateTime.UtcNow;
+                entry.Entity.CreatedBy = "SuperAdmin";
+                entry.Entity.CreatedDt = DateTime.UtcNow.AddHours(2);
             }
 
             if (entry.State == EntityState.Added || entry.State == EntityState.Modified || entry.HasChangedOwnedEntities())
             {
-                entry.Entity.LastModBy = "ADMIN";
-                entry.Entity.LastModDt = DateTime.UtcNow;
+                entry.Entity.LastModBy = "SuperAdmin";
+                entry.Entity.LastModDt = DateTime.UtcNow.AddHours(2);
             }
 
         }

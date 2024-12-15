@@ -10,7 +10,7 @@ using System.Domain.Features.Tenant;
 using System.Infrastructure.Common.Database;
 using System.Text.RegularExpressions;
 
-namespace System.Infrastructure.Features.Tenant;
+namespace System.Infrastructure.Common.Repository;
 
 internal sealed class TenantService(
     IServiceProvider serviceProvider,
@@ -20,7 +20,7 @@ internal sealed class TenantService(
     public async Task<TenantM> CreateTenant(CreateTenantDto request, CancellationToken cancellationToken = default)
     {
         string pattern = @"(?<=Database=)([^;]*)";
-        string defaultConnectionString = currentTenant.GetDefaultConnectionstring();
+        string defaultConnectionString = currentTenant.GetSystemConnectionString();
         string newConnectionString = Regex.Replace(defaultConnectionString, pattern, request.DatabaseName);
 
         try
@@ -90,8 +90,6 @@ internal sealed class TenantService(
     public async Task<List<TenantM>> GetAllTenants(CancellationToken cancellationToken = default)
     {
         List<TenantM> tenants = await systemDbContext.Tenants
-            .Include(p => p.TenantType)
-            .Include(p => p.Users)
             .ToListAsync(cancellationToken);
 
         return tenants;

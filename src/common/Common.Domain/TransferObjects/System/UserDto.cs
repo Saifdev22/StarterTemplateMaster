@@ -3,7 +3,6 @@ public sealed record ReadUserDto
 (
     int UserId,
     string Email,
-    int TenantId,
     bool IsActive
 );
 

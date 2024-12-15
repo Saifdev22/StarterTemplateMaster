@@ -17,7 +17,7 @@ internal sealed class GetAllTenantTypeHandler(IGenericRepository<TenantTypeM> ge
         (
             obj.TenantTypeId,
             obj.TenantTypeCode,
-            obj.TenantTypeName
+            obj.TenantTypeDesc
         )).ToList();
 
         return result;

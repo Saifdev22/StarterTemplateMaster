@@ -11,7 +11,7 @@ internal sealed class UpdateTenantTypeHandler(IGenericRepository<TenantTypeM> _r
         TenantTypeM tenantTypeM = await _repository.GetByIdAsync(request.Request.TenantTypeId);
 
         tenantTypeM.TenantTypeCode = request.Request.TenantTypeCode;
-        tenantTypeM.TenantTypeName = request.Request.TenantTypeName;
+        tenantTypeM.TenantTypeDesc = request.Request.TenantTypeDesc;
 
         _repository.Update(tenantTypeM);
         await _repository.SaveChangesAsync(cancellationToken);

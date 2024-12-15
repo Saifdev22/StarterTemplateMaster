@@ -12,11 +12,11 @@ namespace System.Infrastructure.Common.Database.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.EnsureSchema(
-                name: "main");
+                name: "MAIN");
 
             migrationBuilder.CreateTable(
                 name: "InboxMessageConsumers",
-                schema: "main",
+                schema: "MAIN",
                 columns: table => new
                 {
                     InboxMessageId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -29,7 +29,7 @@ namespace System.Infrastructure.Common.Database.Migrations
 
             migrationBuilder.CreateTable(
                 name: "InboxMessages",
-                schema: "main",
+                schema: "MAIN",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -46,7 +46,7 @@ namespace System.Infrastructure.Common.Database.Migrations
 
             migrationBuilder.CreateTable(
                 name: "OutboxMessageConsumers",
-                schema: "main",
+                schema: "MAIN",
                 columns: table => new
                 {
                     OutboxMessageId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -59,7 +59,7 @@ namespace System.Infrastructure.Common.Database.Migrations
 
             migrationBuilder.CreateTable(
                 name: "OutboxMessages",
-                schema: "main",
+                schema: "MAIN",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -76,12 +76,12 @@ namespace System.Infrastructure.Common.Database.Migrations
 
             migrationBuilder.CreateTable(
                 name: "Permissions",
-                schema: "main",
+                schema: "MAIN",
                 columns: table => new
                 {
                     PermissionId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Code = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false)
+                    PermissionCode = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -90,13 +90,13 @@ namespace System.Infrastructure.Common.Database.Migrations
 
             migrationBuilder.CreateTable(
                 name: "Roles",
-                schema: "main",
+                schema: "MAIN",
                 columns: table => new
                 {
                     RoleId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    RoleName = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
-                    NormalizedRoleName = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false)
+                    RoleName = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
+                    NormalizedRoleName = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -104,14 +104,33 @@ namespace System.Infrastructure.Common.Database.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Tenants",
+                schema: "MAIN",
+                columns: table => new
+                {
+                    TenantId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    TenantTypeId = table.Column<int>(type: "int", nullable: false),
+                    ParentTenantId = table.Column<int>(type: "int", nullable: true),
+                    TenantName = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false),
+                    DatabaseName = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    ConnectionString = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: false),
+                    LicenceExpiryDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Tenants", x => x.TenantId);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "TenantTypes",
-                schema: "main",
+                schema: "MAIN",
                 columns: table => new
                 {
                     TenantTypeId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    TenantTypeCode = table.Column<string>(type: "nvarchar(5)", maxLength: 5, nullable: false),
-                    TenantTypeName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    TenantTypeCode = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
+                    TenantTypeDesc = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     IsActive = table.Column<bool>(type: "bit", nullable: false),
                     LastModBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     LastModDt = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -124,8 +143,31 @@ namespace System.Infrastructure.Common.Database.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Users",
+                schema: "MAIN",
+                columns: table => new
+                {
+                    UserId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Email = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
+                    PasswordHash = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
+                    PasswordSalt = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
+                    RefreshToken = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    RefreshTokenExpiration = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false),
+                    LastModBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    LastModDt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreatedDt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Users", x => x.UserId);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "RolePermissions",
-                schema: "main",
+                schema: "MAIN",
                 columns: table => new
                 {
                     RoleId = table.Column<int>(type: "int", nullable: false),
@@ -137,79 +179,49 @@ namespace System.Infrastructure.Common.Database.Migrations
                     table.ForeignKey(
                         name: "FK_RolePermissions_Permissions_PermissionId",
                         column: x => x.PermissionId,
-                        principalSchema: "main",
+                        principalSchema: "MAIN",
                         principalTable: "Permissions",
                         principalColumn: "PermissionId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_RolePermissions_Roles_RoleId",
                         column: x => x.RoleId,
-                        principalSchema: "main",
+                        principalSchema: "MAIN",
                         principalTable: "Roles",
                         principalColumn: "RoleId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Tenants",
-                schema: "main",
+                name: "TenantUsers",
+                schema: "MAIN",
                 columns: table => new
                 {
-                    TenantId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    TenantTypeId = table.Column<int>(type: "int", nullable: false),
-                    ParentTenantId = table.Column<int>(type: "int", nullable: true),
-                    TenantName = table.Column<string>(type: "nvarchar(5)", maxLength: 5, nullable: false),
-                    DatabaseName = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
-                    ConnectionString = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: false),
-                    LicenceExpiryDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    TenantId = table.Column<int>(type: "int", nullable: false),
+                    UserId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Tenants", x => x.TenantId);
+                    table.PrimaryKey("PK_TenantUsers", x => new { x.TenantId, x.UserId });
                     table.ForeignKey(
-                        name: "FK_Tenants_TenantTypes_TenantTypeId",
-                        column: x => x.TenantTypeId,
-                        principalSchema: "main",
-                        principalTable: "TenantTypes",
-                        principalColumn: "TenantTypeId",
+                        name: "FK_TenantUsers_Tenants_TenantId",
+                        column: x => x.TenantId,
+                        principalSchema: "MAIN",
+                        principalTable: "Tenants",
+                        principalColumn: "TenantId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_TenantUsers_Users_UserId",
+                        column: x => x.UserId,
+                        principalSchema: "MAIN",
+                        principalTable: "Users",
+                        principalColumn: "UserId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Users",
-                schema: "main",
-                columns: table => new
-                {
-                    UserId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    TenantId = table.Column<int>(type: "int", nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
-                    PasswordHash = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
-                    PasswordSalt = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
-                    RefreshToken = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    RefreshTokenExpiryTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    TenantMTenantId = table.Column<int>(type: "int", nullable: true),
-                    IsActive = table.Column<bool>(type: "bit", nullable: false),
-                    LastModBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    LastModDt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CreatedDt = table.Column<DateTime>(type: "datetime2", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Users", x => x.UserId);
-                    table.ForeignKey(
-                        name: "FK_Users_Tenants_TenantMTenantId",
-                        column: x => x.TenantMTenantId,
-                        principalSchema: "main",
-                        principalTable: "Tenants",
-                        principalColumn: "TenantId");
-                });
-
-            migrationBuilder.CreateTable(
                 name: "UserRoles",
-                schema: "main",
+                schema: "MAIN",
                 columns: table => new
                 {
                     UserId = table.Column<int>(type: "int", nullable: false),
@@ -221,14 +233,14 @@ namespace System.Infrastructure.Common.Database.Migrations
                     table.ForeignKey(
                         name: "FK_UserRoles_Roles_RoleId",
                         column: x => x.RoleId,
-                        principalSchema: "main",
+                        principalSchema: "MAIN",
                         principalTable: "Roles",
                         principalColumn: "RoleId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_UserRoles_Users_UserId",
                         column: x => x.UserId,
-                        principalSchema: "main",
+                        principalSchema: "MAIN",
                         principalTable: "Users",
                         principalColumn: "UserId",
                         onDelete: ReferentialAction.Cascade);
@@ -236,55 +248,49 @@ namespace System.Infrastructure.Common.Database.Migrations
 
             migrationBuilder.CreateIndex(
                 name: "IX_RolePermissions_PermissionId",
-                schema: "main",
+                schema: "MAIN",
                 table: "RolePermissions",
                 column: "PermissionId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Roles_RoleName",
-                schema: "main",
+                schema: "MAIN",
                 table: "Roles",
                 column: "RoleName",
                 unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Tenants_DatabaseName",
-                schema: "main",
+                schema: "MAIN",
                 table: "Tenants",
                 column: "DatabaseName",
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Tenants_TenantTypeId",
-                schema: "main",
-                table: "Tenants",
-                column: "TenantTypeId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_TenantTypes_TenantTypeCode",
-                schema: "main",
+                schema: "MAIN",
                 table: "TenantTypes",
                 column: "TenantTypeCode",
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_TenantUsers_UserId",
+                schema: "MAIN",
+                table: "TenantUsers",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_UserRoles_RoleId",
-                schema: "main",
+                schema: "MAIN",
                 table: "UserRoles",
                 column: "RoleId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Users_Email",
-                schema: "main",
+                schema: "MAIN",
                 table: "Users",
                 column: "Email",
                 unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Users_TenantMTenantId",
-                schema: "main",
-                table: "Users",
-                column: "TenantMTenantId");
         }
 
         /// <inheritdoc />
@@ -292,47 +298,51 @@ namespace System.Infrastructure.Common.Database.Migrations
         {
             migrationBuilder.DropTable(
                 name: "InboxMessageConsumers",
-                schema: "main");
+                schema: "MAIN");
 
             migrationBuilder.DropTable(
                 name: "InboxMessages",
-                schema: "main");
+                schema: "MAIN");
 
             migrationBuilder.DropTable(
                 name: "OutboxMessageConsumers",
-                schema: "main");
+                schema: "MAIN");
 
             migrationBuilder.DropTable(
                 name: "OutboxMessages",
-                schema: "main");
+                schema: "MAIN");
 
             migrationBuilder.DropTable(
                 name: "RolePermissions",
-                schema: "main");
-
-            migrationBuilder.DropTable(
-                name: "UserRoles",
-                schema: "main");
-
-            migrationBuilder.DropTable(
-                name: "Permissions",
-                schema: "main");
-
-            migrationBuilder.DropTable(
-                name: "Roles",
-                schema: "main");
-
-            migrationBuilder.DropTable(
-                name: "Users",
-                schema: "main");
-
-            migrationBuilder.DropTable(
-                name: "Tenants",
-                schema: "main");
+                schema: "MAIN");
 
             migrationBuilder.DropTable(
                 name: "TenantTypes",
-                schema: "main");
+                schema: "MAIN");
+
+            migrationBuilder.DropTable(
+                name: "TenantUsers",
+                schema: "MAIN");
+
+            migrationBuilder.DropTable(
+                name: "UserRoles",
+                schema: "MAIN");
+
+            migrationBuilder.DropTable(
+                name: "Permissions",
+                schema: "MAIN");
+
+            migrationBuilder.DropTable(
+                name: "Tenants",
+                schema: "MAIN");
+
+            migrationBuilder.DropTable(
+                name: "Roles",
+                schema: "MAIN");
+
+            migrationBuilder.DropTable(
+                name: "Users",
+                schema: "MAIN");
         }
     }
 }

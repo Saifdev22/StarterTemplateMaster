@@ -9,8 +9,10 @@ internal static class MigrationExtensions
 {
     public static async Task ApplyMigrations(this IApplicationBuilder app)
     {
-        await ApplyMigration2(app);
         ApplyMigration<SystemDbContext>(app, null);
+        ApplySystemSeeder(app);
+
+        await ApplyMigration2(app);
 
         using IServiceScope scope = app.ApplicationServices.CreateScope();
         SystemDbContext systemDbContext = scope.ServiceProvider.GetRequiredService<SystemDbContext>();
@@ -55,5 +57,12 @@ internal static class MigrationExtensions
             Console.ResetColor();
             context.Database.Migrate();
         }
+    }
+
+    private static void ApplySystemSeeder(this IApplicationBuilder app)
+    {
+        using IServiceScope scope = app.ApplicationServices.CreateScope();
+        DataSeeder seeder = scope.ServiceProvider.GetRequiredService<DataSeeder>();
+        seeder.Seed();
     }
 }

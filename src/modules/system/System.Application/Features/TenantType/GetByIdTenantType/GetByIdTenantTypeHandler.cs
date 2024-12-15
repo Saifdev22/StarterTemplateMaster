@@ -17,7 +17,7 @@ internal sealed class GetByIdTenantTypeHandler(IGenericRepository<TenantTypeM> g
         (
             objs.TenantTypeId,
             objs.TenantTypeCode,
-            objs.TenantTypeName
+            objs.TenantTypeDesc
         );
 
         return result;

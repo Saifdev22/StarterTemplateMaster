@@ -23,13 +23,13 @@ internal sealed class ProcessOutboxJob(
         IOptions<OutboxOptions> outboxOptions,
         ILogger<ProcessOutboxJob> logger) : IJob
 {
-    private const string ModuleName = "Users";
+    private const string ModuleName = SystemConstants.ModuleName;
 
     public async Task Execute(IJobExecutionContext context)
     {
         logger.LogInformation("{Module} - Beginning to process outbox messages", ModuleName);
 
-        await using DbConnection connection = await _dbConnectionFactory.OpenConnectionAsync();
+        await using DbConnection connection = await _dbConnectionFactory.OpenSystemConnection();
         await using DbTransaction transaction = await connection.BeginTransactionAsync();
 
         // Get unprocessed outbox messages from database.
@@ -86,7 +86,7 @@ internal sealed class ProcessOutboxJob(
 						SELECT TOP {outboxOptions.Value.BatchSize}
 								Id AS {nameof(OutboxMessageResponse.Id)},
 								Content AS {nameof(OutboxMessageResponse.Content)}
-						FROM [main].[OutboxMessages]
+						FROM {SystemConstants.Schema}.[OutboxMessages]
 						WHERE ProcessedOnUtc IS NULL
 						ORDER BY OccurredOnUtc
 				""";
@@ -106,8 +106,8 @@ internal sealed class ProcessOutboxJob(
     {
 
         const string sql =
-        """
-            UPDATE [main].[OutboxMessages]
+        $"""
+            UPDATE {SystemConstants.Schema}.[OutboxMessages]
             SET ProcessedOnUtc = @ProcessedOnUtc,
                 error = @Error
             WHERE Id = @Id

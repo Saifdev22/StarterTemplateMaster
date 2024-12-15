@@ -11,5 +11,5 @@ public sealed record WriteTenantTypeDto
 (
     int TenantTypeId,
     string TenantTypeCode,
-    string TenantTypeName
+    string TenantTypeDesc
 );

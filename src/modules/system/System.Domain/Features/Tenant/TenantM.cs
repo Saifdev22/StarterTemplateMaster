@@ -1,6 +1,4 @@
-﻿using System.Domain.Features.Identity;
-
-namespace System.Domain.Features.Tenant;
+﻿namespace System.Domain.Features.Tenant;
 
 public class TenantM
 {
@@ -11,8 +9,6 @@ public class TenantM
     public string DatabaseName { get; set; } = string.Empty;
     public string ConnectionString { get; set; } = string.Empty;
     public DateTime LicenceExpiryDate { get; set; }
-    public virtual TenantTypeM? TenantType { get; set; }
-    public virtual ICollection<UserM>? Users { get; }
 
     public static TenantM Create(
         int tenantTypeId,

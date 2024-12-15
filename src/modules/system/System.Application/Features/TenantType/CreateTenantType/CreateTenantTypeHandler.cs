@@ -11,7 +11,7 @@ internal sealed class CreateTenantTypeHandler(IGenericRepository<TenantTypeM> _r
         TenantTypeM newTenantType = TenantTypeM.Create
         (
             request.Request.TenantTypeCode,
-            request.Request.TenantTypeName
+            request.Request.TenantTypeDesc
         );
 
         await _repository.AddAsync(newTenantType);

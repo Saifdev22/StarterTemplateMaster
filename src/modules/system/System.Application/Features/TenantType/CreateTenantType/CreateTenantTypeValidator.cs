@@ -10,7 +10,7 @@ internal sealed class CreateTenantTypeValidator : AbstractValidator<CreateTenant
             .NotEmpty()
             .NotNull();
 
-        RuleFor(p => p.Request.TenantTypeName)
+        RuleFor(p => p.Request.TenantTypeDesc)
             .NotEmpty()
             .NotNull();
     }

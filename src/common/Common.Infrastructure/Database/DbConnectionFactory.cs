@@ -46,15 +46,15 @@ internal sealed class DbConnectionFactory(CurrentTenant ct) : IDbConnectionFacto
     public DbConnection GetConnection(bool systemDb = false)
     {
         return systemDb
-            ? new SqlConnection(ct.GetDefaultConnectionstring())
-            : new SqlConnection(ct.GetConnectionString());
+            ? new SqlConnection(ct.GetSystemConnectionString())
+            : new SqlConnection(ct.GetTenantConnectionString());
     }
 
     public async ValueTask<DbConnection> OpenConnectionAsync(string? connectionString = null)
     {
         SqlConnection connection = !string.IsNullOrEmpty(connectionString) ?
             new SqlConnection(connectionString) :
-            new SqlConnection(ct.GetConnectionString());
+            new SqlConnection(ct.GetTenantConnectionString());
 
         await connection.OpenAsync();
         return connection;
@@ -63,8 +63,16 @@ internal sealed class DbConnectionFactory(CurrentTenant ct) : IDbConnectionFacto
     public async ValueTask<DbConnection> OpenParentConnectionAsync(string? connectionString = null)
     {
         SqlConnection connection = new(ct.GetTenantConnectionString());
-
         await connection.OpenAsync();
+
+        return connection;
+    }
+
+    public async ValueTask<DbConnection> OpenSystemConnection()
+    {
+        SqlConnection connection = new(ct.GetSystemConnectionString());
+        await connection.OpenAsync();
+
         return connection;
     }
 }

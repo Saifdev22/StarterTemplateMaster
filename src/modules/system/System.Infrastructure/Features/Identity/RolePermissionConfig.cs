@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System.Domain.Features.Identity;
+using System.Domain.Identity;
 
 namespace System.Infrastructure.Features.Identity;
 
@@ -9,18 +9,18 @@ internal sealed class RolePermissionConfig : IEntityTypeConfiguration<RolePermis
     public void Configure(EntityTypeBuilder<RolePermissionM> builder)
     {
         builder
-            .HasKey(ur => new { ur.RoleId, ur.PermissionId });
+            .HasKey(_ => new { _.RoleId, _.PermissionId });
 
         builder
             .HasOne<PermissionM>()
             .WithMany()
-            .HasForeignKey(ur => ur.PermissionId)
+            .HasForeignKey(_ => _.PermissionId)
             .OnDelete(DeleteBehavior.Cascade);
 
         builder
             .HasOne<RoleM>()
             .WithMany()
-            .HasForeignKey(ur => ur.RoleId)
+            .HasForeignKey(_ => _.RoleId)
             .OnDelete(DeleteBehavior.Cascade);
 
     }

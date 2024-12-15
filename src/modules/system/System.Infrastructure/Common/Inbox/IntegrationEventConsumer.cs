@@ -24,8 +24,8 @@ internal sealed class IntegrationEventConsumer<TIntegrationEvent>(IDbConnectionF
         };
 
         const string sql =
-                """
-            INSERT INTO users.inbox_messages(id, type, content, occurred_on_utc)
+                $"""
+            INSERT INTO {SystemConstants.Schema}.InboxMessages(id, type, content, occurred_on_utc)
             VALUES (@Id, @Type, @Content::json, @OccurredOnUtc)
             """;
 

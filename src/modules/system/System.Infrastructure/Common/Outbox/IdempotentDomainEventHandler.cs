@@ -15,7 +15,7 @@ internal sealed class IdempotentDomainEventHandler<TDomainEvent>(
 {
     public override async Task Handle(TDomainEvent domainEvent, CancellationToken cancellationToken = default)
     {
-        await using DbConnection connection = await _dbConnectionFactory.OpenConnectionAsync();
+        await using DbConnection connection = await _dbConnectionFactory.OpenSystemConnection();
 
         OutboxMessageConsumer outboxMessageConsumer = new(domainEvent.Id, decorated.GetType().Name);
 
@@ -34,9 +34,9 @@ internal sealed class IdempotentDomainEventHandler<TDomainEvent>(
             OutboxMessageConsumer outboxMessageConsumer)
     {
         const string sql =
-                """
+                $"""
                 SELECT 1
-                FROM main.OutboxMessageConsumers
+                FROM {SystemConstants.Schema}.OutboxMessageConsumers
                 WHERE OutboxMessageId = @OutboxMessageId AND
                       Name = @Name
             """;
@@ -49,8 +49,8 @@ internal sealed class IdempotentDomainEventHandler<TDomainEvent>(
             OutboxMessageConsumer outboxMessageConsumer)
     {
         const string sql =
-                """
-            INSERT INTO main.OutboxMessageConsumers(OutboxMessageId, Name)
+                $"""
+            INSERT INTO {SystemConstants.Schema}.OutboxMessageConsumers(OutboxMessageId, Name)
             VALUES (@OutboxMessageId, @Name)
             """;
 

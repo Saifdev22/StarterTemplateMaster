@@ -1,8 +1,9 @@
 ﻿using Common.Domain.Abstractions;
 using Microsoft.EntityFrameworkCore;
+using System.Infrastructure.Common.Database;
 using System.Linq.Expressions;
 
-namespace System.Infrastructure.Common.Database;
+namespace System.Infrastructure.Common.Repository;
 
 public class GenericRepository<TEntity> : IGenericRepository<TEntity>
     where TEntity : class

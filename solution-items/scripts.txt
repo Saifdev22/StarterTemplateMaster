@@ -5,7 +5,7 @@ Add-Migration -Name InitialCreate -Context SystemDbContext -OutputDir Common/Dat
 Update-Database -Context SystemDbContext -Project System.Infrastructure -StartupProject Starter.API 
 
 Parent
-Add-Migration -Name InitialCreate2 -Context ParentDbContext  -OutputDir Common/Database/Migrations  -Project Parent.Infrastructure -StartupProject Starter.API
+Add-Migration -Name InitialCreate -Context ParentDbContext  -OutputDir Common/Database/Migrations  -Project Parent.Infrastructure -StartupProject Starter.API
 Update-Database -Context ParentDbContext -Project Parent.Infrastructure -StartupProject Starter.API 
 
 
@@ -42,3 +42,19 @@ docker-compose down
 
 Creating A Module
 
+
+
+
+
+UserM
+public virtual IReadOnlyCollection<UserRoleM>? UserRoles { get; set; } = [];
+
+RoleM
+public IReadOnlyCollection<UserRoleM> UserRoles { get; set; } = [];
+
+TenantM
+    public virtual TenantTypeM? TenantType { get; set; }
+    public virtual ICollection<UserM>? Users { get; }
+
+    TenantTypeM
+        public virtual ICollection<TenantM>? Tenants { get; }

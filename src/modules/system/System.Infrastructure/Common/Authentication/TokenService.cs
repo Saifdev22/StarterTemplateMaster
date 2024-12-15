@@ -8,9 +8,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.Application.Common.Interfaces;
-using System.Domain.Features.Identity;
 using System.Domain.Features.Tenant;
 using System.Domain.Features.Token;
+using System.Domain.Identity;
 using System.Globalization;
 using System.IdentityModel.Tokens.Jwt;
 using System.Infrastructure.Common.Database;
@@ -35,7 +35,7 @@ public class TokenService(
             return Result.Failure<TokenResponse>(CustomError.NotFound("TokenService", "User not found."));
         }
 
-        TenantM? tenant = await SystemContext.Tenants.FirstOrDefaultAsync(t => t.TenantId == userDto.TenantId);
+        TenantM? tenant = await SystemContext.Tenants.FirstOrDefaultAsync(t => t.TenantId == 1);
 
         return tenant switch
         {
@@ -58,10 +58,10 @@ public class TokenService(
             return Result.Failure<TokenResponse>(CustomError.NotFound("TokenService", "User not found."));
         }
 
-        TenantM? tenant = await SystemContext.Tenants.FirstOrDefaultAsync(t => t.TenantId == user.TenantId);
+        TenantM? tenant = await SystemContext.Tenants.FirstOrDefaultAsync(t => t.TenantId == 1);
         ArgumentNullException.ThrowIfNull(tenant);
 
-        return user.RefreshToken != request.RefreshToken || user.RefreshTokenExpiryTime <= DateTime.UtcNow
+        return user.RefreshToken != request.RefreshToken || user.RefreshTokenExpiration <= DateTime.UtcNow
             ? Result.Failure<TokenResponse>(CustomError.NotFound("TokenService", "Invalid Refresh Token."))
             : await GenerateTokensAndUpdateUser(user, tenant);
     }
@@ -72,7 +72,7 @@ public class TokenService(
         string token = GenerateJwt(userClaims);
 
         user.RefreshToken = IdentityMethodExtensions.GenerateRefreshToken();
-        user.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(JwtOptions.Value.RefreshTokenExpirationInDays);
+        user.RefreshTokenExpiration = DateTime.UtcNow.AddDays(JwtOptions.Value.RefreshTokenExpirationInDays);
 
         Repository.Update(user);
         await Repository.SaveChangesAsync();
@@ -81,7 +81,7 @@ public class TokenService(
         {
             Token = token,
             RefreshToken = user.RefreshToken,
-            RefreshTokenExpiryTime = user.RefreshTokenExpiryTime
+            RefreshTokenExpiryTime = user.RefreshTokenExpiration
         };
     }
 

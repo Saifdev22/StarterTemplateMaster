@@ -12,8 +12,8 @@ using Parent.Infrastructure.Common.Database;
 namespace Parent.Infrastructure.Common.Database.Migrations
 {
     [DbContext(typeof(ParentDbContext))]
-    [Migration("20241214102733_InitialCreate2")]
-    partial class InitialCreate2
+    [Migration("20241215095332_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

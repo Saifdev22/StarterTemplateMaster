@@ -1,6 +1,6 @@
 ﻿using Common.Domain.Abstractions;
 using Common.Domain.TransferObjects.System;
-using System.Domain.Features.Identity;
+using System.Domain.Identity;
 
 namespace System.Application.Features.Users.GetAllUser;
 
@@ -17,7 +17,6 @@ internal sealed class GetAllUserHandler(IGenericRepository<UserM> genericReposit
         (
             obj.UserId,
             obj.Email,
-            obj.TenantId,
             obj.IsActive
         )).ToList();
 

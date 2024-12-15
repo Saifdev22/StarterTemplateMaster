@@ -1,5 +1,5 @@
 ﻿using Common.Domain.Abstractions;
-using System.Domain.Features.Identity;
+using System.Domain.Identity;
 
 namespace System.Application.Features.Users.DeleteUser;
 

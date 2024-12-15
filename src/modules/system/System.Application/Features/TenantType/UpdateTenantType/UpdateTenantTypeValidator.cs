@@ -11,7 +11,7 @@ internal sealed class UpdateTenantTypeValidator : AbstractValidator<UpdateTenant
             .NotNull()
             .MaximumLength(5);
 
-        RuleFor(p => p.Request.TenantTypeName)
+        RuleFor(p => p.Request.TenantTypeDesc)
             .NotEmpty()
             .NotNull();
     }

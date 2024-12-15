@@ -16,7 +16,7 @@ internal sealed class IdempotentIntegrationEventHandler<TIntegrationEvent>(
             TIntegrationEvent integrationEvent,
             CancellationToken cancellationToken = default)
     {
-        using DbConnection connection = _dbConnectionFactory.GetConnection();
+        using DbConnection connection = await _dbConnectionFactory.OpenSystemConnection();
 
         InboxMessageConsumer inboxMessageConsumer = new(integrationEvent.Id, decorated.GetType().Name);
 
@@ -35,9 +35,9 @@ internal sealed class IdempotentIntegrationEventHandler<TIntegrationEvent>(
             InboxMessageConsumer inboxMessageConsumer)
     {
         const string sql =
-                """
+                $"""
                 SELECT 1
-                FROM main.InboxMessageConsumers
+                FROM {SystemConstants.Schema}.InboxMessageConsumers
                 WHERE InboxMessageId = @InboxMessageId AND
                       Name = @Name
             """;
@@ -50,8 +50,8 @@ internal sealed class IdempotentIntegrationEventHandler<TIntegrationEvent>(
             InboxMessageConsumer inboxMessageConsumer)
     {
         const string sql =
-                """
-            INSERT INTO main.InboxMessageConsumers(InboxMessageId, Name)
+                $"""
+            INSERT INTO {SystemConstants.Schema}.InboxMessageConsumers(InboxMessageId, Name)
             VALUES (@InboxMessageId, @Name)
             """;
 

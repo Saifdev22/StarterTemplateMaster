@@ -1,22 +1,18 @@
-﻿using System.Domain.Features.Identity.Events;
-using System.Security.Cryptography;
+﻿using System.Security.Cryptography;
 using System.Text;
 
-namespace System.Domain.Features.Identity;
+namespace System.Domain.Identity;
 
-public class UserM : AggregateRoot
+public sealed class UserM : AggregateRoot
 {
     public int UserId { get; }
-    public int TenantId { get; private set; }
     public string Email { get; set; } = string.Empty;
     public byte[] PasswordHash { get; set; } = [];
     public byte[] PasswordSalt { get; set; } = [];
     public string RefreshToken { get; set; } = string.Empty;
-    public DateTime RefreshTokenExpiryTime { get; set; }
-    public virtual IReadOnlyCollection<UserRoleM>? UserRoles { get; set; } = [];
+    public DateTime RefreshTokenExpiration { get; set; }
 
     public static UserM Create(
-        int tenantId,
         string email,
         string password)
     {
@@ -24,13 +20,10 @@ public class UserM : AggregateRoot
 
         UserM user = new()
         {
-            TenantId = tenantId,
             Email = email,
             PasswordHash = passwordHash,
             PasswordSalt = passwordSalt
         };
-
-        user.AddDomainEvent(new UserCreatedDomainEvent(Guid.NewGuid()));
 
         return user;
     }

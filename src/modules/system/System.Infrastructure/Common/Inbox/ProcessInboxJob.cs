@@ -22,13 +22,13 @@ internal sealed class ProcessInboxJob(
         IOptions<InboxOptions> inboxOptions,
         ILogger<ProcessInboxJob> logger) : IJob
 {
-    private const string ModuleName = "Users";
+    private const string ModuleName = SystemConstants.ModuleName;
 
     public async Task Execute(IJobExecutionContext context)
     {
         logger.LogInformation("{Module} - Beginning to process inbox messages", ModuleName);
 
-        await using DbConnection connection = await _dbConnectionFactory.OpenConnectionAsync();
+        await using DbConnection connection = await _dbConnectionFactory.OpenSystemConnection();
         await using DbTransaction transaction = await connection.BeginTransactionAsync();
 
         IReadOnlyList<InboxMessageResponse> inboxMessages = await GetInboxMessagesAsync(connection, transaction);
@@ -84,7 +84,7 @@ internal sealed class ProcessInboxJob(
              SELECT TOP {inboxOptions.Value.BatchSize}
                 Id AS {nameof(InboxMessageResponse.Id)},
                 Content AS {nameof(InboxMessageResponse.Content)}
-             FROM [main].[InboxMessages]
+             FROM {SystemConstants.Schema}.[InboxMessages]
              WHERE ProcessedOnUtc IS NULL
              ORDER BY OccurredOnUtc
              """;
@@ -103,8 +103,8 @@ internal sealed class ProcessInboxJob(
             Exception? exception)
     {
         const string sql =
-                """
-            UPDATE [main].[InboxMessages]
+                $"""
+            UPDATE {SystemConstants.Schema}.[InboxMessages]
             SET ProcessedOnUtc = @ProcessedOnUtc,
                 error = @Error
             WHERE Id = @Id

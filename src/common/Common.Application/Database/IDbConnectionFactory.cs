@@ -11,5 +11,6 @@ public interface IDbConnectionFactory
     DbConnection GetConnection(bool systemDb = false);
     ValueTask<DbConnection> OpenConnectionAsync(string? connectionString = null);
     ValueTask<DbConnection> OpenParentConnectionAsync(string? connectionString = null);
+    ValueTask<DbConnection> OpenSystemConnection();
 
 }

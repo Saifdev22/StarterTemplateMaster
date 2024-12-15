@@ -11,14 +11,12 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using System.Application.Common.Interfaces;
-using System.Domain.Features.Identity;
 using System.Infrastructure.Common.Authentication;
 using System.Infrastructure.Common.Authorization;
 using System.Infrastructure.Common.Database;
 using System.Infrastructure.Common.Inbox;
 using System.Infrastructure.Common.Outbox;
-using System.Infrastructure.Features.Identity;
-using System.Infrastructure.Features.Tenant;
+using System.Infrastructure.Common.Repository;
 using System.Presentation.Consumers;
 
 namespace System.Infrastructure;
@@ -44,13 +42,14 @@ public static class SystemModule
     {
         services.AddScoped<ITenantService, TenantService>();
         services.AddScoped<ITokenService, TokenService>();
-        services.AddScoped<IIdentityRepository, UserRepository>();
         services.AddScoped<IPermissionService, PermissionService>();
+        services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+        services.AddScoped<IUnitOfWork>(sp => sp.GetRequiredService<SystemDbContext>());
 
         services.AddDbContext<SystemDbContext>((sp, options) =>
         {
             CurrentTenant tenantProvider = sp.GetRequiredService<CurrentTenant>();
-            string connectionString = tenantProvider.GetConnectionString();
+            string connectionString = tenantProvider.GetSystemConnectionString();
 
             options.AddInterceptors(sp.GetServices<InsertOutboxMessagesInterceptor>());
             options.UseSqlServer(connectionString, sqlServerOptionsAction: sqlOptions =>
@@ -62,8 +61,7 @@ public static class SystemModule
             });
         });
 
-        services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
-        services.AddScoped<IUnitOfWork>(sp => sp.GetRequiredService<SystemDbContext>());
+        services.AddTransient<DataSeeder>();
 
         services.Configure<OutboxOptions>(configuration.GetSection("Users:Outbox"));
         services.ConfigureOptions<ConfigureProcessOutboxJob>();

@@ -1,6 +1,6 @@
 ﻿using Common.Domain.Abstractions;
 using Common.Domain.TransferObjects.System;
-using System.Domain.Features.Identity;
+using System.Domain.Identity;
 
 namespace System.Application.Features.Users.GetByIdUser;
 
@@ -17,7 +17,6 @@ internal sealed class GetByIdUserHandler(IGenericRepository<UserM> genericReposi
         (
             obj.UserId,
             obj.Email,
-            obj.TenantId,
             obj.IsActive
         );
 

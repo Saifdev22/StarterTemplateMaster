@@ -95,7 +95,10 @@ app.MapControllers();
 if (app.Environment.IsDevelopment() || app.Environment.IsProduction())
 {
     app.MapOpenApi();
-    app.MapScalarApiReference(_ => _.Servers = []);
+    app.MapScalarApiReference(_ =>
+    {
+        _.Servers = [];
+    });
     await app.ApplyMigrations();
 }
 
