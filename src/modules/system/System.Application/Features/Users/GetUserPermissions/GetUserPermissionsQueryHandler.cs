@@ -17,17 +17,17 @@ internal sealed class GetUserPermissionsQueryHandler(IDbConnectionFactory _conne
                 $"""
 						SELECT DISTINCT 
 								ur.UserId AS {nameof(UserPermission.UserId)}, 
-								p.Code AS {nameof(UserPermission.Permission)}
-						FROM ID.UserRoles ur
-						LEFT JOIN ID.RolePermissions rp ON rp.RoleId = ur.RoleId 
-						LEFT JOIN ID.Permissions p ON p.PermissionId = rp.PermissionId
-						WHERE ur.UserId = @IdentityId
+								p.PermissionCode AS {nameof(UserPermission.Permission)}
+						FROM MAIN.UserRoles ur
+						LEFT JOIN MAIN.RolePermissions rp ON rp.RoleId = ur.RoleId 
+						LEFT JOIN MAIN.Permissions p ON p.PermissionId = rp.PermissionId
+						WHERE ur.UserId = @Id
 				""";
 
         List<UserPermission> permissions = (await _connection.QueryAsync<UserPermission>(sql, request, true)).AsList();
 
         return permissions.Count == 0
-            ? Result.Failure<PermissionsResponse>(CustomError.NotFound("404", request.IdentityId.ToString()))
+            ? Result.Failure<PermissionsResponse>(CustomError.NotFound("404", request.Id.ToString()))
             : new PermissionsResponse(permissions[0].UserId, permissions.Select(p => p.Permission).ToHashSet());
     }
 

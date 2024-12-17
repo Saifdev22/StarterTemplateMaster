@@ -28,7 +28,7 @@ internal sealed class PermissionAuthorizationHandler(IServiceScopeFactory servic
         using IServiceScope scope = serviceScopeFactory.CreateScope();
         IPermissionService permissionService = scope.ServiceProvider.GetRequiredService<IPermissionService>();
 
-        Result<PermissionsResponse> result = await permissionService.GetUserPermissionsAsync(context.User.GetUserId().ToString());
+        Result<PermissionsResponse> result = await permissionService.GetUserPermissionsAsync(context.User.GetUserId());
 
         return result.IsFailure
             ? throw new StarterException(nameof(IPermissionService.GetUserPermissionsAsync), result.Error)

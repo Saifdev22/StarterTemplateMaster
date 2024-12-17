@@ -1,9 +1,12 @@
 ﻿using Common.Application.Authentication;
+using Common.Application.Database;
 using Common.Domain.Abstractions;
 using Common.Domain.Errors;
 using Common.Domain.Jwt;
 using Common.Domain.Results;
+using Common.Domain.TransferObjects.System;
 using Common.Infrastructure.Authentication;
+using Dapper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -11,7 +14,6 @@ using System.Application.Common.Interfaces;
 using System.Domain.Features.Tenant;
 using System.Domain.Features.Token;
 using System.Domain.Identity;
-using System.Globalization;
 using System.IdentityModel.Tokens.Jwt;
 using System.Infrastructure.Common.Database;
 using System.Security.Claims;
@@ -22,6 +24,7 @@ namespace System.Infrastructure.Common.Authentication;
 public class TokenService(
     IOptions<JwtOptions> JwtOptions,
     IGenericRepository<UserM> Repository,
+    IDbConnectionFactory Connection,
     SystemDbContext SystemContext) : ITokenService
 {
     public async Task<Result<TokenResponse>> AccessToken(AccessTokenRequest request)
@@ -42,7 +45,7 @@ public class TokenService(
             null => Result.Failure<TokenResponse>(CustomError.NotFound("TokenService", "Tenant not found.")),
             _ => !IdentityMethodExtensions.VerifyPasswordHash(request.Password, userDto.PasswordHash, userDto.PasswordSalt)
                                 ? Result.Failure<TokenResponse>(CustomError.Conflict("TokenService", "Invalid Credentials."))
-                                : await GenerateTokensAndUpdateUser(userDto, tenant),
+                                : await GenerateTokensAndUpdateUser(userDto),
         };
     }
 
@@ -63,13 +66,13 @@ public class TokenService(
 
         return user.RefreshToken != request.RefreshToken || user.RefreshTokenExpiration <= DateTime.UtcNow
             ? Result.Failure<TokenResponse>(CustomError.NotFound("TokenService", "Invalid Refresh Token."))
-            : await GenerateTokensAndUpdateUser(user, tenant);
+            : await GenerateTokensAndUpdateUser(user);
     }
 
-    private async Task<Result<TokenResponse>> GenerateTokensAndUpdateUser(UserM user, TenantM tenant)
+    private async Task<Result<TokenResponse>> GenerateTokensAndUpdateUser(UserM user)
     {
-        CustomUserClaim userClaims = new(user.UserId, user.Email!, tenant.TenantId, tenant.DatabaseName);
-        string token = GenerateJwt(userClaims);
+        TokenClaimsResponse tokenClaims = await GetUserClaims(user.Email);
+        string token = GenerateJwt(tokenClaims);
 
         user.RefreshToken = IdentityMethodExtensions.GenerateRefreshToken();
         user.RefreshTokenExpiration = DateTime.UtcNow.AddDays(JwtOptions.Value.RefreshTokenExpirationInDays);
@@ -85,7 +88,7 @@ public class TokenService(
         };
     }
 
-    private string GenerateJwt(CustomUserClaim customClaims)
+    private string GenerateJwt(TokenClaimsResponse customClaims)
     {
         return GenerateEncryptedToken(GetSigningCredentials(), GetClaims(customClaims));
     }
@@ -109,23 +112,25 @@ public class TokenService(
         return new SigningCredentials(new SymmetricSecurityKey(secret), SecurityAlgorithms.HmacSha256);
     }
 
-    private static List<Claim> GetClaims(CustomUserClaim customClaims)
+    private static List<Claim> GetClaims(TokenClaimsResponse customClaims)
     {
         List<Claim> claims =
         [
-                new Claim(ClaimTypes.NameIdentifier, customClaims.Id.ToString()),
-                new Claim(ClaimTypes.Email, customClaims.Email),
-                new Claim("TenantId", customClaims.TenantId.ToString(CultureInfo.InvariantCulture)),
-                new Claim("TenantDb", customClaims.TenantDb)
+            new Claim("UserId", customClaims.UserId.ToString()),
+            new Claim("TenantId", customClaims.TenantId.ToString()),
+            new Claim(ClaimTypes.Email, customClaims.Email),
+            new Claim("TenantTypeCode", customClaims.TenantTypeCode),
+            new Claim("TenantName", customClaims.TenantName),
+            new Claim("DatabaseName", customClaims.DatabaseName)
         ];
 
-        //if (customClaims.Roles != null)
-        //{
-        //    foreach (string role in customClaims.Roles)
-        //    {
-        //        claims.Add(new Claim(ClaimTypes.Role, role));
-        //    }
-        //}
+        if (customClaims.RoleName != null)
+        {
+            foreach (string role in customClaims.RoleName)
+            {
+                claims.Add(new Claim(ClaimTypes.Role, role));
+            }
+        }
 
         return claims;
     }
@@ -153,6 +158,39 @@ public class TokenService(
             : principal;
     }
 
+    public async Task<TokenClaimsResponse> GetUserClaims(string email)
+    {
+        const string sql =
+        $"""
+            SELECT 
+                u.UserId,
+                t.TenantId,
+                u.Email,
+                r.RoleName,
+                tt.TenantTypeCode,
+                t.TenantName,
+                t.DatabaseName
+            FROM MAIN.Users u
+            INNER JOIN MAIN.UserRoles ur ON ur.UserId = u.UserId
+            INNER JOIN MAIN.Roles r ON r.RoleId = ur.RoleId
+            INNER JOIN MAIN.TenantUsers tu ON tu.UserId = u.UserId
+            INNER JOIN MAIN.Tenants t ON t.TenantId = tu.TenantId
+            INNER JOIN MAIN.TenantTypes tt ON tt.TenantTypeId = t.TenantId
+            WHERE u.Email = @email
+        """;
+
+        List<CustomUserClaim> obj = (await Connection.QueryAsync<CustomUserClaim>(sql, new { email }, true)).AsList();
+
+        return new TokenClaimsResponse
+            (obj[0].UserId,
+            obj[0].TenantId,
+            obj[0].Email,
+            obj.Select(p => p.RoleName).ToHashSet(),
+            obj[0].TenantTypeCode,
+            obj[0].TenantName,
+            obj[0].DatabaseName);
+
+    }
 }
 
-public record CustomUserClaim(int Id, string Email, int TenantId, string TenantDb);
+

@@ -1,6 +1,6 @@
-﻿using System.Linq.Expressions;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Parent.Application.Common;
+using System.Linq.Expressions;
 
 namespace Parent.Infrastructure.Common.Database;
 

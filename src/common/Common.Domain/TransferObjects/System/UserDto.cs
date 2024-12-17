@@ -13,3 +13,28 @@ public sealed record WriteUserDto
     string Email,
     string Password
 );
+
+public sealed record CustomUserClaim
+(
+    int UserId,
+    int TenantId,
+    string Email,
+    string RoleName,
+    string TenantTypeCode,
+    string TenantName,
+    string DatabaseName
+);
+
+public sealed record TokenClaimsResponse
+(
+    int? UserId = null,
+    int? TenantId = null,
+    string? Email = null,
+    HashSet<string>? RoleName = null,
+    string? TenantTypeCode = null,
+    string? TenantName = null,
+    string? DatabaseName = null,
+    string? Expiry = null
+);
+
+

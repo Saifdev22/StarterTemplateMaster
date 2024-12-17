@@ -20,7 +20,7 @@ internal sealed class CustomClaimsTransformation(IServiceScopeFactory serviceSco
         using IServiceScope scope = serviceScopeFactory.CreateScope();
         IPermissionService permissionService = scope.ServiceProvider.GetRequiredService<IPermissionService>();
 
-        string identityId = principal.GetIdentityId();
+        int identityId = int.Parse(principal.GetIdentityId());
 
         Result<PermissionsResponse> result = await permissionService.GetUserPermissionsAsync(identityId);
 

@@ -5,11 +5,11 @@ namespace Common.Infrastructure.Authentication;
 
 public static class ClaimsPrincipalExtensions
 {
-    public static Guid GetUserId(this ClaimsPrincipal? principal)
+    public static int GetUserId(this ClaimsPrincipal? principal)
     {
         string? userId = principal?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
-        return Guid.TryParse(userId, out Guid parsedUserId) ?
+        return int.TryParse(userId, out int parsedUserId) ?
                 parsedUserId :
                 throw new StarterException("User identifier is unavailable");
     }

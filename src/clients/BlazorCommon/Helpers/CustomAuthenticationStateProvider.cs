@@ -1,4 +1,5 @@
 ﻿using BlazorCommon.Dtos;
+using Common.Domain.TransferObjects.System;
 using Microsoft.AspNetCore.Components.Authorization;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -22,7 +23,7 @@ public class CustomAuthenticationStateProvider(LocalStorageService localStorageS
             return await Task.FromResult(new AuthenticationState(anonymous));
         }
 
-        CustomUserClaim getUserClaims = GetClaimsFromToken(deserializeToken.Token!);
+        TokenClaimsResponse getUserClaims = GetClaimsFromToken(deserializeToken.Token!);
         if (getUserClaims == null)
         {
             return await Task.FromResult(new AuthenticationState(anonymous));
@@ -30,7 +31,7 @@ public class CustomAuthenticationStateProvider(LocalStorageService localStorageS
 
         // Token Expiration Validation
         // The Exp field is in Unix time
-        string expiry = getUserClaims.Exp;
+        string expiry = getUserClaims.Expiry!;
         if (expiry == null)
         {
             return await Task.FromResult(new AuthenticationState(anonymous));
@@ -59,7 +60,7 @@ public class CustomAuthenticationStateProvider(LocalStorageService localStorageS
         {
             string serializeSession = Serialization.SerializeObj(session);
             await localStorageService.SetToken(serializeSession);
-            CustomUserClaim getUserClaims = GetClaimsFromToken(session.Token!);
+            TokenClaimsResponse getUserClaims = GetClaimsFromToken(session.Token!);
             claimsPrincipal = SetClaimPrincipal(getUserClaims);
         }
         else
@@ -71,7 +72,7 @@ public class CustomAuthenticationStateProvider(LocalStorageService localStorageS
         NotifyAuthenticationStateChanged(Task.FromResult(new AuthenticationState(claimsPrincipal)));
     }
 
-    public static ClaimsPrincipal SetClaimPrincipal(CustomUserClaim model)
+    public static ClaimsPrincipal SetClaimPrincipal(TokenClaimsResponse model)
     {
         ArgumentNullException.ThrowIfNull(model);
 
@@ -80,33 +81,39 @@ public class CustomAuthenticationStateProvider(LocalStorageService localStorageS
             new ClaimsIdentity
             (
                 [
-                    new(ClaimTypes.NameIdentifier, model.Id),
-                    new(ClaimTypes.Name, model.Username),
-                    new(ClaimTypes.Email, model.Email),
-                    new("tenant", model.Tenant),
+                    new("UserId", model.UserId.ToString()!),
+                    new("TenantId", model.TenantId.ToString()!),
+                    new(ClaimTypes.Email, model.Email!),
+                    new("TenantTypeCode", model.TenantTypeCode!),
+                    new("TenantName", model.TenantName!),
+                    new("DatabaseName", model.DatabaseName!),
+                    new("Expiry", model.Expiry!),
                 ], "JwtAuth"
             )
         );
     }
 
-    public static CustomUserClaim GetClaimsFromToken(string jwtToken)
+    public static TokenClaimsResponse GetClaimsFromToken(string jwtToken)
     {
         if (string.IsNullOrEmpty(jwtToken))
         {
-            return new CustomUserClaim();
+            return new TokenClaimsResponse();
         }
 
         JwtSecurityTokenHandler handler = new();
         JwtSecurityToken token = handler.ReadJwtToken(jwtToken);
         IEnumerable<Claim> claims = token.Claims;
 
-        string Id = claims.First(_ => _.Type == ClaimTypes.NameIdentifier).Value!;
+        string UserId = claims.First(_ => _.Type == "UserId").Value!;
         string TenantId = claims.First(_ => _.Type == "TenantId").Value!;
         string Email = claims.First(_ => _.Type == ClaimTypes.Email).Value!;
-        string TenantDb = claims.First(_ => _.Type == "TenantDb").Value!;
-        string exp = claims.First(_ => _.Type.Equals("exp", StringComparison.Ordinal)).Value;
+        HashSet<string> roles = new(claims.Where(c => c.Type == ClaimTypes.Role).Select(c => c.Value));
+        string TenantTypeCode = claims.First(_ => _.Type == "TenantTypeCode").Value!;
+        string TenantName = claims.First(_ => _.Type == "TenantName").Value!;
+        string DatabaseName = claims.First(_ => _.Type == "DatabaseName").Value!;
+        string Expiry = claims.First(_ => _.Type.Equals("exp", StringComparison.Ordinal)).Value;
 
-        return new CustomUserClaim(Id!, TenantId!, Email!, TenantDb!, exp);
+        return new TokenClaimsResponse(int.Parse(UserId!), int.Parse(TenantId!), Email!, roles, TenantTypeCode!, TenantName, DatabaseName, Expiry);
     }
 
 }

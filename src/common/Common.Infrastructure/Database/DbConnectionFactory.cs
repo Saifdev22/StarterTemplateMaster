@@ -10,7 +10,7 @@ internal sealed class DbConnectionFactory(CurrentTenant ct) : IDbConnectionFacto
 {
     public async Task<T> QueryFirstOrDefaultAsync<T>(string sql, object parameters = null!)
     {
-        using DbConnection connection = GetConnection();
+        using DbConnection connection = GetConnection(true);
         await connection.OpenAsync();
 
         Task<T> result = connection.QueryFirstOrDefaultAsync<T>(sql, parameters)!;

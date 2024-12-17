@@ -1,7 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Microsoft.EntityFrameworkCore;
-using System.Domain.Identity;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System.Domain.Features.Tenant;
+using System.Domain.Identity;
 
 namespace System.Infrastructure.Features.Multitenancy;
 
