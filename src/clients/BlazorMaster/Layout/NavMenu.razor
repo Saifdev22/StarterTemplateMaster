@@ -3,7 +3,7 @@
 <div class="top-row ps-3 navbar navbar-dark">
     <div class="container-fluid">
             <a class="navbar-brand" href="/">
-                <span>@context.User.Claims.FirstOrDefault(c => c.Type == "tenant")!.Value</span>
+                <span>@context.User.Claims.FirstOrDefault(c => c.Type == "TenantName")!.Value</span>
             </a>
         <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
             <span class="navbar-toggler-icon"></span>
@@ -24,30 +24,30 @@
             </NavLink>
         </div>
         <div class="nav-item px-3">
-            <NavLink class="nav-link" href="weather">
-                <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Weather
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
             <NavLink class="nav-link" href="tenant/list">
                 <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Tenant
             </NavLink>
         </div>
         <div class="nav-item px-3">
-            <NavLink class="nav-link" href="tenant/list">
+            <NavLink class="nav-link" href="ho/list">
                 <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Head Office
             </NavLink>
         </div>
         <div class="nav-item px-3">
-            <NavLink class="nav-link" href="tenant/list">
+            <NavLink class="nav-link" href="store/list">
                 <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Store
             </NavLink>
         </div>
         <div class="nav-item px-3">
-                <NavLink class="nav-link" href="tenant/list">
+                <NavLink class="nav-link" href="warehouse/list">
                 <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Warehouse
                 </NavLink>
         </div>
+            <div class="nav-item px-3" @onclick="LogoutClicked">
+                <NavLink class="nav-link">
+                    <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Logout
+                </NavLink>
+            </div>
     </nav>
 </div>
 </AuthorizeView>
@@ -59,5 +59,13 @@
     private void ToggleNavMenu()
     {
         collapseNavMenu = !collapseNavMenu;
+    }
+
+    async Task LogoutClicked()
+    {
+        var logoutModel = new TokenResponse();
+        var customAuthStateProvider = (CustomAuthenticationStateProvider)_authenticationStateProvider;
+        await customAuthStateProvider.UpdateAuthenticationState(logoutModel);
+        _navigationManager.NavigateTo("/identity/account/login", replace: true, forceLoad: true);
     }
 }

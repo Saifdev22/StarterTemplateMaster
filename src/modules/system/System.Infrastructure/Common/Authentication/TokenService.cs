@@ -116,12 +116,12 @@ public class TokenService(
     {
         List<Claim> claims =
         [
-            new Claim("UserId", customClaims.UserId.ToString()),
-            new Claim("TenantId", customClaims.TenantId.ToString()),
-            new Claim(ClaimTypes.Email, customClaims.Email),
-            new Claim("TenantTypeCode", customClaims.TenantTypeCode),
-            new Claim("TenantName", customClaims.TenantName),
-            new Claim("DatabaseName", customClaims.DatabaseName)
+            new Claim("UserId", customClaims.UserId.ToString()!),
+            new Claim("TenantId", customClaims.TenantId.ToString()!),
+            new Claim(ClaimTypes.Email, customClaims.Email!),
+            new Claim("TenantTypeCode", customClaims.TenantTypeCode!),
+            new Claim("TenantName", customClaims.TenantName!),
+            new Claim("DatabaseName", customClaims.DatabaseName!)
         ];
 
         if (customClaims.RoleName != null)

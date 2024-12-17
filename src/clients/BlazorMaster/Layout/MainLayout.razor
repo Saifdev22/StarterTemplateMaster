@@ -12,14 +12,11 @@
 <AuthorizeView>
     <Authorized>
         <div class="page">
-            <div class="sidebar">
+@*             <div class="sidebar">
                 <NavMenu />
-            </div>
+            </div> *@
             <main>
-                <div class="top-row px-4">
-                    <a class="btn btn-none" @onclick="LogoutClicked">Logout</a>
-                </div>
-
+                <Navbar />
                 <article class="content px-4">
                     <ErrorBoundary @ref="errorBoundary">
                         <ChildContent>
@@ -30,8 +27,7 @@
                             <p>@Exception.GetType();</p>
                             <p>@Exception.Message;</p>
                         </ErrorContent>
-                    </ErrorBoundary>
-                    
+                    </ErrorBoundary>         
                 </article>
             </main>
         </div>
@@ -46,13 +42,5 @@
     protected override void OnParametersSet()
     {
         errorBoundary?.Recover();
-    }
-
-    async Task LogoutClicked()
-    {
-        var logoutModel = new TokenResponse();
-        var customAuthStateProvider = (CustomAuthenticationStateProvider)_authenticationStateProvider;
-        await customAuthStateProvider.UpdateAuthenticationState(logoutModel);
-        _navigationManager.NavigateTo("/identity/account/login", replace: true, forceLoad: true);
     }
 }
