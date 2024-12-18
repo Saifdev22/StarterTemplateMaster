@@ -1,4 +1,4 @@
-﻿using System.Domain.Features.Token;
+﻿using Common.Domain.TransferObjects.System;
 
 namespace System.Application.Features.Authentication.RefreshToken;
 

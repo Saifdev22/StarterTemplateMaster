@@ -1,6 +1,6 @@
-﻿using MediatR;
+﻿using Common.Domain.TransferObjects.System;
+using MediatR;
 using System.Application.Features.Authentication.RefreshToken;
-using System.Domain.Features.Token;
 using System.Presentation.Common;
 
 namespace System.Presentation.Features.Authentication;

@@ -1,18 +1,27 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace BlazorCommon.Dtos;
-
-public record TokenRequest(string Token, string RefreshToken);
+namespace Common.Domain.TransferObjects.System;
 
 public class TokenResponse
 {
     public string Token { get; set; } = string.Empty;
     public string RefreshToken { get; set; } = string.Empty;
     public DateTime? RefreshTokenExpiryTime { get; set; }
-    public bool Flag { get; set; } = true;
 }
 
-public record CustomUserClaim(string Id = null!, string Username = null!, string Email = null!, string Tenant = null!, string Exp = null!);
+public class AccessTokenRequest
+{
+    public string Email { get; set; } = string.Empty;
+    public string Password { get; set; } = string.Empty;
+}
+
+public class RefreshTokenRequest
+{
+    public string Token { get; set; } = string.Empty;
+    public string RefreshToken { get; set; } = string.Empty;
+}
+
+public record TokenRequest(string Token, string RefreshToken);
 
 public class LoginDto
 {

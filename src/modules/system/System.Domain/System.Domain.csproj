@@ -1,11 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\common\Common.Domain\Common.Domain.csproj" />
+    <Compile Remove="TransferObjects\**" />
+    <EmbeddedResource Remove="TransferObjects\**" />
+    <None Remove="TransferObjects\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="TransferObjects\" />
+    <ProjectReference Include="..\..\..\common\Common.Domain\Common.Domain.csproj" />
   </ItemGroup>
 
 </Project>

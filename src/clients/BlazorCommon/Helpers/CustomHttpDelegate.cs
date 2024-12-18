@@ -1,5 +1,4 @@
-﻿using BlazorCommon.Dtos;
-using BlazorCommon.Services.Contracts;
+﻿using BlazorCommon.Services.Contracts;
 using System.Net;
 using System.Net.Http.Headers;
 
@@ -52,13 +51,13 @@ public sealed class CustomHttpDelegate(LocalStorageService localStorageService, 
             }
 
             // Call for refresh token.
-            TokenResponse newJwtToken = await GetRefreshToken(deserializedToken, cancellationToken);
-            if (string.IsNullOrEmpty(newJwtToken.Token))
+            Result<TokenResponse> newJwtToken = await GetRefreshToken(deserializedToken, cancellationToken);
+            if (string.IsNullOrEmpty(newJwtToken.Value.Token))
             {
                 return result;
             }
 
-            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", newJwtToken.Token);
+            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", newJwtToken.Value.Token);
 
             return await base.SendAsync(request, cancellationToken);
         }
@@ -66,10 +65,10 @@ public sealed class CustomHttpDelegate(LocalStorageService localStorageService, 
         return result;
     }
 
-    private async Task<TokenResponse> GetRefreshToken(TokenResponse tokens, CancellationToken cancellationToken)
+    private async Task<Result<TokenResponse>> GetRefreshToken(TokenResponse tokens, CancellationToken cancellationToken)
     {
-        TokenResponse result = await tokenService.GetTokenWithRefreshToken(new TokenRequest(tokens.Token, tokens.RefreshToken), "N/A", cancellationToken);
-        string serializedToken = Serialization.SerializeObj(new TokenResponse() { Token = result.Token, RefreshToken = result.RefreshToken, RefreshTokenExpiryTime = result.RefreshTokenExpiryTime });
+        Result<TokenResponse> result = await tokenService.GetTokenWithRefreshToken(new TokenRequest(tokens.Token, tokens.RefreshToken), "N/A", cancellationToken);
+        string serializedToken = Serialization.SerializeObj(new TokenResponse() { Token = result.Value.Token, RefreshToken = result.Value.RefreshToken, RefreshTokenExpiryTime = result.Value.RefreshTokenExpiryTime });
         await localStorageService.SetToken(serializedToken);
         return result!;
     }

@@ -12,13 +12,15 @@
     
 @attribute [Authorize]
 
+@using Common.Domain.Results;
 @using Common.Domain.TransferObjects.System
+
 @using MudBlazor
 @using BlazorMaster@using BlazorMaster.Layout
 @using BlazorCommon.Helpers;
-@using BlazorCommon.Dtos
 @using BlazorCommon.Services
 @using BlazorCommon.Services.Contracts
+
 
 @inject AuthenticationStateProvider _authenticationStateProvider
 @inject NavigationManager _navigationManager

@@ -1,5 +1,4 @@
 ﻿using Common.Domain.TransferObjects.System;
-using System.Domain.Features.Token;
 
 namespace System.Application.Common.Interfaces;
 

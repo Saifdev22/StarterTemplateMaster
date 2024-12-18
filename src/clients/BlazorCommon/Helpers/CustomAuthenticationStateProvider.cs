@@ -1,6 +1,4 @@
-﻿using BlazorCommon.Dtos;
-using Common.Domain.TransferObjects.System;
-using Microsoft.AspNetCore.Components.Authorization;
+﻿using Microsoft.AspNetCore.Components.Authorization;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 

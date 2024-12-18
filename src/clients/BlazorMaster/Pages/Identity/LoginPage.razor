@@ -15,7 +15,7 @@
             }
             else
             {
-                <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="demo-form-button">Register</MudButton>
+                <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="demo-form-button">Login</MudButton>
             }
         </MudCardActions>
     </MudCard>
@@ -38,18 +38,15 @@
         ShowLoadingButton = true;
 
         var result = await _tokenService.LoginUser(User);
-        if (result.Flag)
+        if (result.IsSuccess)
         {
-            string customMessage = $"{result.Flag}{Environment.NewLine}{result.Token}";
-            await _js.InvokeVoidAsync("alert", customMessage);
-
             var customAuthStateProvider = (CustomAuthenticationStateProvider)_authenticationStateProvider;
             await customAuthStateProvider.UpdateAuthenticationState(new TokenResponse()
-                {
-                    Token = result.Token,
-                    RefreshToken = result.RefreshToken,
-                    RefreshTokenExpiryTime = result.RefreshTokenExpiryTime
-                });
+            {
+                Token = result.Value.Token,
+                RefreshToken = result.Value.RefreshToken,
+                RefreshTokenExpiryTime = result.Value.RefreshTokenExpiryTime
+            });
 
             _navigationManager.NavigateTo("/home/dashboard", forceLoad: true);
         }

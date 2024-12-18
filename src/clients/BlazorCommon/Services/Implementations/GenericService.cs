@@ -1,6 +1,5 @@
 ﻿using BlazorCommon.Helpers;
 using BlazorCommon.Services.Contracts;
-using Common.Domain.Results;
 using System.Net.Http.Json;
 
 namespace BlazorCommon.Services.Implementations;
