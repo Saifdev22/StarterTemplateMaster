@@ -18,7 +18,7 @@ internal sealed class GlobalExceptionHandler(ILogger<GlobalExceptionHandler> log
         {
             Status = StatusCodes.Status500InternalServerError,
             Type = "https://datatracker.ietf.org/doc/html/rfc7231#section-6.6.1",
-            Title = "Server failure",
+            Title = "Exception Occured In Code -- " + exception.Message,
             Detail = exception is StarterException starterException
             ? $"Request Name: {starterException.RequestName}"
             : "Message - " + exception.Message + ". InnerMessage - " + exception.InnerException!.Message,

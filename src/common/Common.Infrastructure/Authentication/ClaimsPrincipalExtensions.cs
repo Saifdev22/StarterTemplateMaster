@@ -39,7 +39,7 @@ public static class ClaimsPrincipalExtensions
     public static HashSet<string> GetPermissions(this ClaimsPrincipal? principal)
     {
         IEnumerable<Claim> permissionClaims = principal?.FindAll(CustomClaims.Permission) ??
-                                                                                    throw new StarterException("Permissions are unavailable");
+            throw new StarterException("Permissions are unavailable");
 
         return permissionClaims.Select(c => c.Value).ToHashSet();
     }

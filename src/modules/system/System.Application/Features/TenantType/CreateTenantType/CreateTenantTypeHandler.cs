@@ -1,13 +1,19 @@
 ﻿using Common.Domain.Abstractions;
+using Common.Domain.Errors;
 using System.Domain.Features.Tenant;
 
 namespace System.Application.Features.TenantType.CreateTenantType;
 
 internal sealed class CreateTenantTypeHandler(IGenericRepository<TenantTypeM> _repository)
-        : ICommandHandler<CreateTenantTypeCommand, TenantTypeM>
+        : ICommandHandler<CreateTenantTypeCommand, bool>
 {
-    public async Task<Result<TenantTypeM>> Handle(CreateTenantTypeCommand request, CancellationToken cancellationToken)
+    public async Task<Result<bool>> Handle(CreateTenantTypeCommand request, CancellationToken cancellationToken)
     {
+        if (request.Request.TenantTypeCode == "123")
+        {
+            return Result.Failure<bool>(CustomError.NotFound("404", "dd"));
+        }
+
         TenantTypeM newTenantType = TenantTypeM.Create
         (
             request.Request.TenantTypeCode,
@@ -17,6 +23,6 @@ internal sealed class CreateTenantTypeHandler(IGenericRepository<TenantTypeM> _r
         await _repository.AddAsync(newTenantType);
         await _repository.SaveChangesAsync(cancellationToken);
 
-        return Result.Success(newTenantType);
+        return Result.Success(true);
     }
 }

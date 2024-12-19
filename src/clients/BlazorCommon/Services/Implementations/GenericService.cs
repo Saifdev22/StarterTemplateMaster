@@ -6,11 +6,12 @@ namespace BlazorCommon.Services.Implementations;
 
 public class GenericService<TRead, TWrite>(CustomHttpClient getHttpClient) : IGenericService<TRead, TWrite>
 {
-    public async Task<GeneralResponse> Insert(string basePath, TWrite item)
+    public async Task<Result<bool>> Insert(string basePath, TWrite item)
     {
         HttpClient httpClient = await getHttpClient.GetPrivateHttpClient();
+
         HttpResponseMessage response = await httpClient.PostAsJsonAsync($"{basePath}/create", item);
-        GeneralResponse? result = await response.Content.ReadFromJsonAsync<GeneralResponse>();
+        bool? result = await response.Content.ReadFromJsonAsync<bool>();
         return result!;
     }
 
@@ -28,21 +29,21 @@ public class GenericService<TRead, TWrite>(CustomHttpClient getHttpClient) : IGe
         return result!;
     }
 
-    public async Task<GeneralResponse> Update(string basePath, TWrite item)
+    public async Task<Result<bool>> Update(string basePath, TWrite item)
     {
         HttpClient httpClient = await getHttpClient.GetPrivateHttpClient();
         HttpResponseMessage response = await httpClient.PutAsJsonAsync($"{basePath}/update", item);
-        GeneralResponse? result = await response.Content.ReadFromJsonAsync<GeneralResponse>();
+        bool? result = await response.Content.ReadFromJsonAsync<bool>();
         return result!;
     }
 
-    public async Task<GeneralResponse> DeleteById(Uri basePath, int id)
+    public async Task<Result<bool>> DeleteById(Uri basePath, int id)
     {
         Uri deleteUri = new(basePath, $"/delete/{id}");
 
         HttpClient httpClient = await getHttpClient.GetPrivateHttpClient();
         HttpResponseMessage response = await httpClient.DeleteAsync(deleteUri);
-        GeneralResponse? result = await response.Content.ReadFromJsonAsync<GeneralResponse>();
+        bool? result = await response.Content.ReadFromJsonAsync<bool>();
         return result!;
     }
 

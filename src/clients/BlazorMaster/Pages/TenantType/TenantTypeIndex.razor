@@ -1,5 +1,92 @@
-﻿<h3>TenantTypeIndex</h3>
+﻿@page "/tenanttype/index"
+
+<h1>Tenant Type List</h1>
+<br/>
+
+<div class="row mb-3">
+    <div class="col-md-7">
+        <NavLink href="/tenanttype/form" class="btn btn-sm btn-success mb-2">Create Tenant</NavLink>
+    </div>
+</div>
+
+@if (TenantTypes == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <MudDataGrid Items="@TenantTypes" Filterable="true" QuickFilter="@_quickFilter" Hideable="true" ColumnResizeMode="ResizeMode.Column">
+        <ToolBarContent>
+            <MudTextField @bind-Value="_searchString" Placeholder="Search" Adornment="Adornment.Start" Immediate="true"
+            AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+        </ToolBarContent>
+        <Columns>
+            <PropertyColumn Property="x => x.TenantTypeCode" Title="Tenant Type Code"  />
+            <PropertyColumn Property="x => x.TenantTypeName" />
+            <TemplateColumn CellClass="d-flex justify-end">
+                <CellTemplate>
+                    <MudStack Row>
+                        <MudButton Href="/tenanttype/form" Size="@Size.Small" Variant="@Variant.Filled" Color="@Color.Primary">Edit</MudButton>
+                        <MudButton OnClick="OnButtonClicked" Size="@Size.Small" Variant="@Variant.Filled" Color="@Color.Error">Delete</MudButton>
+                    </MudStack>
+                </CellTemplate>
+            </TemplateColumn>
+        </Columns>
+        <PagerContent>
+            <MudDataGridPager T="ReadTenantTypeDto" />
+        </PagerContent>
+    </MudDataGrid>
+}
 
 @code {
+    private List<ReadTenantTypeDto> TenantTypes { get; set; } = new();
+    private string _searchString = null!;
+    [Inject] private IDialogService DialogService { get; set; } = default!;
 
+    protected override async Task OnInitializedAsync()
+    {
+        await GetTenantTypesAsync();
+        StateHasChanged();
+    }
+
+    private async Task GetTenantTypesAsync()
+    {
+        var response = await _tenantTypeService.GetAll(Constants.TenantTypeUrl);
+
+        if (response.IsSuccess)
+        {
+            TenantTypes = response.Value.ToList();
+        }
+        else
+        {
+            Console.WriteLine("Error Occured");
+        }
+    }
+
+    private Func<ReadTenantTypeDto, bool> _quickFilter => x =>
+    {
+        if (string.IsNullOrWhiteSpace(_searchString))
+            return true;
+
+        if (x.TenantTypeCode.Contains(_searchString, StringComparison.OrdinalIgnoreCase))
+            return true;
+
+        if (x.TenantTypeName.Contains(_searchString, StringComparison.OrdinalIgnoreCase))
+            return true;
+
+        return false;
+    };
+
+    string state = "Message box hasn't been opened yet";
+
+
+    private async void OnButtonClicked()
+    {
+        bool? result = await DialogService.ShowMessageBox(
+            "Warning",
+            "Deleting can not be undone!",
+            yesText: "Delete!", cancelText: "Cancel");
+        state = result == null ? "Canceled" : "Deleted!";
+        StateHasChanged();
+    }
 }

@@ -1,0 +1,79 @@
+﻿@page "/tenanttype/form"
+
+<h3>TenantForm</h3>
+
+<EditForm Model=@model OnValidSubmit="OnValidSubmit">
+    <DataAnnotationsValidator />
+    <MudCard>
+        <MudCardContent>
+            <MudTextField @bind-Value="model.TenantTypeCode" Variant="Variant.Outlined" Label="Code" For="@(() => model.TenantTypeCode)" />
+            <MudTextField @bind-Value="model.TenantTypeDesc" Variant="Variant.Outlined" Label="Description" For="@(() => model.TenantTypeDesc)" />
+        </MudCardContent>
+        <MudCardActions>
+            <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="demo-form-button">Submit</MudButton>
+            <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Secondary" Class="demo-form-button">Back</MudButton>
+        </MudCardActions>
+    </MudCard>
+</EditForm>
+
+
+
+@code {
+    // [Parameter]
+    // public int Id { get; set; }
+
+    WriteTenantType model = new WriteTenantType();
+
+    void Back()
+    {
+        _navigationManager.NavigateTo("tenanttype/index");
+    }
+
+    private async void OnValidSubmit(EditContext context)
+    {
+        // if (Id == 0)
+        // {
+            // Insert new Tenant Type
+            var response = await _tenantTypeService.Insert(Constants.TenantTypeUrl, model);
+            if (response.IsSuccess)
+            {
+                Console.WriteLine("Tenant Type created successfully.");
+                Back();
+            }
+            else
+            {
+                Console.WriteLine("Error occurred during creation.");
+            }
+        // }
+        // else
+        // {
+        //     // Update existing Tenant Type
+        //     var response = await _tenantTypeService.Update($"{Constants.TenantTypeUrl}/{Id}", model);
+        //     if (response.Flag)
+        //     {
+        //         Console.WriteLine("Tenant Type updated successfully.");
+        //     }
+        //     else
+        //     {
+        //         Console.WriteLine("Error occurred during update.");
+        //     }
+        // }
+    }
+
+    // protected override async Task OnParametersSetAsync()
+    // {
+    //     if (Id != 0)
+    //     {
+    //         var response = await _tenantTypeService.GetById(Constants.TenantTypeUrl, Id);
+    //         if (response != null)
+    //         {
+    //             readModel = response;
+    //         }
+    //         else
+    //         {
+    //             Console.WriteLine("Error: Tenant Type not found.");
+    //         }
+    //     }
+    // }
+
+}
