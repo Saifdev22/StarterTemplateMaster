@@ -12,7 +12,6 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.Application.Common.Interfaces;
 using System.Domain.Features.Tenant;
-using System.Domain.Features.Token;
 using System.Domain.Identity;
 using System.IdentityModel.Tokens.Jwt;
 using System.Infrastructure.Common.Database;

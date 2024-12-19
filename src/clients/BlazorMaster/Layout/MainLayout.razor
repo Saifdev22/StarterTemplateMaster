@@ -11,25 +11,21 @@
 
 <AuthorizeView>
     <Authorized>
-        <div class="page">
-@*             <div class="sidebar">
-                <NavMenu />
-            </div> *@
-            <main>
-                <Navbar />
-                <article class="content px-4">
-                    <ErrorBoundary @ref="errorBoundary">
-                        <ChildContent>
-                            @Body
-                        </ChildContent>
-                        <ErrorContent Context="Exception" >
-                            <p>Error Occured!!!</p>
-                            <p>@Exception.GetType();</p>
-                            <p>@Exception.Message;</p>
-                        </ErrorContent>
-                    </ErrorBoundary>         
-                </article>
-            </main>
+        <div class="main-wrapper">
+            <Header />
+            <article class="content px-4">
+                <ErrorBoundary @ref="errorBoundary">
+                    <ChildContent>
+                        @Body
+                    </ChildContent>
+                    <ErrorContent Context="Exception" >
+                        <p>Error Occured!!!</p>
+                        <p>@Exception.GetType();</p>
+                        <p>@Exception.Message;</p>
+                    </ErrorContent>
+                </ErrorBoundary>         
+            </article>
+            <Footer />
         </div>
     </Authorized>
    

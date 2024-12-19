@@ -1,6 +1,4 @@
-﻿using Common.Domain.Results;
-
-namespace BlazorCommon.Services.Contracts;
+﻿namespace BlazorCommon.Services.Contracts;
 
 public interface IGenericService<TRead, TWrite>
 {

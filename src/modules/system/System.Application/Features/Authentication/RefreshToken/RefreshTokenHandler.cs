@@ -1,5 +1,5 @@
-﻿using System.Application.Common.Interfaces;
-using System.Domain.Features.Token;
+﻿using Common.Domain.TransferObjects.System;
+using System.Application.Common.Interfaces;
 
 namespace System.Application.Features.Authentication.RefreshToken;
 
