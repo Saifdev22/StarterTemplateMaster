@@ -1,6 +1,7 @@
 name: Blazor Pipeline
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - master
