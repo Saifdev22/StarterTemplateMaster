@@ -50,15 +50,17 @@ public class Result<TValue>(TValue? value, bool isSuccess, CustomError error) : 
 
     [NotNull]
     public TValue Value => IsSuccess
-            ? _value!
-            : throw new InvalidOperationException("The value of a failure result can't be accessed.");
+        ? _value!
+        : throw new InvalidOperationException("The value of a failure result can't be accessed.");
 
     public static implicit operator Result<TValue>(TValue? value)
     {
         return value is not null ? Success(value) : Failure<TValue>(CustomError.NullValue);
     }
 
-    public Result<TValue> ValidationFailure(CustomError error)
+#pragma warning disable CA1000 // Do not declare static members on generic types
+    public static Result<TValue> ValidationFailure(CustomError error)
+#pragma warning restore CA1000 // Do not declare static members on generic types
     {
         return new(default, false, error);
     }
