@@ -1,3 +1,6 @@
+Prepare Blazor
+
+1. Install Microsoft.AspNetCore.Components.WebAssembly On The API
 
 My Software
 

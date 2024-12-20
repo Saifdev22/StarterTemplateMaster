@@ -1,43 +1,25 @@
+-------------------------------------------------------------------------------------------------------------------------
 
+API
+- Fix Result Pattern
+- Fluent Validation Error Response
+- Make Postgres Default Database For Parent With Backups
 
-Creating Endpoint
+-------------------------------------------------------------------------------------------------------------------------
 
-1. Create Model (Domain)
+Devopz
 
-2. Add Model To DbContext
+- Docker Self Hosted Github Runnner.
+- Docker PostgreSQL Backups.
+- Deploy A Test Kubernetes Cluster.
+- Create a R60 Seperate VPS. (Make it a worker/control node)
 
-3. Configure Model
-
-4. Add CQRS
-
-5. Add Endpoint
-
-
-API/Devopz
-
-1. Finalize API (Get TODO Tasks).
-
-2. Docker BlazorWASM (Get Blazor Ready).
-
-3. Docker Self Hosted Github Runnner.
-
-4. Deploy A Test Kubernetes Cluster.
-
-5. Create a R60 Seperate VPS. (Make it a worker/control node) - For databases. (Postgres/MSSQL)
-
-6. Develop A Basic CI/CD Pipeline.
-
-7. Fix Time On Audit Fields
-
-8. Validation Error
-
+-------------------------------------------------------------------------------------------------------------------------
 
 Blazor
 
-
+- API Error & Exception Handling
 _ Blazor CRUD (Forms, Pages, Services, Tables, Models)
 - Fix Login Screen
-_ Create A Custom Navbar & Footer
-
 - Create Layouts for diffent tenant
 

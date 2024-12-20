@@ -1,12 +1,14 @@
-Migrations
-
 System
+
 Add-Migration -Name InitialCreate -Context SystemDbContext -OutputDir Common/Database/Migrations -Project System.Infrastructure -StartupProject Starter.API
 Update-Database -Context SystemDbContext -Project System.Infrastructure -StartupProject Starter.API 
 
 Parent
+
 Add-Migration -Name InitialCreate -Context ParentDbContext  -OutputDir Common/Database/Migrations  -Project Parent.Infrastructure -StartupProject Starter.API
 Update-Database -Context ParentDbContext -Project Parent.Infrastructure -StartupProject Starter.API 
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
 dotnet dev-certs https -ep C:\Users\saifd\Desktop\certs\.aspnet\https\aspnetapp.pfx -p 25122000
@@ -24,27 +26,26 @@ Infrastructure => Common.Infrastructure, Application, Presentation
 Application => Common.Application, Domain, IntegrationEvents
 Presentation => Common.Presentation, Application
 
-
-Prepare Blazor
-
-1. Install Microsoft.AspNetCore.Components.WebAssembly On The API
-
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 docker-compose -f docker-compose.resources.yml up -d postgres.database
-
-
 docker-compose up -d
 docker-compose down
 
 --------------------------------------------------------------------------------------------------------------------------
+Creating Endpoint
 
+1. Create Model (Domain)
 
-Creating A Module
+2. Add Model To DbContext
 
+3. Configure Model
 
+4. Add CQRS
 
+5. Add Endpoint
 
+--------------------------------------------------------------------------------------------------------------------------
 
 UserM
 public virtual IReadOnlyCollection<UserRoleM>? UserRoles { get; set; } = [];
