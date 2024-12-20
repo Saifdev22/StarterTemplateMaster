@@ -11,19 +11,10 @@ public static class ClientSharedModule
 {
     public static IServiceCollection AddClientLibrary(this IServiceCollection services)
     {
-        //string apiBase = "https://starter.webport.co.za/";
-        string apiBase = "https://localhost:7283/";
-
         services.AddScoped<LocalStorageService>();
         services.AddTransient<CustomHttpDelegate>();
         services.AddScoped<CustomHttpClient>();
         services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();
-
-        services.AddHttpClient("SystemApiClient", client =>
-        {
-            client.BaseAddress = new Uri(apiBase);
-        })
-            .AddHttpMessageHandler<CustomHttpDelegate>();
 
         services.AddBlazoredLocalStorage();
         services.AddAuthorizationCore();
@@ -31,6 +22,7 @@ public static class ClientSharedModule
         services.AddScoped<ITokenService, TokenService>();
 
         services.AddScoped<IGenericService<GetAllTenants, CreateTenantDto>, GenericService<GetAllTenants, CreateTenantDto>>();
+        services.AddScoped<IGenericService<ReadTenantTypeDto, WriteTenantType>, GenericService<ReadTenantTypeDto, WriteTenantType>>();
 
         return services;
     }

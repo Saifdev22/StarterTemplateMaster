@@ -13,3 +13,10 @@ public sealed record WriteTenantTypeDto
     string TenantTypeCode,
     string TenantTypeDesc
 );
+
+public class WriteTenantType
+{
+    public int TenantTypeId { get; set; }
+    public string TenantTypeCode { get; set; } = string.Empty;
+    public string TenantTypeDesc { get; set; } = string.Empty;
+}

@@ -58,6 +58,11 @@ li, a, button{
 }
 
 /*=============== REUSABLE CSS CLASSES ===============*/
+
+.main-wrapper {
+    margin-top: 8rem;
+}
+
 .container {
     max-width: 1120px;
     margin-inline: 1.5rem;

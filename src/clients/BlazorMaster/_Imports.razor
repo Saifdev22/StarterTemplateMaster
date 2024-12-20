@@ -21,10 +21,11 @@
 @using BlazorCommon.Services
 @using BlazorCommon.Services.Contracts
 
-
 @inject AuthenticationStateProvider _authenticationStateProvider
 @inject NavigationManager _navigationManager
 @inject IJSRuntime _js
 @inject HttpClient _httpClient
 @inject ITokenService _tokenService
+
 @inject IGenericService<GetAllTenants, CreateTenantDto> _genericService
+@inject IGenericService<ReadTenantTypeDto, WriteTenantType> _tenantTypeService

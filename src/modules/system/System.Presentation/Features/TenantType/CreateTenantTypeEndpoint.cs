@@ -1,7 +1,6 @@
 ﻿using Common.Domain.TransferObjects.System;
 using MediatR;
 using System.Application.Features.TenantType.CreateTenantType;
-using System.Domain.Features.Tenant;
 using System.Presentation.Common;
 
 namespace System.Presentation.Features.TenantType;
@@ -12,7 +11,7 @@ internal sealed class CreateTenantTypeEndpoint : IEndpoint
     {
         app.MapPost("tenanttype/create", async (WriteTenantTypeDto request, ISender sender) =>
         {
-            Result<TenantTypeM> result = await sender.Send(new CreateTenantTypeCommand(request));
+            Result<bool> result = await sender.Send(new CreateTenantTypeCommand(request));
 
             return result.Match(Results.Ok, ApiResults.Problem);
         })
