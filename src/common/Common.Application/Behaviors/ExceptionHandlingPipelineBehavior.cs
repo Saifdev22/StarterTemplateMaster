@@ -20,7 +20,7 @@ internal sealed class ExceptionHandlingPipelineBehavior<TRequest, TResponse>(
         }
         catch (Exception exception)
         {
-            logger.LogError(exception, "Unhandled exception for {RequestName}", typeof(TRequest).Name);
+            logger.LogError(exception, "Exception Handling Pipeline - Unhandled exception for {RequestName}", typeof(TRequest).Name);
 
             throw new StarterException(typeof(TRequest).Name, innerException: exception);
         }
