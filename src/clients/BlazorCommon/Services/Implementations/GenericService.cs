@@ -6,7 +6,7 @@ namespace BlazorCommon.Services.Implementations;
 
 public class GenericService<TRead, TWrite>(CustomHttpClient getHttpClient) : IGenericService<TRead, TWrite>
 {
-    public async Task<Result<bool>> Insert(string basePath, TWrite item)
+    public async Task<bool?> Insert(string basePath, TWrite item)
     {
         HttpClient httpClient = await getHttpClient.GetPrivateHttpClient();
 

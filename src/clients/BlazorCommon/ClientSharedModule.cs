@@ -1,4 +1,5 @@
-﻿using BlazorCommon.Helpers;
+﻿using BlazorCommon.Delegates;
+using BlazorCommon.Helpers;
 using BlazorCommon.Services.Contracts;
 using BlazorCommon.Services.Implementations;
 using Blazored.LocalStorage;
@@ -11,8 +12,10 @@ public static class ClientSharedModule
 {
     public static IServiceCollection AddClientLibrary(this IServiceCollection services)
     {
-        services.AddScoped<LocalStorageService>();
+        services.AddTransient<CustomHttpErrorHandler>();
         services.AddTransient<CustomHttpDelegate>();
+
+        services.AddScoped<LocalStorageService>();
         services.AddScoped<CustomHttpClient>();
         services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();
 

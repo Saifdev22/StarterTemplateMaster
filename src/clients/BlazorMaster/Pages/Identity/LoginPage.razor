@@ -16,6 +16,7 @@
             else
             {
                 <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="demo-form-button">Login</MudButton>
+                <button @onclick="ThrowException">Click me to throw error</button>
             }
         </MudCardActions>
     </MudCard>
@@ -27,6 +28,11 @@
 
     public bool ShowLoadingButton { get; set; } = false;
     internal LoginDto User { get; set; } = new();
+
+    private void ThrowException()
+    {
+        throw new InvalidOperationException("Test error");
+    }
 
     protected async override Task OnInitializedAsync()
     {

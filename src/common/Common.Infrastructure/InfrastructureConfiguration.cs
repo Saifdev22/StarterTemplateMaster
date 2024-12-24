@@ -7,6 +7,7 @@ using Common.Infrastructure.Authorization;
 using Common.Infrastructure.Caching;
 using Common.Infrastructure.Clock;
 using Common.Infrastructure.Database;
+using Common.Infrastructure.Mail;
 using Common.Infrastructure.OutboxScaling;
 using Common.Infrastructure.System;
 using Dapper;
@@ -31,6 +32,9 @@ public static class InfrastructureConfiguration
         string rabbitmqConnectionString,
         string postgresConnectionString)
     {
+        // Mail
+        services.ConfigureMailing();
+
         //Authentication & Authorization
         services.AddAuthenticationInternal();
         services.AddAuthorizationInternal();

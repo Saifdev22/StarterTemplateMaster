@@ -9,28 +9,29 @@
                    Position="DialogPosition.Center"
                    CloseOnEscapeKey="true" />
 
-<AuthorizeView>
-    <Authorized>
-        <div class="main-wrapper">
-            <Header />
-            <article class="content px-4">
-                <ErrorBoundary @ref="errorBoundary">
-                    <ChildContent>
+<ErrorBoundary @ref="errorBoundary">
+    <ChildContent>
+        <AuthorizeView>
+            <Authorized>
+                <div class="main-wrapper">
+                    <button @onclick="ThrowException">Click me to throw error</button>
+                    <Header />
+                    <article class="content px-4">
                         @Body
-                    </ChildContent>
-                    <ErrorContent Context="Exception" >
-                        <p>Error Occured!!!</p>
-                        <p>@Exception.GetType();</p>
-                        <p>@Exception.Message;</p>
-                    </ErrorContent>
-                </ErrorBoundary>         
-            </article>
-            <Footer />
-        </div>
-    </Authorized>
-   
-    <NotAuthorized>@Body</NotAuthorized>
-</AuthorizeView> 
+                    </article>
+                    <Footer />
+                </div>
+            </Authorized>
+            <NotAuthorized>@Body</NotAuthorized>
+        </AuthorizeView>
+    </ChildContent>
+
+    <ErrorContent Context="exception">
+        <p>Error Occurred!!! -  From Main</p>
+        <p>@exception.GetType()</p>
+        <p>@exception.Message</p>
+    </ErrorContent>
+</ErrorBoundary>
 
 @code {
     private ErrorBoundary? errorBoundary;
@@ -38,5 +39,10 @@
     protected override void OnParametersSet()
     {
         errorBoundary?.Recover();
+    }
+
+    private void ThrowException()
+    {
+        throw new InvalidOperationException("Test error");
     }
 }

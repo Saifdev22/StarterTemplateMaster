@@ -1,4 +1,5 @@
-﻿using BlazorCommon.Helpers;
+﻿using BlazorCommon.Delegates;
+using BlazorCommon.Helpers;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 
 namespace BlazorMaster.Registrars;
@@ -22,7 +23,9 @@ internal sealed class BaseAddressRegistrar : IWebAssemblyHostBuilderRegistrar
                 client.BaseAddress = new Uri(configuration["BaseUrls:Production"]!);
             }
 
-        }).AddHttpMessageHandler<CustomHttpDelegate>();
+        })
+            .AddHttpMessageHandler<CustomHttpDelegate>()
+            .AddHttpMessageHandler<CustomHttpErrorHandler>();
 
         builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
     }

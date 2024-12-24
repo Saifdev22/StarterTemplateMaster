@@ -1,4 +1,5 @@
 ﻿@page "/tenanttype/form"
+@using System.Text.Json
 
 <h3>TenantForm</h3>
 
@@ -33,17 +34,34 @@
     {
         // if (Id == 0)
         // {
-            // Insert new Tenant Type
-            var response = await _tenantTypeService.Insert(Constants.TenantTypeUrl, model);
-            if (response.IsSuccess)
+        // Insert new Tenant Type
+        var response = await _tenantTypeService.Insert(Constants.TenantTypeUrl, model);
+
+        if (response.s)
+        {
+            Console.WriteLine("Tenant Type created successfully.");
+            Back();
+        }
+        else
+        {
+            try
             {
-                Console.WriteLine("Tenant Type created successfully.");
-                Back();
+                // Deserialize the error response into the ErrorResponse class
+                var errorResponse = await response.Content.ReadFromJsonAsync<JsonElement>();
+
+                    // Log or display specific fields from the error response
+                if (errorResponse.TryGetProperty("status", out var status))
+                {
+                    Console.WriteLine($"Status: {status.GetInt32()}");
+                }
+                
             }
-            else
+            catch (Exception ex)
             {
-                Console.WriteLine("Error occurred during creation.");
+                // Handle deserialization errors
+                Console.WriteLine($"Failed to parse error response: {ex.Message}");
             }
+        }
         // }
         // else
         // {
